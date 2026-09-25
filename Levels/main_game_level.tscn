@@ -1,3 +1,7 @@
 [gd_scene format=3 uid="uid://dnapchlwmd70e"]
 
+[ext_resource type="PackedScene" uid="uid://cm73x1hof36vw" path="res://Levels/VillageLevel.tscn" id="1_fmdlr"]
+
 [node name="MainGameLevel" type="Node3D" unique_id=1291679621]
+
+[node name="VillageLevel" parent="." unique_id=1849216713 instance=ExtResource("1_fmdlr")]
