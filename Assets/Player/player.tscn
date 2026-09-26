@@ -9,7 +9,7 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_v46uq"]
 
-[node name="Player" type="CharacterBody3D" unique_id=984335552]
+[node name="Player" type="CharacterBody3D" unique_id=984335552 groups=["player"]]
 script = ExtResource("1_61lih")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=78507818]
