@@ -43,6 +43,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.376091, 0.42365563, 20.1799
 [node name="Marker3DRoute1M4" type="Marker3D" parent="." unique_id=1228522832]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3232894, 0.22139275, 20.179972)
 
-[node name="Enemy" parent="." unique_id=966649276 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
+[node name="Marker3DRoute2M1" type="Marker3D" parent="." unique_id=153825760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.6363325, 0.42365563, 30.255852)
+
+[node name="Marker3DRoute2M2" type="Marker3D" parent="." unique_id=330859281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.6363325, 0.42365563, -3.9262543)
+
+[node name="Marker3DRoute3M1" type="Marker3D" parent="." unique_id=900088002]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.829442, 0.42365563, -0.9698429)
+
+[node name="Marker3DRoute3M2" type="Marker3D" parent="." unique_id=831572683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.046607, 0.42365563, -0.71377873)
+
+[node name="Marker3DRoute3M3" type="Marker3D" parent="." unique_id=296127040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4393864, 0.42365563, -7.7716236)
+
+[node name="Marker3DRoute3M4" type="Marker3D" parent="." unique_id=1535856716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52545595, 0.42365563, -7.7716236)
+
+[node name="Enemy1" parent="." unique_id=966649276 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3414364, 0.9999981, 19.81176)
 patrol_points = [NodePath("../Marker3DRoute1M1"), NodePath("../Marker3DRoute1M2"), NodePath("../Marker3DRoute1M3"), NodePath("../Marker3DRoute1M4")]
+
+[node name="Enemy2" parent="." unique_id=582973543 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.683144, 0.9999981, 29.426367)
+patrol_points = [NodePath("../Marker3DRoute2M1"), NodePath("../Marker3DRoute2M2")]
+
+[node name="Enemy3" parent="." unique_id=902739928 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
+transform = Transform3D(-0.23386861, 0, 0.9722682, 0, 1, 0, -0.9722682, 0, -0.23386861, 0.7467537, 0.9999981, -0.5643401)
+patrol_points = [NodePath("../Marker3DRoute3M1"), NodePath("../Marker3DRoute3M2"), NodePath("../Marker3DRoute3M3"), NodePath("../Marker3DRoute3M4")]
