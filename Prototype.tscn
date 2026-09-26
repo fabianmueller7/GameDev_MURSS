@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://duxve5sfodsuy"]
+
+[ext_resource type="PackedScene" uid="uid://cm73x1hof36vw" path="res://Levels/VillageLevel.tscn" id="1_sfvmy"]
+[ext_resource type="PackedScene" uid="uid://ply3xwpbuycx" path="res://Assets/Player/player.tscn" id="2_1h0e5"]
+
+[sub_resource type="Environment" id="Environment_v46uq"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_efkys"]
+
+[node name="Prototype" type="Node3D" unique_id=1593531773]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=794308676]
+environment = SubResource("Environment_v46uq")
+camera_attributes = SubResource("CameraAttributesPractical_efkys")
+
+[node name="Player" parent="." unique_id=984335552 instance=ExtResource("2_1h0e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.928131, 0.9999962, 41.5965)
+
+[node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=1396696176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 54.779243, 0)
+light_energy = 10.111
+
+[node name="VillageLevel" parent="." unique_id=1849216713 instance=ExtResource("1_sfvmy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.053910494, -1.1920929e-07, -0.08564901)

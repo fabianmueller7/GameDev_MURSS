@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cm73x1hof36vw"]
 
-[ext_resource type="PackedScene" uid="uid://hdwrqsv3ybyq" path="res://Game-Objects/floor.tscn" id="1_3ocbk"]
-[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Game-Objects/house.tscn" id="2_68tci"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Game-Objects/wall.tscn" id="3_7t8uq"]
-[ext_resource type="PackedScene" uid="uid://dxv74wmv6tqty" path="res://Game-Objects/building.tscn" id="4_ldsei"]
+[ext_resource type="PackedScene" uid="uid://hdwrqsv3ybyq" path="res://Assets/floor.tscn" id="1_3ocbk"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="2_68tci"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="3_7t8uq"]
+[ext_resource type="PackedScene" uid="uid://dxv74wmv6tqty" path="res://Assets/building.tscn" id="4_ldsei"]
 
 [node name="VillageLevel" type="Node3D" unique_id=1849216713]
 

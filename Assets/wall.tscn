@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bdv8ifo8w2083"]
 
+[ext_resource type="Script" uid="uid://bu2nk4xu4fox1" path="res://Assets/mesh_instance_3d.gd" id="1_vnsvt"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(5, 2.5, 1)
 
@@ -17,3 +19,4 @@ shape = SubResource("BoxShape3D_ifpyu")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1790872418]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 mesh = SubResource("BoxMesh_ifpyu")
+script = ExtResource("1_vnsvt")

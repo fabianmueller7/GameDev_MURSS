@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bevunoamjsphp"]
 
+[ext_resource type="Script" uid="uid://barwj025shwq8" path="res://Assets/house_instance_3d.gd" id="1_m8120"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(5, 2.5, 5)
 
@@ -17,3 +19,4 @@ shape = SubResource("BoxShape3D_ifpyu")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1889723868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 mesh = SubResource("BoxMesh_ckr0i")
+script = ExtResource("1_m8120")
