@@ -64,8 +64,8 @@ func _physics_process(delta: float) -> void:
 		var direction := agent.get_next_path_position() - global_position
 		direction.y = 0
 		direction = direction.normalized()
-		velocity.x = direction.x * speed
-		velocity.z = direction.z * speed
+		velocity.x = move_toward(velocity.x, direction.x * speed, speed * delta * 8.0)
+		velocity.z = move_toward(velocity.z, direction.z * speed, speed * delta * 8.0)
 		if direction.length() > 0.01:
 			look_at(global_position + direction, Vector3.UP)
 

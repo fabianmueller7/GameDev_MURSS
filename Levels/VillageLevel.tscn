@@ -8,6 +8,7 @@
 [node name="VillageLevel" type="Node3D" unique_id=1849216713]
 
 [node name="Floor" parent="." unique_id=1785901491 instance=ExtResource("1_3ocbk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.032165527, -0.010437012, 0.061701894)
 
 [node name="House" parent="." unique_id=1477523257 instance=ExtResource("2_68tci")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.700592, 0, 33.949245)
