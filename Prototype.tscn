@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://bguxy400b6gr3" path="res://Assets/Enemy/Enemy.tscn" id="3_1h0e5"]
 
 [sub_resource type="Environment" id="Environment_v46uq"]
+background_mode = 1
+ambient_light_energy = 0.0
+reflected_light_source = 1
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_efkys"]
 
@@ -21,10 +24,6 @@ camera_attributes = SubResource("CameraAttributesPractical_efkys")
 
 [node name="Player" parent="." unique_id=984335552 instance=ExtResource("2_1h0e5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.928131, 0.9999962, 41.5965)
-
-[node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=1396696176]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 54.779243, 0)
-light_energy = 10.111
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=294780011]
 navigation_mesh = SubResource("NavigationMesh_v46uq")
