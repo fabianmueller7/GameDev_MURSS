@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cg5621g6apjyl"
+path="res://.godot/imported/Window_Wide_Round1.obj-f3c824eb1d6f311fcb23a54e953f6146.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Window_Wide_Round1.obj-f3c824eb1d6f311fcb23a54e953f6146.mesh"]
+
+source_file="res://Assets/Fantasy Town Assets/OBJ/Window_Wide_Round1.obj"
+dest_files=["res://.godot/imported/Window_Wide_Round1.obj-f3c824eb1d6f311fcb23a54e953f6146.mesh", "res://.godot/imported/Window_Wide_Round1.obj-f3c824eb1d6f311fcb23a54e953f6146.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

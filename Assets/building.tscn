@@ -1,10 +1,6 @@
 [gd_scene format=3 uid="uid://dxv74wmv6tqty"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1h0e5"]
-albedo_color = Color(0.54509807, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ifpyu"]
-size = Vector3(1, 2.5, 1)
+[ext_resource type="PackedScene" uid="uid://cmri6xu1np333" path="res://Assets/Fantasy Town Assets/glTF/Prop_Chimney2.gltf" id="1_itnt6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(1, 2.5, 1)
@@ -13,10 +9,8 @@ size = Vector3(1, 2.5, 1)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1723636407]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=541593668]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
-material_override = SubResource("StandardMaterial3D_1h0e5")
-mesh = SubResource("BoxMesh_ifpyu")
+[node name="Prop_Chimney22" parent="StaticBody3D" unique_id=414941049 instance=ExtResource("1_itnt6")]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, -0.0042785406, -1.6692157, -0.01943326)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=848422735]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)

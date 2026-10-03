@@ -220,9 +220,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.700592, 0, 0.9492445)
 [node name="Wall4" parent="." unique_id=1329710362 instance=ExtResource("3_7t8uq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.700592, 0, 3.9492445)
 
-[node name="Wall5" parent="." unique_id=1861483426 instance=ExtResource("3_7t8uq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.700592, 0, 4.9492445)
-
 [node name="Wall6" parent="." unique_id=1196777564 instance=ExtResource("3_7t8uq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.700592, 0, 3.9492445)
 
@@ -234,9 +231,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.700592, 0, -6.0507555)
 
 [node name="Wall9" parent="." unique_id=241202990 instance=ExtResource("3_7t8uq")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.700592, 0, -6.0507555)
-
-[node name="Wall10" parent="." unique_id=1492759732 instance=ExtResource("3_7t8uq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.299408, 0, 9.9492445)
 
 [node name="Wall11" parent="." unique_id=127513361 instance=ExtResource("3_7t8uq")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 20.299408, 0, 17.949245)

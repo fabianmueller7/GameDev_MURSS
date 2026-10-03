@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cme5tm1ekq4k3"
+path="res://.godot/imported/Door_8_Round.obj-51870bb6290abcdcd8a6fffec8e5d714.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Door_8_Round.obj-51870bb6290abcdcd8a6fffec8e5d714.mesh"]
+
+source_file="res://Assets/Fantasy Town Assets/OBJ/Door_8_Round.obj"
+dest_files=["res://.godot/imported/Door_8_Round.obj-51870bb6290abcdcd8a6fffec8e5d714.mesh", "res://.godot/imported/Door_8_Round.obj-51870bb6290abcdcd8a6fffec8e5d714.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

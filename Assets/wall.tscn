@@ -1,22 +1,23 @@
 [gd_scene format=3 uid="uid://bdv8ifo8w2083"]
 
-[ext_resource type="Script" uid="uid://bu2nk4xu4fox1" path="res://Assets/mesh_instance_3d.gd" id="1_vnsvt"]
+[ext_resource type="PackedScene" uid="uid://fylkledn8fjr" path="res://Assets/Fantasy Town Assets/glTF/Prop_MetalFence_Ornament.gltf" id="2_mpthp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
-size = Vector3(5, 2.5, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ifpyu"]
 size = Vector3(5, 2.5, 1)
 
 [node name="Wall" type="Node3D" unique_id=305618915]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1929306316]
 
+[node name="Prop_MetalFence_Ornament2" parent="StaticBody3D" unique_id=1932654913 instance=ExtResource("2_mpthp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5706263, 0.03528166, -0.21650803)
+
+[node name="Prop_MetalFence_Ornament3" parent="StaticBody3D" unique_id=1172648519 instance=ExtResource("2_mpthp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39802957, 0.03528166, -0.21650803)
+
+[node name="Prop_MetalFence_Ornament4" parent="StaticBody3D" unique_id=23467244 instance=ExtResource("2_mpthp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5915505, 0.03528166, -0.21650803)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=908910751]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("BoxShape3D_ifpyu")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1790872418]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
-mesh = SubResource("BoxMesh_ifpyu")
-script = ExtResource("1_vnsvt")

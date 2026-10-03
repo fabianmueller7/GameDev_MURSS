@@ -22,7 +22,7 @@ transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0.021096587, 0)
 shape = SubResource("CapsuleShape3D_v46uq")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1374327771]
-transform = Transform3D(1, 0, 0, 0, -0.012577365, 0.9999209, 0, -0.9999209, -0.012577365, 0, 20.233421, -0.012890339)
+transform = Transform3D(1, 0, 0, 0, -0.012577365, 0.9999209, 0, -0.9999209, -0.012577365, 0, 14.319262, -0.012890339)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=720931264]
 shadow_enabled = true

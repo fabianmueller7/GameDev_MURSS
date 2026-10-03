@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b48dqq2t4x3bd"
+path="res://.godot/imported/Prop_Vine2.obj-64bdc54f4de3fd7641c8429b49a8b88f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Prop_Vine2.obj-64bdc54f4de3fd7641c8429b49a8b88f.mesh"]
+
+source_file="res://Assets/Fantasy Town Assets/OBJ/Prop_Vine2.obj"
+dest_files=["res://.godot/imported/Prop_Vine2.obj-64bdc54f4de3fd7641c8429b49a8b88f.mesh", "res://.godot/imported/Prop_Vine2.obj-64bdc54f4de3fd7641c8429b49a8b88f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

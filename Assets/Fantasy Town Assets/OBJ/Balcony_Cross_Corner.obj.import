@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://difjicpgwttg0"
+path="res://.godot/imported/Balcony_Cross_Corner.obj-246c77d1b34f22d80cd2ed5ddfbf034f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Balcony_Cross_Corner.obj-246c77d1b34f22d80cd2ed5ddfbf034f.mesh"]
+
+source_file="res://Assets/Fantasy Town Assets/OBJ/Balcony_Cross_Corner.obj"
+dest_files=["res://.godot/imported/Balcony_Cross_Corner.obj-246c77d1b34f22d80cd2ed5ddfbf034f.mesh", "res://.godot/imported/Balcony_Cross_Corner.obj-246c77d1b34f22d80cd2ed5ddfbf034f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

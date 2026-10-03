@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bwrf87yqkaa4d"
+path="res://.godot/imported/HoleCover_Straight.obj-fd731117ba90887f938a0627aa12ca47.mesh"
+
+[deps]
+
+files=["res://.godot/imported/HoleCover_Straight.obj-fd731117ba90887f938a0627aa12ca47.mesh"]
+
+source_file="res://Assets/Fantasy Town Assets/OBJ/HoleCover_Straight.obj"
+dest_files=["res://.godot/imported/HoleCover_Straight.obj-fd731117ba90887f938a0627aa12ca47.mesh", "res://.godot/imported/HoleCover_Straight.obj-fd731117ba90887f938a0627aa12ca47.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

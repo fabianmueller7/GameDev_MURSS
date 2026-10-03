@@ -8,6 +8,10 @@ extends CharacterBody3D
 @export var detect_range := 8.0
 ## Give up the chase when the player is farther than this.
 @export var lose_range := 12.0
+## Give up the chase after this many seconds.
+@export var max_chase_time := 7.0
+## After giving up because of the time limit, ignore the player for this many seconds.
+@export var give_up_cooldown := 3.0
 ## Half of the field-of-view angle, in degrees.
 @export var view_angle := 35.0
 ## The player gets caught when the enemy is closer than this.
@@ -26,6 +30,8 @@ extends CharacterBody3D
 var player: Player
 var patrol_index := -1
 var chasing := false
+var chase_timer := 0.0
+var cooldown_timer := 0.0
 var material := StandardMaterial3D.new()
 
 
@@ -46,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	_update_chase_state()
+	_update_chase_state(delta)
 
 	var speed := chase_speed if chasing else patrol_speed
 
@@ -72,24 +78,32 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func _update_chase_state() -> void:
+func _update_chase_state(delta: float) -> void:
 	if player == null:
 		return
+	cooldown_timer = max(cooldown_timer - delta, 0.0)
+
 	var to_player := player.global_position - global_position
 	var distance := to_player.length()
 	to_player.y = 0
 	var forward := -global_transform.basis.z
 	var in_view := forward.angle_to(to_player) < deg_to_rad(view_angle)
 
-	if chasing and distance < catch_distance:
-		player.respawn()
-		_stop_chase()
-	elif not chasing and distance < detect_range and in_view and _can_see_player():
+	if chasing:
+		chase_timer += delta
+		if distance < catch_distance:
+			player.respawn()
+			_stop_chase()
+		elif chase_timer >= max_chase_time:
+			_stop_chase()
+			cooldown_timer = give_up_cooldown
+		elif distance > lose_range:
+			_stop_chase()
+	elif cooldown_timer <= 0.0 and distance < detect_range and in_view and _can_see_player():
 		chasing = true
+		chase_timer = 0.0
 		material.albedo_color = chase_color
 		vision_light.light_color = chase_color
-	elif chasing and distance > lose_range:
-		_stop_chase()
 
 
 func _can_see_player() -> bool:
