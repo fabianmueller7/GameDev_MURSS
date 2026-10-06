@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://o5l7t4wdfv1g"]
+
+[ext_resource type="PackedScene" uid="uid://x15iihn1vxcv" path="res://Assets/Fantasy Town Assets/FBX/Door_2_Flat.fbx" id="1_xfcwp"]
+[ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/door-trigger.gd" id="2_d0tpj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
+size = Vector3(2.2, 4.2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckr0i"]
+size = Vector3(2.1, 4.2, 0.2)
+
+[node name="Door" type="Node3D" unique_id=1128666931]
+
+[node name="Area3D" type="Area3D" parent="." unique_id=645502569 node_paths=PackedStringArray("door_body")]
+script = ExtResource("2_d0tpj")
+door_body = NodePath("../StaticBody3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=251259975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 2.1, 0)
+shape = SubResource("BoxShape3D_ifpyu")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=216270988]
+
+[node name="Door_2_Flat" parent="StaticBody3D" unique_id=82635607 instance=ExtResource("1_xfcwp")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1860984385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 2.1, 0)
+shape = SubResource("BoxShape3D_ckr0i")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

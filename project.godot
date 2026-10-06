@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="MURSS"
-run/main_scene="uid://cm73x1hof36vw"
+run/main_scene="uid://duxve5sfodsuy"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://bj6f62mcty2m8"
 
 [display]
 

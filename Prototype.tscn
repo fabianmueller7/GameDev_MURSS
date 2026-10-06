@@ -3,6 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://cm73x1hof36vw" path="res://Levels/VillageLevel.tscn" id="1_sfvmy"]
 [ext_resource type="PackedScene" uid="uid://ply3xwpbuycx" path="res://Assets/Player/player.tscn" id="2_1h0e5"]
 [ext_resource type="PackedScene" uid="uid://bguxy400b6gr3" path="res://Assets/Enemy/Enemy.tscn" id="3_1h0e5"]
+[ext_resource type="PackedScene" uid="uid://dx76jr02iblt5" path="res://Assets/hud.tscn" id="4_fslth"]
+[ext_resource type="Script" uid="uid://dk6al8wossxkg" path="res://item_spawner.gd" id="5_bdro6"]
+[ext_resource type="PackedScene" uid="uid://dx2cbpgbikrfp" path="res://Assets/end_zone.tscn" id="7_og5wd"]
+[ext_resource type="PackedScene" uid="uid://o5l7t4wdfv1g" path="res://Assets/door.tscn" id="7_ppmsa"]
+
+[sub_resource type="GDScript" id="GDScript_bdro6"]
 
 [sub_resource type="Environment" id="Environment_v46uq"]
 background_mode = 1
@@ -17,13 +23,14 @@ polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Arr
 agent_radius = 0.3
 
 [node name="Prototype" type="Node3D" unique_id=1593531773]
+script = SubResource("GDScript_bdro6")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=794308676]
 environment = SubResource("Environment_v46uq")
 camera_attributes = SubResource("CameraAttributesPractical_efkys")
 
 [node name="Player" parent="." unique_id=984335552 instance=ExtResource("2_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.928131, 0.9999962, 41.5965)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.445108, 0.9999962, 39.543144)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=294780011]
 navigation_mesh = SubResource("NavigationMesh_v46uq")
@@ -161,3 +168,43 @@ patrol_points = [NodePath("../Marker3DRoute7M1"), NodePath("../Marker3DRoute7M2"
 [node name="Enemy8" parent="." unique_id=1465175946 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.119188, 1.1017151, -23.015358)
 patrol_points = [NodePath("../Marker3DRoute8M1"), NodePath("../Marker3DRoute8M2"), NodePath("../Marker3DRoute8M3"), NodePath("../Marker3DRoute8M4"), NodePath("../Marker3DRoute8M5"), NodePath("../Marker3DRoute8M6")]
+
+[node name="Hud" parent="." unique_id=1333986245 instance=ExtResource("4_fslth")]
+
+[node name="KeyMarker1" type="Marker3D" parent="." unique_id=1612003294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.776, 1, 18.529)
+
+[node name="KeyMarker2" type="Marker3D" parent="." unique_id=1042995088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.563, 1, 34.057)
+
+[node name="KeyMarker3" type="Marker3D" parent="." unique_id=1034641049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.82, 1, -7.099)
+
+[node name="KeyMarker4" type="Marker3D" parent="." unique_id=124277166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.064, 1, 1.951)
+
+[node name="BombMarker1" type="Marker3D" parent="." unique_id=1443666294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.824, 1, -32.143227)
+
+[node name="BombMarker2" type="Marker3D" parent="." unique_id=1353023715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.472927, 1, -15.466489)
+
+[node name="BombMarker3" type="Marker3D" parent="." unique_id=369099576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.282524, 1, -15.286563)
+
+[node name="BombMarker4" type="Marker3D" parent="." unique_id=2013952998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.011457, 1, -24.938982)
+
+[node name="BombMarker5" type="Marker3D" parent="." unique_id=36351942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.665, 1, -39.69468)
+
+[node name="ItemSpawner" type="Node3D" parent="." unique_id=911248647 node_paths=PackedStringArray("key_spawn_points", "bomb_spawn_points")]
+script = ExtResource("5_bdro6")
+key_spawn_points = [NodePath("../KeyMarker1"), NodePath("../KeyMarker2"), NodePath("../KeyMarker3"), NodePath("../KeyMarker4")]
+bomb_spawn_points = [NodePath("../BombMarker1"), NodePath("../BombMarker2"), NodePath("../BombMarker3"), NodePath("../BombMarker4")]
+
+[node name="Door" parent="." unique_id=1717911628 instance=ExtResource("7_ppmsa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09676099, -0.0070934296, -12.8770485)
+
+[node name="EndZone" parent="." unique_id=552835390 instance=ExtResource("7_og5wd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.758142, -0.007092476, -33.419838)

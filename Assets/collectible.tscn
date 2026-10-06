@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://brh8661bor8xi"]
+
+[ext_resource type="Script" uid="uid://br3x3ibrkwxeo" path="res://Assets/collectible.gd" id="1_s4df5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ifpyu"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ifpyu"]
+
+[node name="Collectible" type="Area3D" unique_id=1911258213]
+script = ExtResource("1_s4df5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=221441659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_ifpyu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=605259107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("SphereMesh_ifpyu")
+
+[node name="SpotLight3D" type="OmniLight3D" parent="." unique_id=1305445890]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+light_color = Color(1, 1, 0, 1)
+light_energy = 0.165
+omni_range = 4.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
