@@ -24,3 +24,4 @@ light_energy = 0.165
 omni_range = 4.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

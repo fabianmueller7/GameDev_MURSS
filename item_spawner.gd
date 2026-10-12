@@ -11,32 +11,23 @@ func _ready() -> void:
 	spawn_items()
 
 func spawn_items() -> void:
-	# 1. Spawn Key
-	var valid_key_spots = key_spawn_points.filter(func(spot): return spot != null)
-	if valid_key_spots.size() > 0:
-		var random_key_spot = valid_key_spots.pick_random()
-		var key_instance = collectible_scene.instantiate()
-		
-		# Add as child of this Spawner node
-		add_child(key_instance)
-		
-		# Set global position safely now that it's in the tree
-		key_instance.global_position = random_key_spot.global_position
-		key_instance.item_type = 0 # KEY
-		
-		print("Key successfully spawned at: ", key_instance.global_position)
+	spawn_item(Collectible.ItemType.KEY, key_spawn_points)
+	spawn_item(Collectible.ItemType.BOMB, bomb_spawn_points)
 
-	# 2. Spawn Bomb
-	var valid_bomb_spots = bomb_spawn_points.filter(func(spot): return spot != null)
-	if valid_bomb_spots.size() > 0:
-		var random_bomb_spot = valid_bomb_spots.pick_random()
-		var bomb_instance = collectible_scene.instantiate()
-		
-		# Add as child of this Spawner node
-		add_child(bomb_instance)
-		
-		# Set global position safely now that it's in the tree
-		bomb_instance.global_position = random_bomb_spot.global_position
-		bomb_instance.item_type = 1 # BOMB
-		
-		print("Bomb successfully spawned at: ", bomb_instance.global_position)
+# Spawns one item of the given type at a random one of the spawn points
+func spawn_item(item_type: Collectible.ItemType, spawn_points: Array[Marker3D]) -> void:
+	var valid_spots = spawn_points.filter(func(spot): return spot != null)
+	if valid_spots.is_empty():
+		return
+
+	var random_spot = valid_spots.pick_random()
+	var instance = collectible_scene.instantiate()
+
+	# Add as child of this Spawner node
+	add_child(instance)
+
+	# Set global position safely now that it's in the tree
+	instance.global_position = random_spot.global_position
+	instance.item_type = item_type
+
+	print(Collectible.item_name(item_type), " successfully spawned at: ", instance.global_position)

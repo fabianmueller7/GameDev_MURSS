@@ -7,16 +7,27 @@ var is_open: bool = false
 func _on_body_entered(body: Node3D) -> void:
 	if is_open:
 		return # Already open, let them through!
-		
+
 	if body.is_in_group("player"):
-		if GameManager.has_key:
-			# Player has the key! Open the door.
-			is_open = true
-			GameManager.show_message.emit("You unlocked the door with the Key!")
-			open_door()
+		body.add_nearby_target(self)
+		if GameManager.has_item(Collectible.ItemType.KEY):
+			GameManager.show_message.emit("The door is locked. Select the Key and press W to unlock it.")
 		else:
 			# Player does not have the key
 			GameManager.show_message.emit("The door is locked! You need a Key.")
+
+func _on_body_exited(body: Node3D) -> void:
+	if body.is_in_group("player"):
+		body.remove_nearby_target(self)
+
+# Called by the player when they use an item here. Returns true if the item was used up.
+func try_use_item(item_type: Collectible.ItemType) -> bool:
+	if is_open or item_type != Collectible.ItemType.KEY:
+		return false
+	is_open = true
+	GameManager.show_message.emit("You unlocked the door with the Key!")
+	open_door()
+	return true
 
 func open_door() -> void:
 	# Disable the collision so the player can walk through

@@ -117,6 +117,10 @@ func _can_see_player() -> bool:
 	return not result.is_empty() and result.collider == player
 
 
+func die() -> void:
+	queue_free()
+
+
 func _stop_chase() -> void:
 	chasing = false
 	material.albedo_color = patrol_color
