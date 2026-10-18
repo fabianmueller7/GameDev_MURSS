@@ -133,6 +133,7 @@ func _stop_chase() -> void:
 	is_alerted_from_afar = false
 	material.albedo_color = patrol_color
 	vision_light.light_color = patrol_color
+	MusicManager.update_chase_state(false)
 	_return_to_patrol()
 
 
@@ -159,6 +160,8 @@ func start_chase() -> void:
 	chase_timer = 0.0
 	material.albedo_color = chase_color
 	vision_light.light_color = chase_color
+	MusicManager.update_chase_state(true)
 	
 func die() -> void:
+	MusicManager.update_chase_state(false)
 	queue_free()
