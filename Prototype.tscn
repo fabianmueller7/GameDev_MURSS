@@ -2,11 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://cm73x1hof36vw" path="res://Levels/VillageLevel.tscn" id="1_sfvmy"]
 [ext_resource type="PackedScene" uid="uid://ply3xwpbuycx" path="res://Assets/Player/player.tscn" id="2_1h0e5"]
-[ext_resource type="PackedScene" uid="uid://bguxy400b6gr3" path="res://Assets/Enemy/Enemy.tscn" id="3_1h0e5"]
 [ext_resource type="PackedScene" uid="uid://dx76jr02iblt5" path="res://Assets/hud.tscn" id="4_fslth"]
 [ext_resource type="Script" uid="uid://dk6al8wossxkg" path="res://item_spawner.gd" id="5_bdro6"]
 [ext_resource type="PackedScene" uid="uid://dx2cbpgbikrfp" path="res://Assets/end_zone.tscn" id="7_og5wd"]
 [ext_resource type="PackedScene" uid="uid://o5l7t4wdfv1g" path="res://Assets/door.tscn" id="7_ppmsa"]
+[ext_resource type="PackedScene" uid="uid://bpok6q5w1jyms" path="res://Assets/Enemy/watch_tower.tscn" id="8_e4oet"]
+[ext_resource type="PackedScene" uid="uid://dmresi5fmecqp" path="res://Assets/Enemy/guard_dog.tscn" id="9_kqbor"]
+[ext_resource type="PackedScene" uid="uid://bya04ivvxbpqj" path="res://Assets/Enemy/paranoid_guard.tscn" id="10_bta1c"]
+[ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="11_kqbor"]
 
 [sub_resource type="GDScript" id="GDScript_bdro6"]
 
@@ -30,7 +33,7 @@ environment = SubResource("Environment_v46uq")
 camera_attributes = SubResource("CameraAttributesPractical_efkys")
 
 [node name="Player" parent="." unique_id=984335552 instance=ExtResource("2_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.445108, 0.9999962, 39.543144)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.158869, 0.9999962, 37.835728)
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=294780011]
 navigation_mesh = SubResource("NavigationMesh_v46uq")
@@ -137,38 +140,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.065658, 0.424, -31.443813)
 [node name="Marker3DRoute8M6" type="Marker3D" parent="." unique_id=1118486679]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.575989, 0.424, -31.732922)
 
-[node name="Enemy1" parent="." unique_id=966649276 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3414364, 0.9999981, 19.81176)
-patrol_points = [NodePath("../Marker3DRoute1M1"), NodePath("../Marker3DRoute1M2"), NodePath("../Marker3DRoute1M3"), NodePath("../Marker3DRoute1M4")]
-
-[node name="Enemy2" parent="." unique_id=582973543 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.683144, 0.9999981, 29.426367)
-patrol_points = [NodePath("../Marker3DRoute2M1"), NodePath("../Marker3DRoute2M2")]
-
-[node name="Enemy3" parent="." unique_id=902739928 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(-0.23386861, 0, 0.9722682, 0, 1, 0, -0.9722682, 0, -0.23386861, 0.7467537, 0.9999981, -0.5643401)
-patrol_points = [NodePath("../Marker3DRoute3M1"), NodePath("../Marker3DRoute3M2"), NodePath("../Marker3DRoute3M3"), NodePath("../Marker3DRoute3M4")]
-
-[node name="Enemy4" parent="." unique_id=2026487608 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.704199, 1.0137639, -18.217886)
-patrol_points = [NodePath("../Marker3DRoute4M1"), NodePath("../Marker3DRoute4M2"), NodePath("../Marker3DRoute4M3"), NodePath("../Marker3DRoute4M4")]
-
-[node name="Enemy5" parent="." unique_id=616567148 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.0483654, -14.841114)
-patrol_points = [NodePath("../Marker3DRoute5M3"), NodePath("../Marker3DRoute5M1"), NodePath("../Marker3DRoute5M2"), NodePath("../Marker3DRoute5M4")]
-
-[node name="Enemy6" parent="." unique_id=631726478 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.17035, 1, -30.797737)
-patrol_points = [NodePath("../Marker3DRoute6M1"), NodePath("../Marker3DRoute6M2"), NodePath("../Marker3DRoute6M3"), NodePath("../Marker3DRoute6M4")]
-
-[node name="Enemy7" parent="." unique_id=24226246 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.023546, 1.1307498, -25.539103)
-patrol_points = [NodePath("../Marker3DRoute7M1"), NodePath("../Marker3DRoute7M2"), NodePath("../Marker3DRoute7M3"), NodePath("../Marker3DRoute7M4"), NodePath("../Marker3DRoute7M5"), NodePath("../Marker3DRoute7M2")]
-
-[node name="Enemy8" parent="." unique_id=1465175946 node_paths=PackedStringArray("patrol_points") instance=ExtResource("3_1h0e5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.119188, 1.1017151, -23.015358)
-patrol_points = [NodePath("../Marker3DRoute8M1"), NodePath("../Marker3DRoute8M2"), NodePath("../Marker3DRoute8M3"), NodePath("../Marker3DRoute8M4"), NodePath("../Marker3DRoute8M5"), NodePath("../Marker3DRoute8M6")]
-
 [node name="Hud" parent="." unique_id=1333986245 instance=ExtResource("4_fslth")]
 
 [node name="KeyMarker1" type="Marker3D" parent="." unique_id=1612003294]
@@ -208,3 +179,44 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09676099, -0.0070934296, -
 
 [node name="EndZone" parent="." unique_id=552835390 instance=ExtResource("7_og5wd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.758142, -0.007092476, -33.419838)
+
+[node name="WatchTower" parent="." unique_id=248082598 instance=ExtResource("8_e4oet")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 7.2846346, 1, -7.584408)
+
+[node name="WatchTower2" parent="." unique_id=1729056187 instance=ExtResource("8_e4oet")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.635126, 0.71315384, -14.856156)
+
+[node name="WatchTower3" parent="." unique_id=1404722595 instance=ExtResource("8_e4oet")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.7246876, 0.71315384, -32.694736)
+
+[node name="GuardDog" parent="." unique_id=754205335 node_paths=PackedStringArray("patrol_points") instance=ExtResource("9_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.153, 0.4, 16.407)
+patrol_points = [NodePath("../Marker3DRoute1M1"), NodePath("../Marker3DRoute1M2"), NodePath("../Marker3DRoute1M3"), NodePath("../Marker3DRoute1M4")]
+
+[node name="ParanoidGuard" parent="." unique_id=641670538 node_paths=PackedStringArray("patrol_points") instance=ExtResource("10_bta1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.967, 1, 31.877)
+patrol_points = [NodePath("../Marker3DRoute2M1"), NodePath("../Marker3DRoute2M2")]
+
+[node name="BaseEnemy" parent="." unique_id=1452223784 node_paths=PackedStringArray("patrol_points") instance=ExtResource("11_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.541, 1, -0.217)
+patrol_points = [NodePath("../Marker3DRoute3M1"), NodePath("../Marker3DRoute3M2"), NodePath("../Marker3DRoute3M3"), NodePath("../Marker3DRoute3M4")]
+
+[node name="BaseEnemy2" parent="." unique_id=1411996153 node_paths=PackedStringArray("patrol_points") instance=ExtResource("11_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -15.135)
+patrol_points = [NodePath("../Marker3DRoute5M1"), NodePath("../Marker3DRoute5M2"), NodePath("../Marker3DRoute5M3"), NodePath("../Marker3DRoute5M4")]
+
+[node name="BaseEnemy3" parent="." unique_id=657208122 node_paths=PackedStringArray("patrol_points") instance=ExtResource("11_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.106, 1, -18.404)
+patrol_points = [NodePath("../Marker3DRoute4M1"), NodePath("../Marker3DRoute4M2"), NodePath("../Marker3DRoute4M3"), NodePath("../Marker3DRoute4M4")]
+
+[node name="BaseEnemy5" parent="." unique_id=449871496 node_paths=PackedStringArray("patrol_points") instance=ExtResource("11_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.09, 1, -21.732)
+patrol_points = [NodePath("../Marker3DRoute8M1"), NodePath("../Marker3DRoute8M2"), NodePath("../Marker3DRoute8M3"), NodePath("../Marker3DRoute8M4"), NodePath("../Marker3DRoute8M5"), NodePath("../Marker3DRoute8M6")]
+
+[node name="GuardDog2" parent="." unique_id=697672663 node_paths=PackedStringArray("patrol_points") instance=ExtResource("9_kqbor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.233, 0.4, -24.59765)
+patrol_points = [NodePath("../Marker3DRoute7M1"), NodePath("../Marker3DRoute7M2"), NodePath("../Marker3DRoute7M3"), NodePath("../Marker3DRoute7M4"), NodePath("../Marker3DRoute7M5")]
+
+[node name="ParanoidGuard2" parent="." unique_id=1829740332 node_paths=PackedStringArray("patrol_points") instance=ExtResource("10_bta1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.531057, 1, -30.828743)
+patrol_points = [NodePath("../Marker3DRoute6M1"), NodePath("../Marker3DRoute6M2"), NodePath("../Marker3DRoute6M3"), NodePath("../Marker3DRoute6M4")]

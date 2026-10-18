@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bvgu0uuiqifox"]
+
+[ext_resource type="Script" uid="uid://b7q502k17ka1u" path="res://Assets/Enemy/base_enemy.gd" id="1_n0ixs"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_n0ixs"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7xya6"]
+
+[node name="BaseEnemy" type="CharacterBody3D" unique_id=248082598 groups=["enemy"]]
+script = ExtResource("1_n0ixs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=155045242]
+mesh = SubResource("CapsuleMesh_n0ixs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1885320086]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_7xya6")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1362905889]
+avoidance_enabled = true
+radius = 0.6
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1800981358]
+transform = Transform3D(1, 0, 0, 0, 0.7262565, 0.6874238, 0, -0.6874238, 0.7262565, 0, 1.1580708, 0)
