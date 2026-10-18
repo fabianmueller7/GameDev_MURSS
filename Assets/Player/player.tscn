@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://ply3xwpbuycx"]
 
 [ext_resource type="Script" uid="uid://cyiiargcejm5c" path="res://Assets/Player/player.gd" id="1_61lih"]
-[ext_resource type="Script" uid="uid://dl1xjs1jwb2ru" path="res://Assets/Player/mesh_instance_3d.gd" id="2_6miq6"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_v46uq"]
 
@@ -15,7 +14,6 @@ script = ExtResource("1_61lih")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=78507818]
 mesh = SubResource("CapsuleMesh_v46uq")
 surface_material_override/0 = SubResource("StandardMaterial3D_sfvmy")
-script = ExtResource("2_6miq6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1312791141]
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0.021096587, 0)
