@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://b2ksfp6yi6dev"]
+
+[ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="1_barrel"]
+[ext_resource type="Script" path="res://Assets/hiding_barrel.gd" id="2_hide"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_body"]
+height = 1.8
+radius = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
+albedo_color = Color(0.2, 0.45, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.6, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_glow"]
+material = SubResource("StandardMaterial3D_glow")
+top_radius = 0.6
+bottom_radius = 0.6
+height = 0.02
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_area"]
+height = 2.0
+radius = 1.8
+
+[node name="HidingBarrel" type="Node3D" unique_id=690875661 groups=["hiding_spot"]]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="Barrel" parent="StaticBody3D" instance=ExtResource("1_barrel")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CylinderShape3D_body")
+
+[node name="GlowLid" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81, 0)
+mesh = SubResource("CylinderMesh_glow")
+
+[node name="GlowLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+light_color = Color(0.3, 0.6, 1, 1)
+light_energy = 0.8
+omni_range = 3.0
+
+[node name="InteractArea" type="Area3D" parent="." node_paths=PackedStringArray("glow_light")]
+script = ExtResource("2_hide")
+glow_light = NodePath("../GlowLight")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_area")
+
+[connection signal="body_entered" from="InteractArea" to="InteractArea" method="_on_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="InteractArea" method="_on_body_exited"]

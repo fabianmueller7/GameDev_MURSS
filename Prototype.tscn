@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bpok6q5w1jyms" path="res://Assets/Enemy/watch_tower.tscn" id="8_e4oet"]
 [ext_resource type="PackedScene" uid="uid://dmresi5fmecqp" path="res://Assets/Enemy/guard_dog.tscn" id="9_kqbor"]
 [ext_resource type="PackedScene" uid="uid://bya04ivvxbpqj" path="res://Assets/Enemy/paranoid_guard.tscn" id="10_bta1c"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="11_bta1c"]
 [ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="11_kqbor"]
 
 [sub_resource type="GDScript" id="GDScript_bdro6"]
@@ -220,3 +221,9 @@ patrol_points = [NodePath("../Marker3DRoute7M1"), NodePath("../Marker3DRoute7M2"
 [node name="ParanoidGuard2" parent="." unique_id=1829740332 node_paths=PackedStringArray("patrol_points") instance=ExtResource("10_bta1c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.531057, 1, -30.828743)
 patrol_points = [NodePath("../Marker3DRoute6M1"), NodePath("../Marker3DRoute6M2"), NodePath("../Marker3DRoute6M3"), NodePath("../Marker3DRoute6M4")]
+
+[node name="HidingBarrel" parent="." unique_id=690875661 instance=ExtResource("11_bta1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.513685, -0.2473998, 2.869974)
+
+[node name="HidingBarrel2" parent="." unique_id=1997584263 instance=ExtResource("11_bta1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.099066, 0.43854618, 10.069626)

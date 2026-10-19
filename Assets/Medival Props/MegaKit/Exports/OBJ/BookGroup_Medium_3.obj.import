@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cbyrctifjwdjq"
+path="res://.godot/imported/BookGroup_Medium_3.obj-9cb32dc50fa4ec91f44395c0317be2db.mesh"
+
+[deps]
+
+files=["res://.godot/imported/BookGroup_Medium_3.obj-9cb32dc50fa4ec91f44395c0317be2db.mesh"]
+
+source_file="res://Assets/Medival Props/MegaKit/Exports/OBJ/BookGroup_Medium_3.obj"
+dest_files=["res://.godot/imported/BookGroup_Medium_3.obj-9cb32dc50fa4ec91f44395c0317be2db.mesh", "res://.godot/imported/BookGroup_Medium_3.obj-9cb32dc50fa4ec91f44395c0317be2db.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

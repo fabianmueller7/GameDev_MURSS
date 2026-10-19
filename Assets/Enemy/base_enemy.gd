@@ -54,7 +54,9 @@ func _physics_process(delta: float) -> void:
 	var speed := chase_speed if chasing else patrol_speed
 
 	if chasing:
-		agent.target_position = player.global_position
+		# Once the player hides, keep heading to the last known position instead
+		if not player.is_hidden:
+			agent.target_position = player.global_position
 	elif agent.is_navigation_finished() and not patrol_points.is_empty():
 		patrol_index = (patrol_index + 1) % patrol_points.size()
 		agent.target_position = patrol_points[patrol_index].global_position
@@ -96,7 +98,12 @@ func _update_chase_state(delta: float) -> void:
 
 	if chasing:
 		chase_timer += delta
-		if distance < catch_distance:
+		if player.is_hidden:
+			# Lost the player: search the last known position, then give up
+			if agent.is_navigation_finished():
+				_stop_chase()
+				cooldown_timer = give_up_cooldown
+		elif distance < catch_distance:
 			player.respawn()
 			_stop_chase()
 		elif chase_timer >= max_chase_time:
@@ -120,6 +127,8 @@ func _update_chase_state(delta: float) -> void:
 			start_chase()
 
 func _can_see_player() -> bool:
+	if player.is_hidden:
+		return false
 	var from := global_position + Vector3.UP * eye_height
 	var to := player.global_position + Vector3.UP * eye_height
 	var query := PhysicsRayQueryParameters3D.create(from, to)

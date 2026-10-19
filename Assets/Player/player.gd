@@ -15,6 +15,16 @@ var nearby_items: Array[Collectible] = []
 # Things in range that items can be used on (door, end zone); they implement try_use_item()
 var nearby_targets: Array[Node] = []
 var facing := Vector3.FORWARD
+# Things in range that react to the interact key (hiding barrels); they implement interact(player)
+var nearby_interactables: Array[Node] = []
+
+# Hiding state: the spot we are hiding in (null when not hiding) and where to climb out again
+var hiding_spot: Node3D = null
+var is_hidden := false
+var exit_position: Vector3
+
+@onready var body_mesh: MeshInstance3D = $MeshInstance3D
+@onready var body_collision: CollisionShape3D = $CollisionShape3D
 
 
 func _ready() -> void:
@@ -23,6 +33,12 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact"):
+		interact()
+		return
+	if is_hidden:
+		return  # No picking up, dropping or using items while hiding
+
 	if event.is_action_pressed("pickup"):
 		pickup_item()
 	elif event.is_action_pressed("drop"):
@@ -55,6 +71,53 @@ func add_nearby_target(target: Node) -> void:
 
 func remove_nearby_target(target: Node) -> void:
 	nearby_targets.erase(target)
+
+
+func add_nearby_interactable(target: Node) -> void:
+	if not nearby_interactables.has(target):
+		nearby_interactables.append(target)
+
+
+func remove_nearby_interactable(target: Node) -> void:
+	nearby_interactables.erase(target)
+
+
+func interact() -> void:
+	# While hiding, the interact key always means "climb out again"
+	if hiding_spot != null:
+		hiding_spot.interact(self)
+		return
+
+	nearby_interactables = nearby_interactables.filter(func(n): return is_instance_valid(n))
+	if nearby_interactables.is_empty():
+		return
+
+	# Interact with the closest thing in range
+	var closest: Node3D = nearby_interactables[0]
+	for target in nearby_interactables:
+		if global_position.distance_to(target.global_position) < global_position.distance_to(closest.global_position):
+			closest = target
+	closest.interact(self)
+
+
+# Called by a hiding spot: the player disappears inside it and can no longer be seen or caught
+func enter_hiding_spot(spot: Node3D) -> void:
+	hiding_spot = spot
+	is_hidden = true
+	exit_position = global_position
+	velocity = Vector3.ZERO
+	global_position = Vector3(spot.global_position.x, global_position.y, spot.global_position.z)
+	body_mesh.visible = false
+	body_collision.set_deferred("disabled", true)
+
+
+# Called by a hiding spot: the player climbs out where they got in
+func leave_hiding_spot() -> void:
+	hiding_spot = null
+	is_hidden = false
+	global_position = exit_position
+	body_mesh.visible = true
+	body_collision.set_deferred("disabled", false)
 
 
 func pickup_item() -> void:
@@ -92,6 +155,8 @@ func drop_item() -> void:
 
 
 func respawn() -> void:
+	if hiding_spot != null:
+		hiding_spot.interact(self)
 	global_position = start_position
 	velocity = Vector3.ZERO
 
@@ -139,6 +204,10 @@ func use_knife() -> bool:
 
 
 func _physics_process(delta: float) -> void:
+	# While hiding the player does not move at all
+	if is_hidden:
+		return
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
