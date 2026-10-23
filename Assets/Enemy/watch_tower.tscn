@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cycs24lt81dy0" path="res://Assets/Enemy/watch_tower.gd" id="1_pt4wx"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wfn8x"]
+height = 10.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pt4wx"]
 

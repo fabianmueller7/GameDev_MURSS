@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://dx76jr02iblt5"]
 
 [ext_resource type="Script" uid="uid://rffpe43am6at" path="res://Assets/hud.gd" id="1_xjmqd"]
+[ext_resource type="Script" uid="uid://b41s5uapbxghe" path="res://Assets/pause_menu.gd" id="2_msxdw"]
+[ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Assets/death_menu.gd" id="3_cbyko"]
 
-[node name="Hud2" type="CanvasLayer" unique_id=1333986245]
+[node name="Hud" type="CanvasLayer" unique_id=1333986245]
 script = ExtResource("1_xjmqd")
 
 [node name="Label" type="Label" parent="." unique_id=1130204121]
@@ -35,3 +37,91 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 8
 alignment = 1
+
+[node name="PauseMenu" type="Control" parent="." unique_id=1062024452]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_msxdw")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu" unique_id=260970060]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=1078125430]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -119.0
+offset_right = 316.0
+offset_bottom = 119.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer" unique_id=559295821]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Paused"
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=1249298368]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"
+
+[node name="MenuButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=1592274633]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "To Main menu"
+
+[node name="DeathMenu" type="Control" parent="." unique_id=362981006]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_cbyko")
+
+[node name="ColorRect" type="ColorRect" parent="DeathMenu" unique_id=2142981178]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DeathMenu" unique_id=246486128]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -119.0
+offset_right = 316.0
+offset_bottom = 119.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="DeathMenu/VBoxContainer" unique_id=1612188009]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "You failed the mission"
+
+[node name="RetryButton" type="Button" parent="DeathMenu/VBoxContainer" unique_id=1730076490]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Try again"
+
+[node name="MenuButton" type="Button" parent="DeathMenu/VBoxContainer" unique_id=671019604]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "To Main menu"

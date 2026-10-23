@@ -44,7 +44,6 @@ func _ready() -> void:
 	paranoid_component = get_node_or_null("ParanoidComponent")
 	dog_component = get_node_or_null("GuardDogComponent")
 
-
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -104,7 +103,8 @@ func _update_chase_state(delta: float) -> void:
 				_stop_chase()
 				cooldown_timer = give_up_cooldown
 		elif distance < catch_distance:
-			player.respawn()
+			print("caught player")
+			GameManager.trigger_death()			
 			_stop_chase()
 		elif chase_timer >= max_chase_time:
 			_stop_chase()
