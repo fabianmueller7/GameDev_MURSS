@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dihv1whqsq21j"
-path.s3tc="res://.godot/imported/T_RockTrim_BaseColor.png-a12049ce4f87878dfa98aa784e13c1b6.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_RockTrim_BaseColor.png-d3113d38baf64bec75912c0679a57ab1.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Fantasy Town Assets/textures/T_RockTrim_BaseColor.png"
-dest_files=["res://.godot/imported/T_RockTrim_BaseColor.png-a12049ce4f87878dfa98aa784e13c1b6.s3tc.ctex"]
+source_file="res://Assets/Fantasy Town Assets/Textures/T_RockTrim_BaseColor.png"
+dest_files=["res://.godot/imported/T_RockTrim_BaseColor.png-d3113d38baf64bec75912c0679a57ab1.s3tc.ctex"]
 
 [params]
 

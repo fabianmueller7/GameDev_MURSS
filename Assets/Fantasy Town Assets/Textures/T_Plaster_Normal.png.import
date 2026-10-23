@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bfbvkqctwtj3l"
-path.s3tc="res://.godot/imported/T_Plaster_Normal.png-ce7464c009a85da85ce172089228b5b7.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_Plaster_Normal.png-fbb44abe08640233a7939b91ec43f557.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Fantasy Town Assets/textures/T_Plaster_Normal.png"
-dest_files=["res://.godot/imported/T_Plaster_Normal.png-ce7464c009a85da85ce172089228b5b7.s3tc.ctex"]
+source_file="res://Assets/Fantasy Town Assets/Textures/T_Plaster_Normal.png"
+dest_files=["res://.godot/imported/T_Plaster_Normal.png-fbb44abe08640233a7939b91ec43f557.s3tc.ctex"]
 
 [params]
 

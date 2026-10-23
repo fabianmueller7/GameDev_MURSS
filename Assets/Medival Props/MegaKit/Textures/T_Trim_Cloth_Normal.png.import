@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cra4lkq6qbrbu"
-path.s3tc="res://.godot/imported/T_Trim_Cloth_Normal.png-a0fe26de44798d76d6398a85a3d44e98.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_Trim_Cloth_Normal.png-58194e7dfd81ad1261fc1252a6b2f6fc.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Medival Props/MegaKit/textures/T_Trim_Cloth_Normal.png"
-dest_files=["res://.godot/imported/T_Trim_Cloth_Normal.png-a0fe26de44798d76d6398a85a3d44e98.s3tc.ctex"]
+source_file="res://Assets/Medival Props/MegaKit/Textures/T_Trim_Cloth_Normal.png"
+dest_files=["res://.godot/imported/T_Trim_Cloth_Normal.png-58194e7dfd81ad1261fc1252a6b2f6fc.s3tc.ctex"]
 
 [params]
 

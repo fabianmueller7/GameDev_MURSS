@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c1mali7xvnxv5"
-path.s3tc="res://.godot/imported/T_RoundTiles_Normal.png-a54784dc97d4b44bf35be30044dc7392.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_RoundTiles_Normal.png-060472aa609b8e027cc094124a882002.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Fantasy Town Assets/textures/T_RoundTiles_Normal.png"
-dest_files=["res://.godot/imported/T_RoundTiles_Normal.png-a54784dc97d4b44bf35be30044dc7392.s3tc.ctex"]
+source_file="res://Assets/Fantasy Town Assets/Textures/T_RoundTiles_Normal.png"
+dest_files=["res://.godot/imported/T_RoundTiles_Normal.png-060472aa609b8e027cc094124a882002.s3tc.ctex"]
 
 [params]
 

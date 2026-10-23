@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dmfny276ajpb4"
-path.s3tc="res://.godot/imported/T_UnevenBrick_Normal.png-c5aca7a70ff26b9f06a2050f6a9698b9.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_UnevenBrick_Normal.png-72344f389f332a9c6e05f3ea762173eb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Fantasy Town Assets/textures/T_UnevenBrick_Normal.png"
-dest_files=["res://.godot/imported/T_UnevenBrick_Normal.png-c5aca7a70ff26b9f06a2050f6a9698b9.s3tc.ctex"]
+source_file="res://Assets/Fantasy Town Assets/Textures/T_UnevenBrick_Normal.png"
+dest_files=["res://.godot/imported/T_UnevenBrick_Normal.png-72344f389f332a9c6e05f3ea762173eb.s3tc.ctex"]
 
 [params]
 

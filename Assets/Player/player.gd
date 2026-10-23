@@ -23,13 +23,25 @@ var hiding_spot: Node3D = null
 var is_hidden := false
 var exit_position: Vector3
 
-@onready var body_mesh: MeshInstance3D = $MeshInstance3D
+@onready var body_mesh: Node3D = $Model
 @onready var body_collision: CollisionShape3D = $CollisionShape3D
+@onready var anim: AnimationPlayer = $Model/AnimationPlayer
+
+# Bones the stab animation may move; everything else keeps doing Idle/Walk
+const STAB_BONES := ["UpperArm_R", "ForeArm_R", "Hand_R"]
+var anim_tree: AnimationTree
+var move_blend := 0.0  # 0 = Idle, 1 = Walk
 
 
 func _ready() -> void:
 	start_position = global_position
 	GameManager.add_item(Collectible.ItemType.KNIFE, Collectible.MAX_USES[Collectible.ItemType.KNIFE])
+
+	_setup_animation_tree()
+
+	# Player casts no shadow
+	for node in body_mesh.find_children("*", "GeometryInstance3D", true, false):
+		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -169,6 +181,7 @@ func use_item() -> void:
 
 	var used := false
 	if item_type == Collectible.ItemType.KNIFE:
+		anim_tree.set("parameters/stab/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		used = use_knife()
 	else:
 		for target in nearby_targets:
@@ -228,3 +241,57 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	_update_animation(direction, delta)
+
+
+# Builds an AnimationTree: Idle/Walk drive the whole body,
+# Stab is layered on top and only moves the right arm, so you can stab while walking
+func _setup_animation_tree() -> void:
+	anim.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
+	anim.get_animation("Walk").loop_mode = Animation.LOOP_LINEAR
+
+	var idle := AnimationNodeAnimation.new()
+	idle.animation = &"Idle"
+	var walk := AnimationNodeAnimation.new()
+	walk.animation = &"Walk"
+	var stab := AnimationNodeAnimation.new()
+	stab.animation = &"Stab"
+
+	# One-shot that plays Stab once, filtered to the right arm bones
+	var stab_shot := AnimationNodeOneShot.new()
+	stab_shot.fadein_time = 0.05
+	stab_shot.fadeout_time = 0.15
+	stab_shot.filter_enabled = true
+	var stab_anim := anim.get_animation("Stab")
+	for i in stab_anim.get_track_count():
+		var path := stab_anim.track_get_path(i)
+		if path.get_concatenated_subnames() in STAB_BONES:
+			stab_shot.set_filter_path(path, true)
+
+	var tree := AnimationNodeBlendTree.new()
+	tree.add_node(&"idle", idle)
+	tree.add_node(&"walk", walk)
+	tree.add_node(&"move", AnimationNodeBlend2.new())
+	tree.add_node(&"stab_anim", stab)
+	tree.add_node(&"stab", stab_shot)
+	tree.connect_node(&"move", 0, &"idle")
+	tree.connect_node(&"move", 1, &"walk")
+	tree.connect_node(&"stab", 0, &"move")
+	tree.connect_node(&"stab", 1, &"stab_anim")
+	tree.connect_node(&"output", 0, &"stab")
+
+	anim.stop()
+	anim_tree = AnimationTree.new()
+	anim_tree.tree_root = tree
+	body_mesh.add_child(anim_tree)
+	anim_tree.anim_player = anim_tree.get_path_to(anim)
+	anim_tree.active = true
+
+
+# Turns the model towards the walking direction and fades between Idle and Walk
+func _update_animation(direction: Vector3, delta: float) -> void:
+	if direction:
+		body_mesh.rotation.y = atan2(direction.x, direction.z)
+	var target := 1.0 if direction else 0.0
+	move_blend = move_toward(move_blend, target, delta * 6.0)
+	anim_tree.set("parameters/move/blend_amount", move_blend)

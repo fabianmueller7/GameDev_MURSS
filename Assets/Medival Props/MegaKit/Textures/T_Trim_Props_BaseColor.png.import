@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bbogjbj51mg4y"
-path.s3tc="res://.godot/imported/T_Trim_Props_BaseColor.png-061b3dc7b210eed6d0d039fdfad88d30.s3tc.ctex"
+path.s3tc="res://.godot/imported/T_Trim_Props_BaseColor.png-5a406acc0b0bf172fbb0a9723dcbfbe2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Medival Props/MegaKit/textures/T_Trim_Props_BaseColor.png"
-dest_files=["res://.godot/imported/T_Trim_Props_BaseColor.png-061b3dc7b210eed6d0d039fdfad88d30.s3tc.ctex"]
+source_file="res://Assets/Medival Props/MegaKit/Textures/T_Trim_Props_BaseColor.png"
+dest_files=["res://.godot/imported/T_Trim_Props_BaseColor.png-5a406acc0b0bf172fbb0a9723dcbfbe2.s3tc.ctex"]
 
 [params]
 
