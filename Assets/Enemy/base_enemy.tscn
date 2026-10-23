@@ -8,12 +8,12 @@
 
 [node name="BaseEnemy" type="CharacterBody3D" unique_id=248082598 groups=["enemy"]]
 script = ExtResource("1_n0ixs")
+catch_distance = 1.4
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=155045242]
 mesh = SubResource("CapsuleMesh_n0ixs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1885320086]
-transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_7xya6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1362905889]

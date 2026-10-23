@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://b7m0qcda0v6qr"]
+
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="2_u7cx7"]
+[ext_resource type="PackedScene" uid="uid://bi3d33qdu4ngs" path="res://Assets/Player/spy_character.glb" id="3_iynih"]
+[ext_resource type="PackedScene" uid="uid://hdwrqsv3ybyq" path="res://Assets/floor.tscn" id="4_u7cx7"]
+
+[sub_resource type="Environment" id="Environment_ifpyu"]
+background_mode = 2
+background_energy_multiplier = 0.5
+ambient_light_source = 3
+ambient_light_color = Color(0.24780053, 0, 0.38109186, 1)
+ambient_light_sky_contribution = 0.8
+ambient_light_energy = 0.2
+tonemap_mode = 3
+glow_enabled = true
+glow_intensity = 0.8
+glow_bloom = 0.1
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.3491902, 0.38109186, 0.42358288, 1)
+volumetric_fog_emission = Color(0, 0, 0.14644991, 1)
+adjustment_enabled = true
+adjustment_contrast = 1.1
+adjustment_saturation = 0.8
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ckr0i"]
+
+[node name="Background" type="Node3D" unique_id=1968647247]
+
+[node name="House" parent="." unique_id=1477523257 instance=ExtResource("2_u7cx7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4704442, 0, -3.959916)
+
+[node name="House2" parent="." unique_id=1785947484 instance=ExtResource("2_u7cx7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.891488, 0.00835228, 0.3168156)
+
+[node name="Floor" parent="." unique_id=1785901491 instance=ExtResource("4_u7cx7")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=434979502]
+transform = Transform3D(0.2965108, 0.5171505, 0.80289274, 0, 0.84069943, -0.5415021, -0.95502955, 0.16056122, 0.24927643, -0.91076374, 0.7020483, -0.18599427)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=583247082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5095577, 3.910403, -2.6694818)
+light_color = Color(0.7977378, 0.8808251, 0.9776916, 1)
+light_energy = 0.4
+shadow_enabled = true
+sky_mode = 1
+
+[node name="spy_character" parent="." unique_id=307275390 instance=ExtResource("3_iynih")]
+transform = Transform3D(0.7388448, 0, 0.67387563, 0, 1, 0, -0.67387563, 0, 0.7388448, -1.8022134, 0, -1.0389812)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=663069754]
+environment = SubResource("Environment_ifpyu")
+camera_attributes = SubResource("CameraAttributesPractical_ckr0i")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=238841178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.372802, 2.0597644, 0.12532365)
+light_color = Color(0.9999972, 0.5941919, 0.44859833, 1)
+light_energy = 2.0
+omni_range = 8.0

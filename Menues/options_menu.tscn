@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://g486fdkxvags"]
+
+[ext_resource type="Script" uid="uid://b183v031syw0h" path="res://Menues/options_menu.gd" id="1_0yk1o"]
+[ext_resource type="PackedScene" uid="uid://b7m0qcda0v6qr" path="res://Menues/background.tscn" id="2_k8r48"]
+
+[node name="OptionsMenu" type="Control" unique_id=1073645018]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0yk1o")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=620687776]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -89.0
+offset_right = 711.0
+offset_bottom = 89.0
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=594964652]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Options"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=2010775420]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1252819100]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Volume"
+
+[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/HBoxContainer" unique_id=1494173836]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1285408204]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "80"
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=432135592]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Back to Main Menu"
+
+[node name="Background" parent="." unique_id=1968647247 instance=ExtResource("2_k8r48")]

@@ -1,9 +1,10 @@
-[gd_scene format=3 uid="uid://bdqs5x0a0g11k"]
+[gd_scene format=3 uid="uid://bwfhoailjhbiy"]
 
 [ext_resource type="AudioStream" uid="uid://dx7j4e0rtwku7" path="res://Assets/Music/GameMusic.mp3" id="1_rjr7q"]
 [ext_resource type="Script" uid="uid://bfri7v6ntut1i" path="res://music_manager.gd" id="1_tylfe"]
 
 [node name="MusicManager" type="AudioStreamPlayer" unique_id=528363990]
+process_mode = 3
 stream = ExtResource("1_rjr7q")
 parameters/looping = true
 script = ExtResource("1_tylfe")

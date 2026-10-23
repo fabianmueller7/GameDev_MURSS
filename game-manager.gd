@@ -7,10 +7,14 @@ const SLOT_COUNT := 4
 var slots: Array = []
 var slot_uses: Array = []
 var selected_slot: int = 0
+var current_level_path: String = "res://Levels/level_1.tscn"
+
 
 # Signal to notify HUD or other systems of changes
 signal inventory_updated
 signal show_message(text)
+signal player_died
+
 
 func _ready() -> void:
 	slots.resize(SLOT_COUNT)
@@ -55,3 +59,18 @@ func take_selected_item() -> Variant:
 func select_slot(index: int) -> void:
 	selected_slot = wrapi(index, 0, SLOT_COUNT)
 	inventory_updated.emit()
+	
+func trigger_death() -> void:
+	print("player dead registered")
+	player_died.emit()
+	
+func reset_game() -> void:
+	# Clear out inventory items and uses
+	slots.clear()
+	slot_uses.clear()
+	slots.resize(SLOT_COUNT)
+	slot_uses.resize(SLOT_COUNT)
+	selected_slot = 0
+	inventory_updated.emit()
+	add_item(Collectible.ItemType.KNIFE, Collectible.MAX_USES[Collectible.ItemType.KNIFE])
+	get_tree().reload_current_scene()

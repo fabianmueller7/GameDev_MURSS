@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dyul0s6381nbo"]
+
+[ext_resource type="Script" uid="uid://cojsbkqegoacu" path="res://game_container.gd" id="1_ge4kj"]
+[ext_resource type="PackedScene" uid="uid://dx76jr02iblt5" path="res://Assets/hud.tscn" id="2_aq3js"]
+
+[node name="GameContainer" type="Node3D" unique_id=799812363]
+script = ExtResource("1_ge4kj")
+
+[node name="LevelContainer" type="Node3D" parent="." unique_id=1111735272]
+
+[node name="Hud" parent="." unique_id=1333986245 instance=ExtResource("2_aq3js")]

@@ -19,7 +19,7 @@ func _ready() -> void:
 	update_inventory()
 
 	# Show the initial objective text at the beginning of the play
-	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nE: pick up   Q: drop   W: use   F: hide   1-4 / mouse wheel: switch slot", 6.0)
+	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nE: pick up Q: drop W: use F: hide 1-4 / mouse wheel: switch slot", 6.0)
 
 func build_inventory_slots() -> void:
 	for i in GameManager.SLOT_COUNT:
@@ -32,7 +32,7 @@ func build_inventory_slots() -> void:
 		number.position = Vector2(6, 2)
 		number.add_theme_font_size_override("font_size", 14)
 		panel.add_child(number)
-
+		
 		var item_label := Label.new()
 		item_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

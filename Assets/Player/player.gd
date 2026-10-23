@@ -35,13 +35,13 @@ var move_blend := 0.0  # 0 = Idle, 1 = Walk
 
 func _ready() -> void:
 	start_position = global_position
-	GameManager.add_item(Collectible.ItemType.KNIFE, Collectible.MAX_USES[Collectible.ItemType.KNIFE])
-
 	_setup_animation_tree()
 
 	# Player casts no shadow
 	for node in body_mesh.find_children("*", "GeometryInstance3D", true, false):
 		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		
+	GameManager.player_died.connect(_on_player_died)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -295,3 +295,6 @@ func _update_animation(direction: Vector3, delta: float) -> void:
 	var target := 1.0 if direction else 0.0
 	move_blend = move_toward(move_blend, target, delta * 6.0)
 	anim_tree.set("parameters/move/blend_amount", move_blend)
+	
+func _on_player_died() -> void:
+	respawn()
