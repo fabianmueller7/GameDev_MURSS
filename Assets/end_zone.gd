@@ -4,7 +4,7 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		body.add_nearby_target(self)
 		if GameManager.has_item(Collectible.ItemType.BOMB):
-			GameManager.show_message.emit("This is the spot! Select the Bomb and press W to use it.")
+			GameManager.show_message.emit("This is the spot! Select the Bomb and press E to use it.")
 		else:
 			# Player arrived without the bomb -> Missing item message
 			GameManager.show_message.emit("You reached the end, but you are missing the Bomb!")

@@ -40,12 +40,12 @@ func _apply_look() -> void:
 		ItemType.KNIFE:
 			light.light_color = Color(0.6, 0.8, 1)
 
-# The player picks items up with the "pickup" action, so we only tell it what is in reach
+# The player picks items up with the "interact" action (F), so we only tell it what is in reach
 # (Make sure your player node is added to a group named "player")
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		body.add_nearby_item(self)
-		GameManager.show_message.emit("Press E to pick up the %s" % item_name(item_type))
+		GameManager.show_message.emit("Press F to pick up the %s" % item_name(item_type))
 
 func _on_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):

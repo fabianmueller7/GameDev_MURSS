@@ -2,10 +2,33 @@ extends CharacterBody3D
 class_name Player
 
 
-const SPEED = 5.0
+const BASE_SPEED = 5.0
+const WALK_SPEED = BASE_SPEED * 0.7    # Normal walking: 30% slower than before
+const SPRINT_SPEED = BASE_SPEED * 1.2  # Sprinting (Shift): 20% faster than the old walking speed
+
+# Stamina goes from 0.0 (empty) to 1.0 (full)
+const MAX_SPRINT_TIME = 5.0  # Seconds of sprinting with full stamina
+const STAMINA_REGEN = 0.1    # Regenerates 10% per second while not sprinting
 const JUMP_VELOCITY = 4.5
 const DROP_DISTANCE = 1.5
 const KNIFE_RANGE = 2.0
+
+# Sounds
+@export var footstep_sounds: Array[AudioStream] = [
+	preload("res://Assets/Sounds/footsteps/footstep_light_01.wav"),
+	preload("res://Assets/Sounds/footsteps/footstep_light_03.wav"),
+	preload("res://Assets/Sounds/footsteps/footstep_light_04.wav"),
+	preload("res://Assets/Sounds/footsteps/footstep_light_05.wav"),
+	preload("res://Assets/Sounds/footsteps/footstep_light_06.wav"),
+]
+@export var breathing_sound: AudioStream = preload("res://Assets/Sounds/heavy_breathing.wav")
+@export var stab_sound: AudioStream = preload("res://Assets/Sounds/stabbing.wav")
+@export var pickup_sound: AudioStream = preload("res://Assets/Sounds/collect_item.wav")
+@export var pickup_volume_db := 3.0
+@export var drop_sound: AudioStream = preload("res://Assets/Sounds/drop_item.wav")
+@export var drop_volume_db := 3.0
+@export var footstep_volume_db := 0.0
+@export var breathing_volume_db := 4.0
 
 var start_position: Vector3
 var collectible_scene: PackedScene = preload("res://Assets/collectible.tscn")
@@ -31,11 +54,28 @@ var exit_position: Vector3
 const STAB_BONES := ["UpperArm_R", "ForeArm_R", "Hand_R"]
 var anim_tree: AnimationTree
 var move_blend := 0.0  # 0 = Idle, 1 = Walk
+var walk_anim_speed := 1.0  # Walk animation plays faster while sprinting
+
+var stamina := 1.0
+# Set when stamina runs out; sprinting stays blocked until Shift is released
+var exhausted := false
+var is_sprinting := false
+
+var footstep_player: AudioStreamPlayer
+var breathing_player: AudioStreamPlayer
+var stab_player: AudioStreamPlayer
+var pickup_player: AudioStreamPlayer
+var drop_player: AudioStreamPlayer
+var stride_length := 1.5     # Distance per footstep, matched to the Walk animation in _ready()
+var step_distance := 0.0     # Distance walked since the last footstep
+var is_breathing := false
+var breathing_tween: Tween
 
 
 func _ready() -> void:
 	start_position = global_position
 	_setup_animation_tree()
+	_setup_sounds()
 
 	# Player casts no shadow
 	for node in body_mesh.find_children("*", "GeometryInstance3D", true, false):
@@ -51,9 +91,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if is_hidden:
 		return  # No picking up, dropping or using items while hiding
 
-	if event.is_action_pressed("pickup"):
-		pickup_item()
-	elif event.is_action_pressed("drop"):
+	if event.is_action_pressed("drop"):
 		drop_item()
 	elif event.is_action_pressed("use_item"):
 		use_item()
@@ -100,16 +138,25 @@ func interact() -> void:
 		hiding_spot.interact(self)
 		return
 
+	nearby_items = nearby_items.filter(func(item): return is_instance_valid(item) and not item.is_queued_for_deletion())
 	nearby_interactables = nearby_interactables.filter(func(n): return is_instance_valid(n))
-	if nearby_interactables.is_empty():
+
+	# Items and world objects (barrels) share the F key: use whatever is closest
+	var candidates: Array = []
+	candidates.append_array(nearby_items)
+	candidates.append_array(nearby_interactables)
+	if candidates.is_empty():
 		return
 
-	# Interact with the closest thing in range
-	var closest: Node3D = nearby_interactables[0]
-	for target in nearby_interactables:
+	var closest: Node3D = candidates[0]
+	for target in candidates:
 		if global_position.distance_to(target.global_position) < global_position.distance_to(closest.global_position):
 			closest = target
-	closest.interact(self)
+
+	if closest is Collectible:
+		pickup_item(closest)
+	else:
+		closest.interact(self)
 
 
 # Called by a hiding spot: the player disappears inside it and can no longer be seen or caught
@@ -132,24 +179,15 @@ func leave_hiding_spot() -> void:
 	body_collision.set_deferred("disabled", false)
 
 
-func pickup_item() -> void:
-	nearby_items = nearby_items.filter(func(item): return is_instance_valid(item) and not item.is_queued_for_deletion())
-	if nearby_items.is_empty():
-		return
-
-	# Pick up the closest item in range
-	var closest: Collectible = nearby_items[0]
-	for item in nearby_items:
-		if global_position.distance_to(item.global_position) < global_position.distance_to(closest.global_position):
-			closest = item
-
-	if not GameManager.add_item(closest.item_type, closest.remaining_uses()):
+func pickup_item(item: Collectible) -> void:
+	if not GameManager.add_item(item.item_type, item.remaining_uses()):
 		GameManager.show_message.emit("Your inventory is full! Drop something first (Q).")
 		return
 
-	GameManager.show_message.emit("You picked up the %s!" % Collectible.item_name(closest.item_type))
-	nearby_items.erase(closest)
-	closest.queue_free()
+	pickup_player.play()
+	GameManager.show_message.emit("You picked up the %s!" % Collectible.item_name(item.item_type))
+	nearby_items.erase(item)
+	item.queue_free()
 
 
 func drop_item() -> void:
@@ -163,6 +201,7 @@ func drop_item() -> void:
 	dropped.global_position = global_position + facing * DROP_DISTANCE
 	dropped.item_type = item_type
 	dropped.uses = uses
+	drop_player.play()
 	GameManager.show_message.emit("You dropped the %s." % Collectible.item_name(item_type))
 
 
@@ -171,6 +210,9 @@ func respawn() -> void:
 		hiding_spot.interact(self)
 	global_position = start_position
 	velocity = Vector3.ZERO
+	stamina = 1.0
+	exhausted = false
+	GameManager.stamina_changed.emit(stamina, exhausted)
 
 
 func use_item() -> void:
@@ -208,6 +250,7 @@ func use_knife() -> bool:
 		return false
 
 	target.die()
+	stab_player.play()
 	var uses_left := GameManager.get_selected_uses() - 1
 	if uses_left > 0:
 		GameManager.show_message.emit("You took out the enemy! Knife uses left: %d" % uses_left)
@@ -217,8 +260,9 @@ func use_knife() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	# While hiding the player does not move at all
+	# While hiding the player does not move at all (but stamina still regenerates)
 	if is_hidden:
+		_update_stamina(false, delta)
 		return
 
 	# Add the gravity.
@@ -230,18 +274,115 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	is_sprinting = _update_stamina(direction != Vector3.ZERO, delta)
+	var speed := SPRINT_SPEED if is_sprinting else WALK_SPEED
 	if direction:
 		facing = direction
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, SPRINT_SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPRINT_SPEED)
 
 	move_and_slide()
 	_update_animation(direction, delta)
+	_update_footsteps(delta)
+
+
+# Drains stamina while sprinting and regenerates it otherwise.
+# Returns true if the player sprints this frame.
+func _update_stamina(moving: bool, delta: float) -> bool:
+	var sprint_held := Input.is_action_pressed("sprint")
+	if not sprint_held:
+		exhausted = false
+
+	var old_stamina := stamina
+	var old_exhausted := exhausted
+	var sprinting := moving and sprint_held and not exhausted and stamina > 0.0
+
+	if sprinting:
+		stamina = maxf(stamina - delta / MAX_SPRINT_TIME, 0.0)
+		if stamina <= 0.0:
+			exhausted = true
+	else:
+		stamina = minf(stamina + STAMINA_REGEN * delta, 1.0)
+
+	if stamina != old_stamina or exhausted != old_exhausted:
+		GameManager.stamina_changed.emit(stamina, exhausted)
+	_update_breathing(not sprinting and stamina < 1.0)
+	return sprinting
+
+
+func _setup_sounds() -> void:
+	footstep_player = AudioStreamPlayer.new()
+	footstep_player.volume_db = footstep_volume_db
+	footstep_player.max_polyphony = 3  # Steps may overlap a little while sprinting
+	add_child(footstep_player)
+
+	breathing_player = AudioStreamPlayer.new()
+	breathing_player.stream = breathing_sound
+	breathing_player.volume_db = breathing_volume_db
+	breathing_player.finished.connect(_on_breathing_finished)
+	add_child(breathing_player)
+
+	stab_player = AudioStreamPlayer.new()
+	stab_player.stream = stab_sound
+	add_child(stab_player)
+
+	pickup_player = AudioStreamPlayer.new()
+	pickup_player.stream = pickup_sound
+	pickup_player.volume_db = pickup_volume_db
+	add_child(pickup_player)
+
+	drop_player = AudioStreamPlayer.new()
+	drop_player.stream = drop_sound
+	drop_player.volume_db = drop_volume_db
+	add_child(drop_player)
+
+	# One Walk cycle = two steps, so a footstep lines up with the animation at any speed
+	stride_length = WALK_SPEED * anim.get_animation("Walk").length / 2.0
+	step_distance = stride_length * 0.5
+
+
+# Plays a random footstep every stride while walking or sprinting on the ground
+func _update_footsteps(delta: float) -> void:
+	var ground_speed := Vector2(velocity.x, velocity.z).length()
+	if not is_on_floor() or ground_speed < 0.1:
+		step_distance = stride_length * 0.5  # First step comes quickly after starting to move
+		return
+
+	step_distance += ground_speed * delta
+	if step_distance >= stride_length:
+		step_distance -= stride_length
+		footstep_player.stream = footstep_sounds.pick_random()
+		footstep_player.pitch_scale = randf_range(0.92, 1.08)
+		footstep_player.play()
+
+
+# Heavy breathing while stamina regenerates, fades out once it is full (or we sprint again)
+func _update_breathing(regenerating: bool) -> void:
+	if regenerating == is_breathing:
+		return
+	is_breathing = regenerating
+	if breathing_tween:
+		breathing_tween.kill()
+
+	if is_breathing:
+		breathing_player.volume_db = breathing_volume_db
+		if not breathing_player.playing:
+			breathing_player.play()
+	else:
+		breathing_tween = create_tween()
+		breathing_tween.tween_property(breathing_player, "volume_db", -40.0, 0.6)
+		breathing_tween.tween_callback(breathing_player.stop)
+
+
+# Loops the breathing as long as we are still out of breath
+func _on_breathing_finished() -> void:
+	if is_breathing:
+		breathing_player.play()
 
 
 # Builds an AnimationTree: Idle/Walk drive the whole body,
@@ -271,11 +412,13 @@ func _setup_animation_tree() -> void:
 	var tree := AnimationNodeBlendTree.new()
 	tree.add_node(&"idle", idle)
 	tree.add_node(&"walk", walk)
+	tree.add_node(&"walk_speed", AnimationNodeTimeScale.new())
 	tree.add_node(&"move", AnimationNodeBlend2.new())
 	tree.add_node(&"stab_anim", stab)
 	tree.add_node(&"stab", stab_shot)
 	tree.connect_node(&"move", 0, &"idle")
-	tree.connect_node(&"move", 1, &"walk")
+	tree.connect_node(&"walk_speed", 0, &"walk")
+	tree.connect_node(&"move", 1, &"walk_speed")
 	tree.connect_node(&"stab", 0, &"move")
 	tree.connect_node(&"stab", 1, &"stab_anim")
 	tree.connect_node(&"output", 0, &"stab")
@@ -295,6 +438,11 @@ func _update_animation(direction: Vector3, delta: float) -> void:
 	var target := 1.0 if direction else 0.0
 	move_blend = move_toward(move_blend, target, delta * 6.0)
 	anim_tree.set("parameters/move/blend_amount", move_blend)
+
+	# Speed up the walk cycle while sprinting so the feet keep up
+	var anim_target := SPRINT_SPEED / WALK_SPEED if is_sprinting else 1.0
+	walk_anim_speed = move_toward(walk_anim_speed, anim_target, delta * 4.0)
+	anim_tree.set("parameters/walk_speed/scale", walk_anim_speed)
 	
 func _on_player_died() -> void:
 	respawn()

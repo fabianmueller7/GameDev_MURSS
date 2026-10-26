@@ -4,6 +4,11 @@ const SLOT_SIZE := Vector2(80, 80)
 
 @onready var message_label: Label = $Label
 @onready var slot_container: HBoxContainer = $InventoryBar
+@onready var stamina_bar: ProgressBar = $StaminaBar
+
+const STAMINA_COLOR := Color(0.35, 0.8, 0.4)
+const EXHAUSTED_COLOR := Color(0.9, 0.3, 0.2)
+var stamina_fill: StyleBoxFlat
 
 var slot_panels: Array[Panel] = []
 var slot_labels: Array[Label] = []
@@ -14,12 +19,15 @@ func _ready() -> void:
 	# Connect to GameManager signals
 	GameManager.show_message.connect(_on_show_message)
 	GameManager.inventory_updated.connect(update_inventory)
+	GameManager.stamina_changed.connect(_on_stamina_changed)
+
+	setup_stamina_bar()
 
 	build_inventory_slots()
 	update_inventory()
 
 	# Show the initial objective text at the beginning of the play
-	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nE: pick up Q: drop W: use F: hide 1-4 / mouse wheel: switch slot", 6.0)
+	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nWASD: move   Shift: sprint   F: interact / pick up   E: use item   Q: drop   Left/Right: switch slot", 6.0)
 
 func build_inventory_slots() -> void:
 	for i in GameManager.SLOT_COUNT:
@@ -69,6 +77,22 @@ func update_inventory() -> void:
 			slot_labels[i].text = Collectible.item_name(item)
 			slot_labels[i].add_theme_color_override("font_color", Collectible.ITEM_COLORS[item].lightened(0.4))
 			uses_labels[i].text = "x%d" % GameManager.slot_uses[i] if Collectible.MAX_USES[item] > 1 else ""
+
+func setup_stamina_bar() -> void:
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color(0, 0, 0, 0.6)
+	background.set_corner_radius_all(4)
+	stamina_fill = StyleBoxFlat.new()
+	stamina_fill.bg_color = STAMINA_COLOR
+	stamina_fill.set_corner_radius_all(4)
+	stamina_bar.add_theme_stylebox_override("background", background)
+	stamina_bar.add_theme_stylebox_override("fill", stamina_fill)
+	stamina_bar.value = 1.0
+
+# Bar turns red when stamina ran out, until the player releases Shift
+func _on_stamina_changed(value: float, exhausted: bool) -> void:
+	stamina_bar.value = value
+	stamina_fill.bg_color = EXHAUSTED_COLOR if exhausted else STAMINA_COLOR
 
 func _on_show_message(text: String) -> void:
 	show_temp_message(text, 3.0)

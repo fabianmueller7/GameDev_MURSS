@@ -1,8 +1,17 @@
 extends Area3D
 
 @export var door_body: StaticBody3D
+@export var open_sound: AudioStream = preload("res://Assets/Sounds/door.wav")
+
+var sound_player: AudioStreamPlayer3D
 
 var is_open: bool = false
+
+func _ready() -> void:
+	sound_player = AudioStreamPlayer3D.new()
+	sound_player.stream = open_sound
+	sound_player.unit_size = 12.0  # The camera is ~14 m above the player, keep it audible
+	add_child(sound_player)
 
 func _on_body_entered(body: Node3D) -> void:
 	if is_open:
@@ -11,7 +20,7 @@ func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		body.add_nearby_target(self)
 		if GameManager.has_item(Collectible.ItemType.KEY):
-			GameManager.show_message.emit("The door is locked. Select the Key and press W to unlock it.")
+			GameManager.show_message.emit("The door is locked. Select the Key and press E to unlock it.")
 		else:
 			# Player does not have the key
 			GameManager.show_message.emit("The door is locked! You need a Key.")
@@ -30,6 +39,8 @@ func try_use_item(item_type: Collectible.ItemType) -> bool:
 	return true
 
 func open_door() -> void:
+	sound_player.play()
+
 	# Disable the collision so the player can walk through
 	if door_body:
 		var collision = door_body.get_node_or_null("CollisionShape3D")

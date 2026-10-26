@@ -6,9 +6,20 @@ extends Area3D
 @export var glow_energy := 0.8
 @export var pulse_speed := 2.0    # How fast the blue glow pulses
 @export var pulse_amount := 0.25  # How strong the pulse is (0 = steady light)
+@export var interact_sound: AudioStream = preload("res://Assets/Sounds/barrel.wav")
+@export var sound_volume_db := 3.0
 
 var occupant: Player = null
 var _time := 0.0
+var sound_player: AudioStreamPlayer3D
+
+
+func _ready() -> void:
+	sound_player = AudioStreamPlayer3D.new()
+	sound_player.stream = interact_sound
+	sound_player.volume_db = sound_volume_db
+	sound_player.unit_size = 12.0  # The camera is ~14 m above the player, keep it audible
+	add_child(sound_player)
 
 
 func _process(delta: float) -> void:
@@ -32,6 +43,8 @@ func _on_body_exited(body: Node3D) -> void:
 
 # Called by the player when pressing the interact key near this barrel (or while hiding in it)
 func interact(player: Player) -> void:
+	if occupant == null or occupant == player:
+		sound_player.play()
 	if occupant == player:
 		occupant = null
 		player.leave_hiding_spot()

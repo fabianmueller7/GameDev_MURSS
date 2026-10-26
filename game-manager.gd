@@ -14,6 +14,7 @@ var current_level_path: String = "res://Levels/level_1.tscn"
 signal inventory_updated
 signal show_message(text)
 signal player_died
+signal stamina_changed(value: float, exhausted: bool)  # value: 0.0 (empty) to 1.0 (full)
 
 
 func _ready() -> void:

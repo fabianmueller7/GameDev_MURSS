@@ -8,11 +8,23 @@ var music_bus_idx: int
 var filter_effect: AudioEffectLowPassFilter
 var active_chase_count := 0
 
+# Played once when the player gets detected (no enemy was chasing before)
+@export var detected_sound: AudioStream = preload("res://Assets/Sounds/detected.mp3")
+@export var detected_volume_db := -3.0
+var detected_player: AudioStreamPlayer
+
 func _ready() -> void:
 	# Point to our custom music bus and filter effect
 	music_bus_idx = AudioServer.get_bus_index("Music")
 	filter_effect = AudioServer.get_bus_effect(music_bus_idx, 0) as AudioEffectLowPassFilter
 	
+	# Sound effects go to the Master bus so the music filter does not muffle them
+	detected_player = AudioStreamPlayer.new()
+	detected_player.stream = detected_sound
+	detected_player.volume_db = detected_volume_db
+	detected_player.bus = "Master"
+	add_child(detected_player)
+
 	# Ensure this player uses the Music bus
 	bus = "Music"
 	
@@ -27,6 +39,8 @@ func _ready() -> void:
 func update_chase_state(is_chasing: bool) -> void:
 	if is_chasing:
 		active_chase_count += 1
+		if active_chase_count == 1:
+			detected_player.play()
 	else:
 		active_chase_count = max(active_chase_count - 1, 0)
 	

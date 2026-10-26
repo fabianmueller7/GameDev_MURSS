@@ -165,12 +165,21 @@ func ordered_to_chase(player: Player) -> void:
 	start_chase()
 	
 func start_chase() -> void:
-	chasing = true
 	chase_timer = 0.0
+	if chasing:
+		return  # Already chasing (e.g. the watchtower keeps alerting us): just keep going
+	chasing = true
 	material.albedo_color = chase_color
 	vision_light.light_color = chase_color
 	MusicManager.update_chase_state(true)
 	
 func die() -> void:
-	MusicManager.update_chase_state(false)
 	queue_free()
+
+
+# Removed while chasing (killed, level reloaded, back to menu): the chase is over for the music
+func _exit_tree() -> void:
+	if chasing:
+		chasing = false
+		if is_instance_valid(MusicManager) and MusicManager.is_inside_tree():
+			MusicManager.update_chase_state(false)
