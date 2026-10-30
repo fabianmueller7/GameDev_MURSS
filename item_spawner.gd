@@ -4,6 +4,8 @@ extends Node3D
 
 @export var key_spawn_points: Array[Marker3D] = []
 @export var bomb_spawn_points: Array[Marker3D] = []
+@export var coin_spawn_points: Array[Marker3D] = []
+@export var coin_count := 2  # Coins are spawned at this many different coin markers
 
 func _ready() -> void:
 	# Wait one frame to ensure the scene tree and world transforms are fully ready
@@ -13,6 +15,13 @@ func _ready() -> void:
 func spawn_items() -> void:
 	spawn_item(Collectible.ItemType.KEY, key_spawn_points)
 	spawn_item(Collectible.ItemType.BOMB, bomb_spawn_points)
+
+	# Several coins, each at a different marker
+	var coin_spots := coin_spawn_points.duplicate()
+	coin_spots.shuffle()
+	for spot in coin_spots.slice(0, coin_count):
+		var single_spot: Array[Marker3D] = [spot]
+		spawn_item(Collectible.ItemType.COIN, single_spot)
 
 # Spawns one item of the given type at a random one of the spawn points
 func spawn_item(item_type: Collectible.ItemType, spawn_points: Array[Marker3D]) -> void:

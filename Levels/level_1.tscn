@@ -167,10 +167,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.011457, 1, -24.938982)
 [node name="BombMarker5" type="Marker3D" parent="." unique_id=36351942]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.665, 1, -39.69468)
 
-[node name="ItemSpawner" type="Node3D" parent="." unique_id=911248647 node_paths=PackedStringArray("key_spawn_points", "bomb_spawn_points")]
+[node name="ItemSpawner" type="Node3D" parent="." unique_id=911248647 node_paths=PackedStringArray("key_spawn_points", "bomb_spawn_points", "coin_spawn_points")]
 script = ExtResource("3_rs4xw")
 key_spawn_points = [NodePath("../KeyMarker1"), NodePath("../KeyMarker2"), NodePath("../KeyMarker3"), NodePath("../KeyMarker4")]
 bomb_spawn_points = [NodePath("../BombMarker1"), NodePath("../BombMarker2"), NodePath("../BombMarker3"), NodePath("../BombMarker4")]
+coin_spawn_points = [NodePath("../CoinSpawn1")]
 
 [node name="Door" parent="." unique_id=1717911628 instance=ExtResource("4_lk57d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09676099, -0.0070934296, -12.8770485)
@@ -226,3 +227,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.513685, -0.2473998, 2.869
 
 [node name="HidingBarrel2" parent="." unique_id=1997584263 instance=ExtResource("10_1rr3k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.099066, 0.43854618, 10.069626)
+
+[node name="CoinSpawn1" type="Marker3D" parent="." unique_id=941261736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.436745, 0.51493645, 37.236015)

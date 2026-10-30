@@ -15,6 +15,16 @@ extends CharacterBody3D
 @export var patrol_color := Color(0.8, 0.15, 0.15)
 @export var chase_color := Color(1.0, 0.5, 0.0)
 
+# Reaction to noise (the player using an item nearby)
+@export var investigate_time := 3.0        # Seconds standing still and looking at the noise
+@export var investigate_turn_speed := 6.0
+@export var investigate_color := Color(1.0, 0.85, 0.2)
+
+# Reaction to a thrown coin: walk there, wait, then go back to the patrol route
+@export var distract_speed := 3.0
+@export var distract_wait_time := 5.0
+@export var distracted_view_angle := 15.0  # Narrower view while focused on the coin
+
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
 @onready var mesh: MeshInstance3D = $MeshInstance3D
 @onready var vision_light: SpotLight3D = $SpotLight3D
@@ -26,6 +36,10 @@ var chase_timer := 0.0
 var cooldown_timer := 0.0
 var material := StandardMaterial3D.new()
 var is_alerted_from_afar: bool
+var investigate_timer := 0.0
+var noise_position: Vector3
+var distracted := false
+var distract_wait_timer := 0.0
 
 # References to optional aggregated components found in children
 var paranoid_component: Node = null
@@ -45,17 +59,26 @@ func _ready() -> void:
 	dog_component = get_node_or_null("GuardDogComponent")
 
 func _physics_process(delta: float) -> void:
+	_update_view_cone(delta)
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	_update_chase_state(delta)
 
-	var speed := chase_speed if chasing else patrol_speed
+	# Heard a noise: stand still and look towards it (detection keeps running meanwhile)
+	if investigate_timer > 0.0 and not chasing:
+		_investigate(delta)
+		move_and_slide()
+		return
+
+	var speed := chase_speed if chasing else (distract_speed if distracted else patrol_speed)
 
 	if chasing:
 		# Once the player hides, keep heading to the last known position instead
 		if not player.is_hidden:
 			agent.target_position = player.global_position
+	elif distracted:
+		_update_distraction(delta)
 	elif agent.is_navigation_finished() and not patrol_points.is_empty():
 		patrol_index = (patrol_index + 1) % patrol_points.size()
 		agent.target_position = patrol_points[patrol_index].global_position
@@ -73,7 +96,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction.x * speed, speed * delta * 8.0)
 		velocity.z = move_toward(velocity.z, direction.z * speed, speed * delta * 8.0)
 
-		if paranoid_component and not chasing:
+		if paranoid_component and not chasing and not distracted:
 			var is_looking_back = paranoid_component.process_behavior(self, delta)
 			if is_looking_back:
 				direction = -direction
@@ -93,7 +116,7 @@ func _update_chase_state(delta: float) -> void:
 	var distance := to_player.length()
 	to_player.y = 0
 	var forward := -global_transform.basis.z
-	var in_view := forward.angle_to(to_player) < deg_to_rad(view_angle)
+	var in_view := forward.angle_to(to_player) < deg_to_rad(_current_view_angle())
 
 	if chasing:
 		chase_timer += delta
@@ -137,6 +160,72 @@ func _can_see_player() -> bool:
 	return not result.is_empty() and result.collider == player
 
 
+# Called by the player when using an item nearby
+func hear_noise(source: Vector3) -> void:
+	if chasing:
+		return
+	investigate_timer = investigate_time
+	noise_position = source
+	material.albedo_color = investigate_color
+	vision_light.light_color = investigate_color
+
+
+func _investigate(delta: float) -> void:
+	investigate_timer -= delta
+	velocity.x = move_toward(velocity.x, 0, patrol_speed)
+	velocity.z = move_toward(velocity.z, 0, patrol_speed)
+
+	var to_noise := noise_position - global_position
+	to_noise.y = 0
+	if to_noise.length() > 0.01:
+		# Forward is -Z (same as look_at)
+		var target_yaw := atan2(-to_noise.x, -to_noise.z)
+		rotation.y = lerp_angle(rotation.y, target_yaw, minf(delta * investigate_turn_speed, 1.0))
+
+	if investigate_timer <= 0.0:
+		# Nothing found: back to the normal patrol (or keep checking out the coin)
+		var color := investigate_color if distracted else patrol_color
+		material.albedo_color = color
+		vision_light.light_color = color
+
+
+# Focused on a coin: narrower field of view until the distraction is over
+func _current_view_angle() -> float:
+	return distracted_view_angle if distracted else view_angle
+
+
+# The spotlight smoothly follows the current field of view
+func _update_view_cone(delta: float) -> void:
+	vision_light.spot_angle = lerpf(vision_light.spot_angle, _current_view_angle(), minf(delta * 5.0, 1.0))
+
+
+# Called by a thrown coin that landed nearby
+func distract(target: Vector3) -> void:
+	if chasing:
+		return
+	distracted = true
+	distract_wait_timer = distract_wait_time
+	investigate_timer = 0.0  # Go there right away
+	agent.target_position = target
+	material.albedo_color = investigate_color
+	vision_light.light_color = investigate_color
+
+
+func _update_distraction(delta: float) -> void:
+	if not agent.is_navigation_finished():
+		return  # Still walking to the coin
+	distract_wait_timer -= delta
+	if distract_wait_timer <= 0.0:
+		_end_distraction()
+
+
+func _end_distraction() -> void:
+	distracted = false
+	material.albedo_color = patrol_color
+	vision_light.light_color = patrol_color
+	_return_to_patrol()
+
+
 func _stop_chase() -> void:
 	chasing = false
 	is_alerted_from_afar = false
@@ -166,6 +255,8 @@ func ordered_to_chase(player: Player) -> void:
 	
 func start_chase() -> void:
 	chase_timer = 0.0
+	investigate_timer = 0.0
+	distracted = false
 	if chasing:
 		return  # Already chasing (e.g. the watchtower keeps alerting us): just keep going
 	chasing = true

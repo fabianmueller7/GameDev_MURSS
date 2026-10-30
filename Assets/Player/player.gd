@@ -13,6 +13,15 @@ const JUMP_VELOCITY = 4.5
 const DROP_DISTANCE = 1.5
 const KNIFE_RANGE = 2.0
 
+# Using an item makes noise: enemies within this radius stop and turn towards the player
+@export var item_noise_radius := 6.0
+
+# Coin: thrown in the facing direction, lures enemies around the landing spot
+const THROWN_COIN_SCENE := preload("res://Assets/thrown_coin.tscn")
+@export var coin_throw_distance := 8.0
+@export var coin_distract_radius := 10.0
+@export var coin_flight_time := 0.6
+
 # Sounds
 @export var footstep_sounds: Array[AudioStream] = [
 	preload("res://Assets/Sounds/footsteps/footstep_light_01.wav"),
@@ -225,6 +234,8 @@ func use_item() -> void:
 	if item_type == Collectible.ItemType.KNIFE:
 		anim_tree.set("parameters/stab/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		used = use_knife()
+	elif item_type == Collectible.ItemType.COIN:
+		used = throw_coin()
 	else:
 		for target in nearby_targets:
 			if target.try_use_item(item_type):
@@ -235,6 +246,44 @@ func use_item() -> void:
 
 	if used:
 		GameManager.use_selected_item()
+		# The coin makes its noise where it lands, not at the player
+		if item_type != Collectible.ItemType.COIN:
+			make_noise(item_noise_radius)
+
+
+# Throws a coin in the facing direction (stops in front of walls). Returns true if thrown.
+func throw_coin() -> bool:
+	var dir := facing.normalized()
+	var from := global_position + Vector3.UP * 0.5
+	var target := from + dir * coin_throw_distance
+	var space := get_world_3d().direct_space_state
+
+	var query := PhysicsRayQueryParameters3D.create(from, target)
+	query.exclude = [get_rid()]
+	var hit := space.intersect_ray(query)
+	if not hit.is_empty():
+		target = hit.position - dir * 0.4
+
+	# Land on the ground below the target point
+	var down := PhysicsRayQueryParameters3D.create(target + Vector3.UP, target + Vector3.DOWN * 10.0)
+	down.exclude = [get_rid()]
+	var ground := space.intersect_ray(down)
+	if not ground.is_empty():
+		target = ground.position
+
+	var coin := THROWN_COIN_SCENE.instantiate()
+	get_parent().add_child(coin)
+	coin.global_position = from
+	coin.throw_to(target, coin_flight_time, coin_distract_radius)
+	GameManager.show_message.emit("You threw a coin.")
+	return true
+
+
+# Alerts enemies within the radius: they stop for a moment and look towards the player
+func make_noise(radius: float) -> void:
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if global_position.distance_to(enemy.global_position) <= radius and enemy.has_method("hear_noise"):
+			enemy.hear_noise(global_position)
 
 
 # Kills the closest enemy within reach. Returns true if the knife was used.

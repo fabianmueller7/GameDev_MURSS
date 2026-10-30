@@ -1,11 +1,11 @@
 extends Area3D
 class_name Collectible
 
-enum ItemType { KEY, BOMB, KNIFE }
+enum ItemType { KEY, BOMB, KNIFE, COIN }
 
-const ITEM_NAMES := { ItemType.KEY: "Key", ItemType.BOMB: "Bomb", ItemType.KNIFE: "Knife" }
-const ITEM_COLORS := { ItemType.KEY: Color(1, 0.8, 0.1), ItemType.BOMB: Color(0.15, 0.15, 0.15), ItemType.KNIFE: Color(0.75, 0.8, 0.85) }
-const MAX_USES := { ItemType.KEY: 1, ItemType.BOMB: 1, ItemType.KNIFE: 3 }
+const ITEM_NAMES := { ItemType.KEY: "Key", ItemType.BOMB: "Bomb", ItemType.KNIFE: "Knife", ItemType.COIN: "Coin" }
+const ITEM_COLORS := { ItemType.KEY: Color(1, 0.8, 0.1), ItemType.BOMB: Color(0.15, 0.15, 0.15), ItemType.KNIFE: Color(0.75, 0.8, 0.85), ItemType.COIN: Color(0.85, 0.55, 0.15) }
+const MAX_USES := { ItemType.KEY: 1, ItemType.BOMB: 1, ItemType.KNIFE: 3, ItemType.COIN: 1 }
 
 @export var item_type: ItemType = ItemType.KEY:
 	set(value):
@@ -39,6 +39,8 @@ func _apply_look() -> void:
 			light.light_color = Color(1, 0.3, 0.1)
 		ItemType.KNIFE:
 			light.light_color = Color(0.6, 0.8, 1)
+		ItemType.COIN:
+			light.light_color = Color(1, 0.7, 0.3)
 
 # The player picks items up with the "interact" action (F), so we only tell it what is in reach
 # (Make sure your player node is added to a group named "player")

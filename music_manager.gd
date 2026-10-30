@@ -17,7 +17,7 @@ extends Node
 # Per-track offsets so the three versions sound equally loud (combat is mastered much louder)
 @export var exploration_offset_db := 0.0
 @export var tension_offset_db := 1.5
-@export var combat_offset_db := -6.0
+@export var combat_offset_db := -3.0
 
 @export_group("Tension")
 @export var tension_far := 14.0   # Enemy further away than this: no tension at all
