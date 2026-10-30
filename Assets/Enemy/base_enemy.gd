@@ -24,6 +24,8 @@ extends CharacterBody3D
 @export var distract_speed := 3.0
 @export var distract_wait_time := 5.0
 @export var distracted_view_angle := 15.0  # Narrower view while focused on the coin
+@export var distract_stop_distance := 1.5  # Stops this far from the coin (leaves room for other enemies)
+@export var distracted_hearing_scale := 0.5  # Guard dogs hear only half as far while distracted (0 = deaf)
 
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
 @onready var mesh: MeshInstance3D = $MeshInstance3D
@@ -40,6 +42,9 @@ var investigate_timer := 0.0
 var noise_position: Vector3
 var distracted := false
 var distract_wait_timer := 0.0
+var distract_target: Vector3
+var distract_arrived := false
+var distract_stuck_timer := 0.0
 
 # References to optional aggregated components found in children
 var paranoid_component: Node = null
@@ -71,6 +76,12 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	# Arrived at the coin: stand still and watch it until the wait time is over
+	if distracted and distract_arrived and not chasing:
+		_watch_coin(delta)
+		move_and_slide()
+		return
+
 	var speed := chase_speed if chasing else (distract_speed if distracted else patrol_speed)
 
 	if chasing:
@@ -78,7 +89,7 @@ func _physics_process(delta: float) -> void:
 		if not player.is_hidden:
 			agent.target_position = player.global_position
 	elif distracted:
-		_update_distraction(delta)
+		_check_distraction_arrival(delta)
 	elif agent.is_navigation_finished() and not patrol_points.is_empty():
 		patrol_index = (patrol_index + 1) % patrol_points.size()
 		agent.target_position = patrol_points[patrol_index].global_position
@@ -142,7 +153,8 @@ func _update_chase_state(delta: float) -> void:
 			spotted = true
 
 		# Delegate detection rules if the Guard Dog component is attached
-		if dog_component and dog_component.check_hearing(player, distance):
+		var hearing_scale := distracted_hearing_scale if distracted else 1.0
+		if dog_component and dog_component.check_hearing(player, distance, hearing_scale):
 			if _can_see_player():
 				spotted = true
 
@@ -204,16 +216,36 @@ func distract(target: Vector3) -> void:
 	if chasing:
 		return
 	distracted = true
+	distract_arrived = false
+	distract_stuck_timer = 0.0
 	distract_wait_timer = distract_wait_time
+	distract_target = target
 	investigate_timer = 0.0  # Go there right away
 	agent.target_position = target
 	material.albedo_color = investigate_color
 	vision_light.light_color = investigate_color
 
 
-func _update_distraction(delta: float) -> void:
-	if not agent.is_navigation_finished():
-		return  # Still walking to the coin
+# Arrived when close enough (horizontally, the coin lies on the ground), when the navigation
+# says so, or when stuck (e.g. another enemy is already standing at the coin)
+func _check_distraction_arrival(delta: float) -> void:
+	var to_coin := distract_target - global_position
+	to_coin.y = 0
+	var moving := Vector2(velocity.x, velocity.z).length() > 0.3
+	distract_stuck_timer = 0.0 if moving else distract_stuck_timer + delta
+
+	if to_coin.length() <= distract_stop_distance or agent.is_navigation_finished() or distract_stuck_timer > 0.75:
+		distract_arrived = true
+
+
+func _watch_coin(delta: float) -> void:
+	velocity.x = 0
+	velocity.z = 0
+	var to_coin := distract_target - global_position
+	to_coin.y = 0
+	if to_coin.length() > 0.01:
+		rotation.y = lerp_angle(rotation.y, atan2(-to_coin.x, -to_coin.z), minf(delta * investigate_turn_speed, 1.0))
+
 	distract_wait_timer -= delta
 	if distract_wait_timer <= 0.0:
 		_end_distraction()
@@ -221,6 +253,7 @@ func _update_distraction(delta: float) -> void:
 
 func _end_distraction() -> void:
 	distracted = false
+	distract_arrived = false
 	material.albedo_color = patrol_color
 	vision_light.light_color = patrol_color
 	_return_to_patrol()

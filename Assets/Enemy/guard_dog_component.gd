@@ -38,8 +38,9 @@ func _process(delta: float) -> void:
 		bark_timer = randf_range(bark_interval_min, bark_interval_max)
 
 
-func check_hearing(player: Player, distance: float) -> bool:
-	if distance < hearing_radius:
+# radius_scale shrinks the hearing radius (e.g. while distracted by a coin)
+func check_hearing(player: Player, distance: float, radius_scale := 1.0) -> bool:
+	if distance < hearing_radius * radius_scale:
 		var player_is_moving: bool = player.velocity.length() > 0.1
 		var player_is_crouching: bool = ("is_crouching" in player and player.is_crouching)
 		
