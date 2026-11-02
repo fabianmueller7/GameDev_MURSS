@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="1_cb21r"]
 [ext_resource type="Script" uid="uid://c3ry0m2n16i7m" path="res://Assets/Enemy/paranoid_component.gd" id="2_4hwhx"]
+[ext_resource type="PackedScene" uid="uid://dyn55lyegvi8m" path="res://Assets/Enemy/cultist.glb" id="2_knx5u"]
 
 [node name="ParanoidGuard" unique_id=248082598 instance=ExtResource("1_cb21r")]
+model_scene = ExtResource("2_knx5u")
 
 [node name="ParanoidComponent" type="Node" parent="." index="4" unique_id=1931590459]
 script = ExtResource("2_4hwhx")

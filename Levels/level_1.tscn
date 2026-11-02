@@ -191,11 +191,14 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.72
 [node name="GuardDog" parent="." unique_id=754205335 node_paths=PackedStringArray("patrol_points") instance=ExtResource("7_k2bse")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.153, 0.4, 16.407)
 patrol_points = [NodePath("../Marker3DRoute1M1"), NodePath("../Marker3DRoute1M2"), NodePath("../Marker3DRoute1M3"), NodePath("../Marker3DRoute1M4")]
+model_scene = null
+attack_hit_range = 2.0
 
 [node name="ParanoidGuard" parent="." unique_id=641670538 node_paths=PackedStringArray("patrol_points") instance=ExtResource("8_c7pbv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.967, 1, 31.877)
 patrol_points = [NodePath("../Marker3DRoute2M1"), NodePath("../Marker3DRoute2M2")]
 catch_distance = 1.2
+model_scene = null
 
 [node name="BaseEnemy" parent="." unique_id=1452223784 node_paths=PackedStringArray("patrol_points") instance=ExtResource("9_77l7m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.541, 1, -0.217)
@@ -216,11 +219,14 @@ patrol_points = [NodePath("../Marker3DRoute8M1"), NodePath("../Marker3DRoute8M2"
 [node name="GuardDog2" parent="." unique_id=697672663 node_paths=PackedStringArray("patrol_points") instance=ExtResource("7_k2bse")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.233, 0.4, -24.59765)
 patrol_points = [NodePath("../Marker3DRoute7M1"), NodePath("../Marker3DRoute7M2"), NodePath("../Marker3DRoute7M3"), NodePath("../Marker3DRoute7M4"), NodePath("../Marker3DRoute7M5")]
+model_scene = null
+attack_hit_range = 2.0
 
 [node name="ParanoidGuard2" parent="." unique_id=1829740332 node_paths=PackedStringArray("patrol_points") instance=ExtResource("8_c7pbv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.531057, 1, -30.828743)
 patrol_points = [NodePath("../Marker3DRoute6M1"), NodePath("../Marker3DRoute6M2"), NodePath("../Marker3DRoute6M3"), NodePath("../Marker3DRoute6M4")]
 catch_distance = 1.2
+model_scene = null
 
 [node name="HidingBarrel" parent="." unique_id=690875661 instance=ExtResource("10_1rr3k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.513685, -0.2473998, 2.869974)

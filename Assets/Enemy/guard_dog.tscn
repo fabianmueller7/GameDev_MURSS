@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dmresi5fmecqp"]
 
 [ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="1_o88y2"]
+[ext_resource type="PackedScene" uid="uid://dlwwa75cr3w52" path="res://Assets/Enemy/guard_dog.glb" id="2_7pcd1"]
 [ext_resource type="Script" uid="uid://0thxwk4u70d0" path="res://Assets/Enemy/guard_dog_component.gd" id="2_y6w1b"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_44ru2"]
@@ -12,6 +13,11 @@ size = Vector3(0.5087738, 0.50341797, 0.4945984)
 patrol_speed = 3.5
 chase_speed = 6.0
 catch_distance = 1.5
+model_scene = ExtResource("2_7pcd1")
+model_offset = Vector3(0, -0.41, 0)
+attack_animation = "Attack"
+attack_hit_time = 0.5
+attack_hit_range = 1.3
 
 [node name="MeshInstance3D" parent="." index="0" unique_id=155045242]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)

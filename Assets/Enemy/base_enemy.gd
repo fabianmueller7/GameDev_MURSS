@@ -27,6 +27,15 @@ extends CharacterBody3D
 @export var distract_stop_distance := 1.5  # Stops this far from the coin (leaves room for other enemies)
 @export var distracted_hearing_scale := 0.5  # Guard dogs hear only half as far while distracted (0 = deaf)
 
+# 3D model with animations (Idle, Walk, Chase + an attack). Leave empty to keep the old capsule.
+@export var model_scene: PackedScene
+@export var model_offset := Vector3(0, -1.0, 0)  # Moves the model so its feet stand on the ground
+@export var model_scale := 1.0
+@export var attack_animation := "Stab"           # The guard dog uses "Attack"
+@export var attack_hit_time := 0.4               # Seconds into the attack animation when the hit lands
+# The enemy keeps chasing while it winds up, so walking away is not enough; only sprinting gets out of reach
+@export var attack_hit_range := 1.6              # The player must still be this close when the hit lands
+
 @onready var agent: NavigationAgent3D = $NavigationAgent3D
 @onready var mesh: MeshInstance3D = $MeshInstance3D
 @onready var vision_light: SpotLight3D = $SpotLight3D
@@ -50,6 +59,16 @@ var distract_stuck_timer := 0.0
 var paranoid_component: Node = null
 var dog_component: Node = null
 
+# Model / animation state
+var model: Node3D
+var anim: AnimationPlayer
+var attacking := false
+var attack_timer := 0.0
+var attack_length := 0.0
+var attack_hit_done := false
+var touching_player := false     # Bumped into the player during the last physics frame
+var observed_contact := 0.0      # Measured distance at which our bodies actually touch
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("player") as Player
 	material.albedo_color = patrol_color
@@ -63,7 +82,17 @@ func _ready() -> void:
 	paranoid_component = get_node_or_null("ParanoidComponent")
 	dog_component = get_node_or_null("GuardDogComponent")
 
+	_setup_model()
+
 func _physics_process(delta: float) -> void:
+	if attacking:
+		_attack_tick(delta)
+	_move(delta)  # Keeps chasing during the wind-up: the enemy lunges after the player
+	_check_player_contact()
+	_update_animation()
+
+
+func _move(delta: float) -> void:
 	_update_view_cone(delta)
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -136,10 +165,15 @@ func _update_chase_state(delta: float) -> void:
 			if agent.is_navigation_finished():
 				_stop_chase()
 				cooldown_timer = give_up_cooldown
-		elif distance < catch_distance:
-			print("caught player")
-			GameManager.trigger_death()			
-			_stop_chase()
+		elif touching_player or _flat_distance_to_player() < _effective_catch_distance():
+			if attacking:
+				pass  # Already swinging
+			elif anim and anim.has_animation(attack_animation):
+				_start_attack()
+			else:
+				print("caught player")
+				GameManager.trigger_death()
+				_stop_chase()
 		elif chase_timer >= max_chase_time:
 			_stop_chase()
 			cooldown_timer = give_up_cooldown
@@ -297,6 +331,117 @@ func start_chase() -> void:
 	vision_light.light_color = chase_color
 	MusicManager.update_chase_state(true)
 	
+# ---------------- Model and animations ----------------
+
+func _setup_model() -> void:
+	if model_scene == null:
+		return
+	model = model_scene.instantiate() as Node3D
+	add_child(model)
+	model.position = model_offset
+	model.rotation.y = PI  # The models look along +Z, the enemy walks along -Z (look_at)
+	model.scale = Vector3.ONE * model_scale
+	mesh.visible = false  # Hide the old capsule
+	anim = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	if anim == null:
+		push_warning("No AnimationPlayer found in the model of " + name)
+		return
+	for loop_name in ["Idle", "Walk", "Chase"]:
+		if anim.has_animation(loop_name):
+			anim.get_animation(loop_name).loop_mode = Animation.LOOP_LINEAR
+	if anim.has_animation(attack_animation):
+		attack_length = anim.get_animation(attack_animation).length
+	else:
+		push_warning("Model of %s has no animation '%s'" % [name, attack_animation])
+	_play("Idle")
+
+
+func _play(anim_name: String, blend := 0.2) -> void:
+	if anim and anim.has_animation(anim_name) and anim.current_animation != anim_name:
+		anim.play(anim_name, blend)
+
+
+# Walk while patrolling or going to a coin, Chase while hunting, Idle while standing
+func _update_animation() -> void:
+	if anim == null or attacking:
+		return
+	var moving := Vector2(velocity.x, velocity.z).length() > 0.3
+	if moving and chasing:
+		_play("Chase")
+	elif moving:
+		_play("Walk")
+	else:
+		_play("Idle")
+
+
+# Close enough: swing while still running after the player. The hit only counts if the player
+# is still in reach when it lands, so walking away fails but sprinting away can work.
+func _start_attack() -> void:
+	attacking = true
+	attack_timer = 0.0
+	attack_hit_done = false
+	anim.play(attack_animation, 0.1)
+
+
+func _attack_tick(delta: float) -> void:
+	attack_timer += delta
+	if not attack_hit_done and attack_timer >= attack_hit_time:
+		attack_hit_done = true
+		var distance := _flat_distance_to_player()
+		if chasing and not player.is_hidden and distance <= maxf(attack_hit_range, _contact_distance() + 0.15):
+			print("caught player")
+			GameManager.trigger_death()
+			_stop_chase()
+		else:
+			attacking = false  # Missed: straight back into the chase animation
+			return
+	if attack_timer >= attack_length:
+		attacking = false
+
+
+# Distance on the ground only. The bodies' centres sit at different heights (a dog is much lower
+# than the player), so the 3D distance would never get small enough to catch or hit.
+func _flat_distance_to_player() -> float:
+	var d := player.global_position - global_position
+	d.y = 0
+	return d.length()
+
+
+# Running into the player always counts as catching them, whatever the numbers say
+func _check_player_contact() -> void:
+	touching_player = false
+	for i in get_slide_collision_count():
+		if get_slide_collision(i).get_collider() == player:
+			touching_player = true
+			observed_contact = maxf(observed_contact, _flat_distance_to_player())
+
+
+# How close the two bodies can get before they touch (measured once they have touched)
+func _contact_distance() -> float:
+	return maxf(_body_radius(self) + _body_radius(player), observed_contact)
+
+
+# Catch slightly before the bodies touch, even if catch_distance is set smaller than that
+func _effective_catch_distance() -> float:
+	return maxf(catch_distance, _contact_distance() + 0.1)
+
+
+func _body_radius(body: Node) -> float:
+	for child in body.get_children():
+		if child is CollisionShape3D and child.shape:
+			var s: Vector3 = child.scale
+			var shape: Shape3D = child.shape
+			if shape is CapsuleShape3D:
+				return shape.radius * maxf(s.x, s.z)
+			if shape is CylinderShape3D:
+				return shape.radius * maxf(s.x, s.z)
+			if shape is SphereShape3D:
+				return shape.radius * maxf(s.x, s.z)
+			if shape is BoxShape3D:
+				return maxf(shape.size.x * s.x, shape.size.z * s.z) * 0.5
+	return 0.5
+
+
 func die() -> void:
 	queue_free()
 
