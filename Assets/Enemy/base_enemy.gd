@@ -351,7 +351,7 @@ func _setup_model() -> void:
 			anim.get_animation(loop_name).loop_mode = Animation.LOOP_LINEAR
 	if anim.has_animation(attack_animation):
 		attack_length = anim.get_animation(attack_animation).length
-	else:
+	elif attack_animation != "":
 		push_warning("Model of %s has no animation '%s'" % [name, attack_animation])
 	_play("Idle")
 

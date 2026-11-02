@@ -3,19 +3,26 @@ extends Enemy
 
 @export var rotation_interval := 5.0  # Time spent looking in one direction
 @export var rotation_angle_step := 90.0 # Degrees to rotate each interval
+@export var alarm_hold_time := 1.0      # Keeps ringing this long after losing sight of the player
 
 var watch_timer := 0.0
 var target_yaw := 0.0
+var alarm_timer := 0.0
+var model_snapped := false
 
 func _ready() -> void:
 	super._ready()
 	# Disable components or movement agents that watchtowers don't need
 	if agent:
 		agent.queue_free()
+	if anim and anim.has_animation("Alarm"):
+		anim.get_animation("Alarm").loop_mode = Animation.LOOP_LINEAR
 
 func _physics_process(delta: float) -> void:
 	# Watchtowers don't walk, use gravity, or follow patrol points, 
 	# but they DO need to check if they spot the player.
+	if not model_snapped:
+		_snap_model_to_floor()
 	_update_chase_state(delta)
 	_update_view_cone(delta)
 
@@ -34,6 +41,10 @@ func _physics_process(delta: float) -> void:
 	# Smoothly rotate towards the target view direction
 	var current_rot = rotation.y
 	rotation.y = lerp_angle(current_rot, target_yaw, delta * 3.0)
+
+	# Ring the bell while the player is in sight (and a moment longer), otherwise stand watch
+	alarm_timer = maxf(alarm_timer - delta, 0.0)
+	_play("Alarm" if alarm_timer > 0.0 else "Idle", 0.15)
 
 # Heard a noise: turn towards it and keep looking there for investigate_time
 func hear_noise(source: Vector3) -> void:
@@ -65,8 +76,21 @@ func _update_chase_state(delta: float) -> void:
 		_alert_nearby_guards()
 
 func _alert_nearby_guards() -> void:
+	alarm_timer = alarm_hold_time
 	print("Watchtower spotted the player! Alerting guards...")
 	# Find all enemies in a radius or group and force them to chase
 	for node in get_tree().get_nodes_in_group("enemy"):
 		if node is Enemy and not node is Watchtower:
 			node.ordered_to_chase(player)
+
+
+# The towers are placed at different heights and don't use gravity: put the model's feet on the floor below
+func _snap_model_to_floor() -> void:
+	model_snapped = true
+	if model == null:
+		return
+	var query := PhysicsRayQueryParameters3D.create(global_position, global_position + Vector3.DOWN * 5.0)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	if not hit.is_empty():
+		model.global_position.y = hit.position.y
