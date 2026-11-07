@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bhoklyluh74nm"]
+
+[ext_resource type="Script" uid="uid://b2dh20lbporfy" path="res://Tiles/t_tile_variant_2.gd" id="1_gvfqn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="2_gvfqn"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="3_1i808"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="3_sd1nm"]
+[ext_resource type="PackedScene" uid="uid://b82ryjrd7k7lj" path="res://Assets/long_house.tscn" id="4_od0yd"]
+
+[node name="TTileVariant2" type="Node3D" unique_id=411416305]
+script = ExtResource("1_gvfqn")
+
+[node name="Floor" parent="." unique_id=1785901491 instance=ExtResource("2_gvfqn")]
+
+[node name="House" parent="." unique_id=1477523257 instance=ExtResource("3_1i808")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 3.5)
+
+[node name="House2" parent="." unique_id=515374257 instance=ExtResource("3_1i808")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 3.5)
+
+[node name="Wall3" parent="." unique_id=305618915 instance=ExtResource("3_sd1nm")]
+transform = Transform3D(1.2, 0, 0, 0, 1, 0, 0, 0, 1, -3.0328836, 0, -5.85)
+
+[node name="Wall5" parent="." unique_id=1952680886 instance=ExtResource("3_sd1nm")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.85, 0, -3.5)
+
+[node name="LongHouse" parent="." unique_id=2075677187 instance=ExtResource("4_od0yd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3.5)

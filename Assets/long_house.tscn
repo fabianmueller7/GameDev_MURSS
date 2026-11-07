@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b82ryjrd7k7lj"]
+
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="1_864m7"]
+
+[node name="LongHouse" type="Node3D" unique_id=1477523257]
+
+[node name="House" parent="." unique_id=264969110 instance=ExtResource("1_864m7")]
+transform = Transform3D(1.167, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
