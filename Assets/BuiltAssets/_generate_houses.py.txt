@@ -1,0 +1,151 @@
+import math, os, re
+PROJ = os.path.expanduser("~/mnt/GameDev_MURSS")
+KIT_DIR = "Assets/Fantasy Town Assets/glTF"
+OUT_DIR = "Assets/BuiltAssets"
+
+def uid_of(piece):
+    imp = open(os.path.join(PROJ, KIT_DIR, piece + ".gltf.import")).read()
+    return re.search(r'uid="(uid://[a-z0-9]+)"', imp).group(1)
+
+STYLES = {
+    "plaster": dict(straight="Wall_Plaster_Straight", grid="Wall_Plaster_WoodGrid", door="Wall_Plaster_Door_Round",
+                    wide="Wall_Plaster_Window_Wide_Round", thin="Wall_Plaster_Window_Thin_Round"),
+    "brick":   dict(straight="Wall_UnevenBrick_Straight", grid="Wall_UnevenBrick_Straight", door="Wall_UnevenBrick_Door_Round",
+                    wide="Wall_UnevenBrick_Window_Wide_Round", thin="Wall_UnevenBrick_Window_Thin_Round"),
+}
+# Extra pieces placed with the same transform as the wall segment (local x offset, piece)
+INSERTS = {
+    "door": [(0.0, "DoorFrame_Round_WoodDark"), (-0.51, "Door_1_Round")],
+    "wide": [(0.0, "Window_Wide_Round1")],
+    "wide_shutters": [(0.0, "Window_Wide_Round1"), (0.0, "WindowShutters_Wide_Round_Open")],
+    # Open wide shutters reach 1.2 m sideways and would clip into the corner posts
+    "wide_shutters_corner": [(0.0, "Window_Wide_Round1"), (0.0, "WindowShutters_Wide_Round_Closed")],
+    "thin": [(0.0, "Window_Thin_Round1")],
+    "thin_shutters": [(0.0, "Window_Thin_Round1"), (0.0, "WindowShutters_Thin_Round_Closed")],
+}
+# Roof surface height above the wall top at x = W/4 (measured from the kit meshes)
+ROOF_AT_QUARTER = {4: 2.43, 6: 2.99}
+
+class House:
+    def __init__(self, name, w, d):
+        self.name, self.w, self.d = name, w, d
+        self.parts = []   # (piece, x, y, z, yaw_deg)
+        self.height = 0.0
+
+    def add(self, piece, x, y, z, yaw=0.0):
+        self.parts.append((piece, x, y, z, yaw))
+
+    # sides: S = +z (front gable end), N = -z, E = +x, W = -x; segments listed left -> right seen from outside
+    def floor(self, y, style, sides):
+        st = STYLES[style]
+        w, d = self.w, self.d
+        frames = {
+            "S": (0,   lambda i: (-w/2 + 1 + 2*i, d/2)),
+            "N": (180, lambda i: ( w/2 - 1 - 2*i, -d/2)),
+            "E": (90,  lambda i: ( w/2, d/2 - 1 - 2*i)),
+            "W": (-90, lambda i: (-w/2, -d/2 + 1 + 2*i)),
+        }
+        for side, (yaw, pos) in frames.items():
+            n = (w if side in "SN" else d) // 2
+            segs = sides.get(side, [])
+            segs = segs + ["straight"] * (n - len(segs))
+            assert len(segs) == n, (self.name, side, segs)
+            for i, kind in enumerate(segs):
+                x, z = pos(i)
+                base = kind.split("_")[0]
+                self.add(st[base], x, y, z, yaw)
+                if kind == "wide_shutters" and i in (0, n - 1):
+                    kind = "wide_shutters_corner"
+                for off, piece in INSERTS.get(kind, []):
+                    r = math.radians(yaw)
+                    self.add(piece, x + off*math.cos(r), y, z - off*math.sin(r), yaw)
+        for cx in (-w/2, w/2):
+            for cz in (-d/2, d/2):
+                self.add("Corner_ExteriorWide_Wood", cx, y, cz)
+        self.height = max(self.height, y + 3.0)
+
+    def roof(self, chimney=None):
+        h, w, d = self.height, self.w, self.d
+        self.add("Roof_RoundTiles_%dx%d" % (w, d), 0, h, 0)
+        self.add("Roof_Front_Brick%d" % w, 0, h, d/2, 0)
+        self.add("Roof_Front_Brick%d" % w, 0, h, -d/2, 180)
+        if chimney is not None:
+            # chimney at x = W/4, top ~1 m above the roof surface
+            self.add("Prop_Chimney", w/4, h + ROOF_AT_QUARTER[w] - 2.2, chimney)
+
+def fmt(v):
+    v = round(v, 4)
+    return "0" if v == 0 else ("%g" % v)
+
+def transform(x, y, z, yaw):
+    r = math.radians(yaw); c, s = math.cos(r), math.sin(r)
+    if abs(c) < 1e-9: c = 0.0
+    if abs(s) < 1e-9: s = 0.0
+    vals = [c, 0, s, 0, 1, 0, -s, 0, c, x, y, z]
+    return "Transform3D(%s)" % ", ".join(fmt(v) for v in vals)
+
+def write_scene(house):
+    pieces = sorted({p[0] for p in house.parts})
+    ids = {p: "%d_%s" % (i + 1, p.lower()[:20]) for i, p in enumerate(pieces)}
+    lines = ["[gd_scene format=3]", ""]
+    for p in pieces:
+        lines.append('[ext_resource type="PackedScene" uid="%s" path="res://%s/%s.gltf" id="%s"]' % (uid_of(p), KIT_DIR, p, ids[p]))
+    total_h = house.height
+    lines += ["", '[sub_resource type="BoxShape3D" id="BoxShape3D_house"]',
+              "size = Vector3(%s, %s, %s)" % (fmt(house.w + 0.2), fmt(total_h), fmt(house.d + 0.2)), "",
+              '[node name="%s" type="Node3D"]' % house.name, "",
+              '[node name="StaticBody3D" type="StaticBody3D" parent="."]', "",
+              '[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]',
+              "transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, %s, 0)" % fmt(total_h / 2),
+              'shape = SubResource("BoxShape3D_house")', "",
+              '[node name="Model" type="Node3D" parent="."]', ""]
+    counts = {}
+    for piece, x, y, z, yaw in house.parts:
+        counts[piece] = counts.get(piece, 0) + 1
+        lines.append('[node name="%s_%d" parent="Model" instance=ExtResource("%s")]' % (piece, counts[piece], ids[piece]))
+        lines.append("transform = " + transform(x, y, z, yaw))
+        lines.append("")
+    path = os.path.join(PROJ, OUT_DIR, house.name_snake + ".tscn")
+    open(path, "w").write("\n".join(lines))
+    return path
+
+def snake(name):
+    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+
+houses = []
+
+h = House("CottageSmall", 4, 4)
+h.floor(0, "plaster", {"S": ["door", "thin_shutters"], "E": ["wide_shutters"], "W": ["straight", "wide"], "N": ["thin"]})
+h.roof(chimney=-0.5); houses.append(h)
+
+h = House("LonghousePlaster", 4, 8)
+h.floor(0, "plaster", {"S": ["thin", "straight"], "E": ["wide_shutters", "door", "wide_shutters", "grid"],
+                       "W": ["grid", "wide", "wide", "grid"], "N": ["straight", "thin"]})
+h.roof(chimney=2.0); houses.append(h)
+
+h = House("BrickHouse", 6, 6)
+h.floor(0, "brick", {"S": ["wide", "door", "wide"], "E": ["thin", "straight", "thin"],
+                     "W": ["straight", "wide", "straight"], "N": ["straight", "thin", "straight"]})
+h.roof(chimney=-1.0); houses.append(h)
+
+h = House("TownhouseTall", 4, 6)
+h.floor(0, "brick", {"S": ["door", "thin"], "E": ["straight", "wide", "straight"], "W": ["wide", "straight", "straight"], "N": ["straight", "straight"]})
+h.floor(3, "plaster", {"S": ["wide_shutters", "thin_shutters"], "E": ["grid", "wide_shutters", "grid"],
+                       "W": ["wide_shutters", "grid", "thin"], "N": ["thin", "grid"]})
+h.roof(chimney=1.5); houses.append(h)
+
+h = House("ManorLarge", 6, 8)
+h.floor(0, "plaster", {"S": ["wide", "straight", "wide"], "E": ["wide_shutters", "door", "straight", "wide_shutters"],
+                       "W": ["straight", "wide", "wide", "straight"], "N": ["thin", "straight", "thin"]})
+h.floor(3, "plaster", {"S": ["grid", "wide_shutters", "grid"], "E": ["wide_shutters", "grid", "grid", "wide_shutters"],
+                       "W": ["grid", "thin_shutters", "thin_shutters", "grid"], "N": ["grid", "thin", "grid"]})
+houses.append(h)
+
+if __name__ == "__main__":
+    for h in houses:
+        if h.name == "ManorLarge":
+            pass
+    houses[-1].roof(chimney=-2.0)
+    for h in houses:
+        h.name_snake = snake(h.name)
+        print(write_scene(h), len(h.parts), "parts", "%dx%d m" % (h.w, h.d), "height %.1f" % h.height)

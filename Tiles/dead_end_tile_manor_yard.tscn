@@ -1,0 +1,438 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/manor_large.tscn" id="2_manorlargetscn"]
+[ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="3_wallunevenbric"]
+[ext_resource type="PackedScene" uid="uid://oyyw0crjea1i" path="res://Assets/Fantasy Town Assets/glTF/Prop_Wagon.gltf" id="4_propwagongltf"]
+[ext_resource type="PackedScene" uid="uid://b502fr662pvok" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Dummy.gltf" id="5_dummygltf"]
+[ext_resource type="PackedScene" uid="uid://b5sl2hv408l2q" path="res://Assets/Medival Props/MegaKit/Exports/glTF/WeaponStand.gltf" id="6_weaponstandglt"]
+[ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="7_benchgltf"]
+[ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="8_barrelgltf"]
+[ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="9_barrelapplesgl"]
+[ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="10_cratewoodenglt"]
+[ext_resource type="PackedScene" uid="uid://cl1u0bmbtym83" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Holder.gltf" id="11_barrelholdergl"]
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight2"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight3"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight4"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight5"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight6"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight7"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight8"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight9"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight10"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight11"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight12"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight13"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight14"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight15"]
+size = Vector3(1, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight16"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight17"]
+size = Vector3(2, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight18"]
+size = Vector3(1, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight19"]
+size = Vector3(1.9, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight20"]
+size = Vector3(1.9, 3.1227, 0.4065)
+
+[sub_resource type="BoxShape3D" id="Box_Prop_Wagon1"]
+size = Vector3(1.9514, 1.5292, 4.024)
+
+[sub_resource type="BoxShape3D" id="Box_Dummy1"]
+size = Vector3(0.8085, 1.8598, 0.5846)
+
+[sub_resource type="BoxShape3D" id="Box_WeaponStand1"]
+size = Vector3(1.3862, 1.1059, 0.9831)
+
+[sub_resource type="BoxShape3D" id="Box_Bench1"]
+size = Vector3(2.7767, 0.526, 0.5343)
+
+[sub_resource type="BoxShape3D" id="Box_Barrel1"]
+size = Vector3(0.698, 0.898, 0.698)
+
+[sub_resource type="BoxShape3D" id="Box_Barrel_Apples1"]
+size = Vector3(0.698, 0.898, 0.698)
+
+[sub_resource type="BoxShape3D" id="Box_Crate_Wooden1"]
+size = Vector3(0.8423, 0.8785, 0.9083)
+
+[sub_resource type="BoxShape3D" id="Box_Barrel2"]
+size = Vector3(0.698, 0.898, 0.698)
+
+[sub_resource type="BoxShape3D" id="Box_Crate_Wooden2"]
+size = Vector3(0.8423, 0.8785, 0.9083)
+
+[sub_resource type="BoxShape3D" id="Box_Barrel_Holder1"]
+size = Vector3(1.3592, 1.2511, 0.741)
+
+[node name="DeadEndTileManorYard" type="Node3D"]
+
+[node name="Floor" parent="." instance=ExtResource("1_tilefloortscn")]
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="Manor1" parent="Buildings" instance=ExtResource("2_manorlargetscn")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, -3)
+
+[node name="Wall_UnevenBrick_Straight1" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, -5)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight1" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight1")
+
+[node name="Wall_UnevenBrick_Straight2" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, -3)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight2" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight2")
+
+[node name="Wall_UnevenBrick_Straight3" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, -1)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight3" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight3")
+
+[node name="Wall_UnevenBrick_Straight4" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 1)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight4" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight4")
+
+[node name="Wall_UnevenBrick_Straight5" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 3)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight5" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight5")
+
+[node name="Wall_UnevenBrick_Straight6" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 5)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight6" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight6")
+
+[node name="Wall_UnevenBrick_Straight7" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, -5)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight7" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight7")
+
+[node name="Wall_UnevenBrick_Straight8" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, -3)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight8" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight8")
+
+[node name="Wall_UnevenBrick_Straight9" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, -1)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight9" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight9")
+
+[node name="Wall_UnevenBrick_Straight10" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 1)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight10" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight10")
+
+[node name="Wall_UnevenBrick_Straight11" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 3)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight11" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight11")
+
+[node name="Wall_UnevenBrick_Straight12" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 5)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight12" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight12")
+
+[node name="Wall_UnevenBrick_Straight13" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -5, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight13" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight13")
+
+[node name="Wall_UnevenBrick_Straight14" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -3, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight14" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight14")
+
+[node name="Wall_UnevenBrick_Straight15" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.5, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight15" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight15")
+
+[node name="Wall_UnevenBrick_Straight16" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight16" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight16")
+
+[node name="Wall_UnevenBrick_Straight17" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight17" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight17")
+
+[node name="Wall_UnevenBrick_Straight18" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.5, 0, 5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight18" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight18")
+
+[node name="Wall_UnevenBrick_Straight19" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05, 0, -5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight19" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(0.95, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight19"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight19")
+
+[node name="Wall_UnevenBrick_Straight20" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.05, 0, -5.65)
+
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight20" instance=ExtResource("3_wallunevenbric")]
+transform = Transform3D(0.95, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
+shape = SubResource("Box_Wall_UnevenBrick_Straight20")
+
+[node name="Prop_Wagon1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3, 0, 3.6)
+
+[node name="Mesh" parent="Props/Prop_Wagon1" instance=ExtResource("4_propwagongltf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Prop_Wagon1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037, 0.7677, -1.1384)
+shape = SubResource("Box_Prop_Wagon1")
+
+[node name="Dummy1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.2, 0, 3.7)
+
+[node name="Mesh" parent="Props/Dummy1" instance=ExtResource("5_dummygltf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Dummy1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0002, 0.9299, 0.0002)
+shape = SubResource("Box_Dummy1")
+
+[node name="WeaponStand1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 0, 4.5)
+
+[node name="Mesh" parent="Props/WeaponStand1" instance=ExtResource("6_weaponstandglt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/WeaponStand1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553, -0.0031)
+shape = SubResource("Box_WeaponStand1")
+
+[node name="Bench1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6, 0, 0.58)
+
+[node name="Mesh" parent="Props/Bench1" instance=ExtResource("7_benchgltf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Bench1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.263, 0.005)
+shape = SubResource("Box_Bench1")
+
+[node name="Barrel1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9, 0, 0.62)
+
+[node name="Mesh" parent="Props/Barrel1" instance=ExtResource("8_barrelgltf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
+shape = SubResource("Box_Barrel1")
+
+[node name="Barrel_Apples1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.65, 0, 0.62)
+
+[node name="Mesh" parent="Props/Barrel_Apples1" instance=ExtResource("9_barrelapplesgl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
+shape = SubResource("Box_Barrel_Apples1")
+
+[node name="Crate_Wooden1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85, 0, -4.9)
+
+[node name="Mesh" parent="Props/Crate_Wooden1" instance=ExtResource("10_cratewoodenglt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
+shape = SubResource("Box_Crate_Wooden1")
+
+[node name="Barrel2" type="StaticBody3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85, 0, -3.85)
+
+[node name="Mesh" parent="Props/Barrel2" instance=ExtResource("8_barrelgltf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
+shape = SubResource("Box_Barrel2")
+
+[node name="Crate_Wooden2" type="StaticBody3D" parent="Props"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.85, 0, -2.85)
+
+[node name="Mesh" parent="Props/Crate_Wooden2" instance=ExtResource("10_cratewoodenglt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
+shape = SubResource("Box_Crate_Wooden2")
+
+[node name="Barrel_Holder1" type="StaticBody3D" parent="Props"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.85, 0, -4.6)
+
+[node name="Mesh" parent="Props/Barrel_Holder1" instance=ExtResource("11_barrelholdergl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Holder1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6256, 0.0185)
+shape = SubResource("Box_Barrel_Holder1")
+
+[node name="Light1" type="OmniLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 2.4, 5)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.9
+omni_range = 4
+
+[node name="Light2" type="OmniLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 2.4, 5)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.9
+omni_range = 4
+
+[node name="Light3" type="OmniLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.6, 0.9)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 1
+omni_range = 4.5
+
+[node name="ItemSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.85, 0.5, -2)

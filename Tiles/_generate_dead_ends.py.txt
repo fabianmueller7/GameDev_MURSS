@@ -1,0 +1,441 @@
+# Generator for the dead-end tiles (run with python3 from anywhere; needs numpy). Writes Tiles/dead_end_tile_*.tscn
+import math, os, re
+import numpy as np
+# --- glTF bounds helper ---
+import json, sys
+import json,sys,math
+def quat_mat(q):
+    x,y,z,w=q
+    return [[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w)],[2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w)],[2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y)]]
+def mat(n):
+    if 'matrix' in n:
+        m=n['matrix']; return [[m[0],m[4],m[8],m[12]],[m[1],m[5],m[9],m[13]],[m[2],m[6],m[10],m[14]],[0,0,0,1]]
+    t=n.get('translation',[0,0,0]); r=n.get('rotation',[0,0,0,1]); s=n.get('scale',[1,1,1])
+    R=quat_mat(r)
+    return [[R[i][0]*s[0],R[i][1]*s[1],R[i][2]*s[2],t[i]] for i in range(3)]+[[0,0,0,1]]
+def mul(a,b): return [[sum(a[i][k]*b[k][j] for k in range(4)) for j in range(4)] for i in range(4)]
+def bounds(f):
+    g=json.load(open(f)); lo=[1e9]*3; hi=[-1e9]*3
+    def walk(ni,M):
+        n=g['nodes'][ni]; M=mul(M,mat(n))
+        if 'mesh' in n:
+            for p in g['meshes'][n['mesh']]['primitives']:
+                a=g['accessors'][p['attributes']['POSITION']]
+                for cx in (a['min'][0],a['max'][0]):
+                    for cy in (a['min'][1],a['max'][1]):
+                        for cz in (a['min'][2],a['max'][2]):
+                            v=[sum(M[i][k]*c for k,c in enumerate((cx,cy,cz)))+M[i][3] for i in range(3)]
+                            for i in range(3): lo[i]=min(lo[i],v[i]); hi[i]=max(hi[i],v[i])
+        for c in n.get('children',[]): walk(c,M)
+    I=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+    for r in g['scenes'][g.get('scene',0)]['nodes']: walk(r,I)
+    return lo,hi
+
+
+PROJ = os.path.expanduser("~/mnt/GameDev_MURSS")
+FT = "Assets/Fantasy Town Assets/glTF"
+MK = "Assets/Medival Props/MegaKit/Exports/glTF"
+BUILT = "Assets/BuiltAssets"
+HOUSES = {  # scene -> footprint (w, d) of the collision box
+    "cottage_small": (4, 4), "longhouse_plaster": (4, 8), "brick_house": (6, 6),
+    "townhouse_tall": (4, 6), "manor_large": (6, 8),
+}
+
+def kit_path(piece):
+    for d in (FT, MK):
+        if os.path.exists(os.path.join(PROJ, d, piece + ".gltf")):
+            return d
+    raise KeyError(piece)
+
+_bounds = {}
+def piece_bounds(piece):
+    if piece not in _bounds:
+        _bounds[piece] = bounds(os.path.join(PROJ, kit_path(piece), piece + ".gltf"))
+    return _bounds[piece]
+
+def uid_from_import(path):
+    p = os.path.join(PROJ, path + ".import")
+    if not os.path.exists(p):
+        return None
+    m = re.search(r'uid="(uid://[a-z0-9]+)"', open(p).read())
+    return m.group(1) if m else None
+
+def uid_from_scene(path):
+    head = open(os.path.join(PROJ, path)).readline()
+    m = re.search(r'uid="(uid://[a-z0-9]+)"', head)
+    return m.group(1) if m else None
+
+def fmt(v):
+    v = round(v, 4)
+    return "0" if v == 0 else ("%g" % v)
+
+def basis(yaw, sx=1.0, sy=1.0, sz=1.0):
+    r = math.radians(yaw); c, s = math.cos(r), math.sin(r)
+    if abs(c) < 1e-9: c = 0.0
+    if abs(s) < 1e-9: s = 0.0
+    # rows of R(yaw) * diag(sx, sy, sz)
+    return [c*sx, 0, s*sz, 0, sy, 0, -s*sx, 0, c*sz]
+
+def tf(x, y, z, yaw=0.0, sx=1.0, sy=1.0, sz=1.0):
+    return "Transform3D(%s)" % ", ".join(fmt(v) for v in basis(yaw, sx, sy, sz) + [x, y, z])
+
+def rot_rect(cx, cz, hx, hz, yaw):
+    """Axis-aligned footprint (x0, x1, z0, z1) of a local box rotated by a multiple of 90 degrees."""
+    k = round(yaw / 90) % 4
+    if k % 2 == 1:
+        hx, hz = hz, hx
+    return cx, cz, hx, hz
+
+class Tile:
+    def __init__(self, name, file):
+        self.name, self.file = name, file
+        self.ext = {}        # res path -> (id, type, uid)
+        self.subs = []       # sub_resource text blocks
+        self.nodes = []      # node text blocks
+        self.blockers = []   # (x0, x1, z0, z1) footprints for the leak check
+        self.counts = {}
+        self.marker = None
+
+    def res(self, path, kind="PackedScene", uid=None):
+        if path not in self.ext:
+            self.ext[path] = ("%d_%s" % (len(self.ext) + 1, re.sub(r'[^a-z0-9]', '', os.path.basename(path).lower())[:14]), kind, uid)
+        return self.ext[path][0]
+
+    def uname(self, base):
+        base = re.sub(r'[^A-Za-z0-9_]', '', base)
+        self.counts[base] = self.counts.get(base, 0) + 1
+        return "%s%d" % (base, self.counts[base])
+
+    def block(self, cx, cz, hx, hz):
+        self.blockers.append((cx - hx, cx + hx, cz - hz, cz + hz))
+
+    def node(self, text):
+        self.nodes.append(text)
+
+    # ---------- building blocks ----------
+    def floor(self):
+        rid = self.res("Assets/tile_floor.tscn", uid=uid_from_scene("Assets/tile_floor.tscn"))
+        self.node('[node name="Floor" parent="." instance=ExtResource("%s")]' % rid)
+
+    def house(self, scene, x, z, yaw=0, label=None):
+        path = "%s/%s.tscn" % (BUILT, scene)
+        rid = self.res(path, uid=uid_from_scene(path))
+        name = self.uname(label or "".join(p.title() for p in scene.split("_")))
+        self.node('[node name="%s" parent="Buildings" instance=ExtResource("%s")]\ntransform = %s' % (name, rid, tf(x, 0, z, yaw)))
+        w, d = HOUSES[scene]
+        self.block(*rot_rect(x, z, w/2 + 0.1, d/2 + 0.1, yaw))
+
+    def scene(self, path, x, z, yaw=0, parent="Props", label=None, footprint=None, y=0.0):
+        rid = self.res(path, uid=uid_from_scene(path))
+        name = self.uname(label or os.path.splitext(os.path.basename(path))[0].replace("-", "_").title().replace("_", ""))
+        self.node('[node name="%s" parent="%s" instance=ExtResource("%s")]\ntransform = %s' % (name, parent, rid, tf(x, y, z, yaw)))
+        if footprint:
+            self.block(*rot_rect(x, z, footprint[0], footprint[1], yaw))
+
+    def prop(self, piece, x, z, yaw=0, y=0.0, collide=True, parent="Props", sx=1.0, min_height=0.0):
+        """Kit piece; with collide=True it gets a StaticBody3D with a box matching the mesh bounds."""
+        path = "%s/%s.gltf" % (kit_path(piece), piece)
+        rid = self.res(path, uid=uid_from_import(path))
+        (lx0, ly0, lz0), (lx1, ly1, lz1) = piece_bounds(piece)
+        lx0, lx1 = lx0 * sx, lx1 * sx
+        name = self.uname(piece)
+        if not collide:
+            self.node('[node name="%s" parent="%s" instance=ExtResource("%s")]\ntransform = %s' % (name, parent, rid, tf(x, y, z, yaw, sx=sx)))
+            return
+        h = max(ly1 - max(ly0, 0), min_height)
+        size = (lx1 - lx0, h, lz1 - lz0)
+        center = ((lx0 + lx1) / 2, max(ly0, 0) + h / 2, (lz0 + lz1) / 2)
+        sid = "Box_%s" % name
+        self.subs.append('[sub_resource type="BoxShape3D" id="%s"]\nsize = Vector3(%s, %s, %s)' % (sid, fmt(size[0]), fmt(size[1]), fmt(size[2])))
+        self.node('[node name="%s" type="StaticBody3D" parent="%s"]\ntransform = %s' % (name, parent, tf(x, y, z, yaw)))
+        self.node('[node name="Mesh" parent="%s/%s" instance=ExtResource("%s")]\ntransform = %s' % (parent, name, rid, tf(0, 0, 0, 0, sx=sx)))
+        self.node('[node name="Collision" type="CollisionShape3D" parent="%s/%s"]\ntransform = %s\nshape = SubResource("%s")' % (parent, name, tf(*center), sid))
+        # world footprint of the (rotated) box center
+        r = math.radians(yaw); c, s = math.cos(r), math.sin(r)
+        wx = x + center[0] * c + center[2] * s
+        wz = z - center[0] * s + center[2] * c
+        self.block(*rot_rect(wx, wz, size[0] / 2, size[2] / 2, yaw))
+
+    def wall_run(self, piece, axis, fixed, start, end, yaw):
+        """Freestanding kit walls (2 m pieces, last one scaled) from start to end along x or z."""
+        pos = start
+        while pos < end - 1e-6:
+            length = min(2.0, end - pos)
+            mid = pos + length / 2
+            x, z = (mid, fixed) if axis == "x" else (fixed, mid)
+            self.prop(piece, x, z, yaw, parent="Walls", sx=length / 2.0)
+            pos += length
+
+    def light(self, x, y, z, color=(1.0, 0.7, 0.4), energy=1.2, rng=5.0):
+        self.node('[node name="%s" type="OmniLight3D" parent="Lights"]\ntransform = %s\nlight_color = Color(%s, %s, %s, 1)\nlight_energy = %s\nomni_range = %s'
+                  % (self.uname("Light"), tf(x, y, z), fmt(color[0]), fmt(color[1]), fmt(color[2]), fmt(energy), fmt(rng)))
+
+    def item_spawn(self, x, z):
+        self.marker = (x, z)
+        self.node('[node name="ItemSpawn" type="Marker3D" parent="."]\ntransform = %s' % tf(x, 0.5, z))
+
+    # ---------- output ----------
+    def write(self):
+        head = ["[gd_scene format=3]", ""]
+        for path, (rid, kind, uid) in self.ext.items():
+            u = ' uid="%s"' % uid if uid else ""
+            head.append('[ext_resource type="%s"%s path="res://%s" id="%s"]' % (kind, u, path, rid))
+        body = ["", *("%s\n" % s for s in self.subs),
+                '[node name="%s" type="Node3D"]\n' % self.name]
+        groups = ['[node name="%s" type="Node3D" parent="."]\n' % g for g in ("Buildings", "Walls", "Props", "Lights")]
+        floor = [n for n in self.nodes if n.startswith('[node name="Floor"')]
+        rest = [n for n in self.nodes if not n.startswith('[node name="Floor"')]
+        text = "\n".join(head) + "\n" + "\n".join(body) + "\n" + "\n".join(f + "\n" for f in floor) + "\n".join(groups) + "\n" + "\n".join(n + "\n" for n in rest)
+        open(os.path.join(PROJ, "Tiles", self.file), "w").write(text)
+
+    def check(self, res=0.1, grow=0.3):
+        """Flood fill from the entry; reports leaks and whether the item spawn is reachable."""
+        n = int(round(12 / res)) + 1
+        xs = np.linspace(-6, 6, n)
+        X, Z = np.meshgrid(xs, xs, indexing="xy")
+        blocked = np.zeros_like(X, dtype=bool)
+        for x0, x1, z0, z1 in self.blockers:
+            blocked |= (X > x0 - grow) & (X < x1 + grow) & (Z > z0 - grow) & (Z < z1 + grow)
+        free = ~blocked
+        row = int(round((6 + 5.9) / res))  # (row=z, col=x)
+        cols = [c for c in range(n) if abs(xs[c]) <= 1.0 and free[row, c]]
+        if not cols:
+            return -1, 0.0, False  # entry too narrow
+        start = (row, min(cols, key=lambda c: abs(xs[c])))
+        seen = np.zeros_like(free); stack = [start]; seen[start] = True
+        while stack:
+            r, c = stack.pop()
+            for dr, dc in ((1,0),(-1,0),(0,1),(0,-1)):
+                rr, cc = r + dr, c + dc
+                if 0 <= rr < n and 0 <= cc < n and free[rr, cc] and not seen[rr, cc]:
+                    seen[rr, cc] = True; stack.append((rr, cc))
+        edge = np.zeros_like(seen)
+        edge[0, :] = edge[:, 0] = edge[:, -1] = True
+        edge[-1, :] = np.abs(xs) > 1.0
+        leaks = seen & edge
+        reach = seen.sum() * res * res
+        ok_item = self.marker is None or seen[int(round((6 + self.marker[1]) / res)), int(round((6 + self.marker[0]) / res))]
+        return leaks.sum(), round(reach, 1), ok_item
+
+def ascii_map(t, grow=0.65, res=0.25):
+    n = int(round(12 / res)) + 1
+    xs = np.linspace(-6, 6, n)
+    rows = []
+    for zi, z in enumerate(xs):
+        line = ""
+        for x in xs:
+            hit_real = any(x0 < x < x1 and z0 < z < z1 for x0, x1, z0, z1 in t.blockers)
+            hit_grow = any(x0 - grow < x < x1 + grow and z0 - grow < z < z1 + grow for x0, x1, z0, z1 in t.blockers)
+            m = t.marker
+            if m and abs(x - m[0]) < res/2 and abs(z - m[1]) < res/2: line += "I"
+            elif hit_real: line += "#"
+            elif hit_grow: line += "+"
+            else: line += "."
+        rows.append(line)
+    return "\n".join(rows)
+
+
+# ---------------- grave assets (primitive meshes + collision) ----------------
+GRAVE_STONE = '''[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Stone"]
+albedo_color = Color(0.46, 0.47, 0.5, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Earth"]
+albedo_color = Color(0.22, 0.17, 0.12, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Slab"]
+material = SubResource("Stone")
+size = Vector3(0.7, 0.75, 0.16)
+
+[sub_resource type="CylinderMesh" id="Top"]
+material = SubResource("Stone")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.16
+
+[sub_resource type="BoxMesh" id="Mound"]
+material = SubResource("Earth")
+size = Vector3(0.75, 0.18, 1.5)
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.8, 1.1, 1.85)
+
+[node name="Gravestone" type="StaticBody3D"]
+
+[node name="Slab" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+mesh = SubResource("Slab")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.75, 0)
+mesh = SubResource("Top")
+
+[node name="Mound" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0.95)
+mesh = SubResource("Mound")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.8)
+shape = SubResource("Shape")
+'''
+GRAVE_CROSS = '''[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Wood"]
+albedo_color = Color(0.33, 0.24, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Earth"]
+albedo_color = Color(0.22, 0.17, 0.12, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Post"]
+material = SubResource("Wood")
+size = Vector3(0.14, 1.15, 0.14)
+
+[sub_resource type="BoxMesh" id="Beam"]
+material = SubResource("Wood")
+size = Vector3(0.6, 0.14, 0.14)
+
+[sub_resource type="BoxMesh" id="Mound"]
+material = SubResource("Earth")
+size = Vector3(0.75, 0.18, 1.5)
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.8, 1.15, 1.85)
+
+[node name="GraveCross" type="StaticBody3D"]
+
+[node name="Post" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+mesh = SubResource("Post")
+
+[node name="Beam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+mesh = SubResource("Beam")
+
+[node name="Mound" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0.95)
+mesh = SubResource("Mound")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0.8)
+shape = SubResource("Shape")
+'''
+for fname, text in (("gravestone.tscn", GRAVE_STONE), ("grave_cross.tscn", GRAVE_CROSS)):
+    open(os.path.join(PROJ, BUILT, fname), "w").write(text)
+
+WALL5 = "Assets/wall.tscn"      # friend's 5 m metal fence with collision
+BRICK = "Wall_UnevenBrick_Straight"
+WARM = (1.0, 0.7, 0.4)
+
+def fence_ring(t):
+    """Metal fences on all edges, 2 m gap bottom center (same layout as the X/T tiles)."""
+    for x in (-3.5, 3.5):
+        t.scene(WALL5, x, 5.85, 0, parent="Walls", label="Fence", footprint=(2.5, 0.05))
+    for x in (-3.5, 0, 3.5):
+        t.scene(WALL5, x, -5.85, 0, parent="Walls", label="Fence", footprint=(2.5, 0.05))
+    for side in (-5.85, 5.85):
+        for z in (-3.5, 0, 3.5):
+            t.scene(WALL5, side, z, 90, parent="Walls", label="Fence", footprint=(2.5, 0.05))
+
+def brick_ring(t, top=True, z_from=-6.0):
+    """Courtyard brick walls (brick side facing inwards), 2 m gap bottom center."""
+    t.wall_run(BRICK, "z", -5.65, z_from, 6.0, 90)
+    t.wall_run(BRICK, "z", 5.65, z_from, 6.0, -90)
+    t.wall_run(BRICK, "x", 5.65, -6.0, -1.0, 180)
+    t.wall_run(BRICK, "x", 5.65, 1.0, 6.0, 180)
+
+def grave(t, kind, x, z):
+    t.scene("%s/%s.tscn" % (BUILT, kind), x, z, 0, label="Grave")
+    t.block(x, z + 0.8, 0.4, 0.93)
+
+tiles = []
+
+# ---------- 1: Graveyard with a small chapel ----------
+t = Tile("DeadEndTileGraveyard", "dead_end_tile_graveyard.tscn")
+t.floor(); fence_ring(t)
+t.house("brick_house", 0, -2.9, 0, label="Chapel")
+kinds = ["gravestone", "grave_cross"]
+i = 0
+# one dense row on each side of the path, wide aisle in front of the chapel
+for x in (-5.1, -4.1, -3.1, -2.1, 2.1, 3.1, 4.1, 5.1):
+    grave(t, kinds[i % 3 == 1], x, 3.3); i += 1
+# graves along the outer fence beside the chapel
+for x in (-5.05, 5.05):
+    for z in (-4.7, -2.6):
+        grave(t, kinds[i % 2], x, z); i += 1
+for x in (-1.7, 1.7):
+    t.prop("CandleStick_Stand", x, 0.75)
+    t.light(x, 1.5, 0.75, WARM, 0.9, 4.0)
+t.light(0, 5.0, 3.0, (0.55, 0.65, 1.0), 0.5, 9.0)  # cold moonlight over the graves
+t.item_spawn(3.85, -5.0)
+tiles.append(t)
+
+# ---------- 2: Narrow alley that bends to the left ----------
+t = Tile("DeadEndTileAlley", "dead_end_tile_alley.tscn")
+t.floor()
+t.house("manor_large", 0, -3, -90, label="Manor")
+t.house("townhouse_tall", 3.1, 3, 0, label="Townhouse")
+t.house("cottage_small", -3.1, 4, 90, label="Cottage")
+t.prop(BRICK, -5.5, 1.0, 90, parent="Walls")          # end of the alley
+t.scene("Assets/hiding-barrel.tscn", -4.65, 1.0, 0, footprint=(0.7, 0.7))
+t.prop("FarmCrate_Empty", 0.76, 5.0, 90)
+t.prop("Bucket_Wooden_1", -0.82, 3.0)
+t.light(-2.8, 2.4, 1.0, WARM, 1.0, 4.5)
+t.light(0, 2.6, 4.5, WARM, 0.6, 4.0)
+t.item_spawn(-2.8, 1.0)
+tiles.append(t)
+
+# ---------- 3: Courtyard in front of a large manor ----------
+t = Tile("DeadEndTileManorYard", "dead_end_tile_manor_yard.tscn")
+t.floor()
+t.house("manor_large", 0, -3, -90, label="Manor")
+brick_ring(t)
+t.wall_run(BRICK, "x", -5.65, -6.0, -4.1, 0)
+t.wall_run(BRICK, "x", -5.65, 4.1, 6.0, 0)
+t.prop("Prop_Wagon", -4.3, 3.6, 0)
+t.prop("Dummy", 2.2, 3.7, -90)
+t.prop("WeaponStand", 4.6, 4.5, 0)
+t.prop("Bench", 2.6, 0.58, 0)
+t.prop("Barrel", -2.9, 0.62)
+t.prop("Barrel_Apples", -3.65, 0.62)
+t.prop("Crate_Wooden", -4.85, -4.9)
+t.prop("Barrel", -4.85, -3.85)
+t.prop("Crate_Wooden", -4.85, -2.85, 90)
+t.prop("Barrel_Holder", 4.85, -4.6, 90)
+for x in (-1.6, 1.6):
+    t.light(x, 2.4, 5.0, WARM, 0.9, 4.0)
+t.light(-1.0, 2.6, 0.9, WARM, 1.0, 4.5)
+t.item_spawn(4.85, -2.0)
+tiles.append(t)
+
+# ---------- 4: Small market square behind two houses ----------
+t = Tile("DeadEndTileMarket", "dead_end_tile_market.tscn")
+t.floor()
+t.house("cottage_small", -4.1, -4, 0, label="Cottage")
+t.house("longhouse_plaster", 2.1, -4, -90, label="Longhouse")
+brick_ring(t, z_from=-2.0)
+t.prop("Stall_Empty", -3.6, 0.3, 0)
+t.prop("Stall_Empty", 3.8, 0.3, 0)
+t.prop("Stall_Cart_Empty", -3.3, 3.6, 0)
+t.prop("Table_Large", 3.6, 3.4, 0)
+t.prop("FarmCrate_Apple", 3.1, 3.4, 0, y=0.81, collide=False)
+t.prop("FarmCrate_Carrot", 4.1, 3.35, 0, y=0.81, collide=False)
+t.prop("Barrel_Apples", -1.9, 1.0)
+t.prop("FarmCrate_Apple", -1.9, 1.75)
+t.prop("Crate_Wooden", 5.0, 1.6)
+t.prop("Bag", 2.4, 1.0)
+t.scene("Assets/hiding-barrel.tscn", 4.7, 4.8, 0, footprint=(0.7, 0.7))
+t.light(-3.6, 2.4, 1.0, WARM, 1.0, 4.5)
+t.light(3.6, 2.4, 1.6, WARM, 1.0, 4.5)
+t.item_spawn(-3.6, -1.05)
+tiles.append(t)
+
+for t in tiles:
+    t.write()
+    leaks, _, _ = t.check(grow=0.3)    # navmesh agent radius: no way out through any gap
+    _, area, item = t.check(grow=0.65)  # player radius: how much is walkable, item spot reachable
+    print("%-28s leaks=%d  walkable≈%.1f m²  item_reachable=%s  nodes=%d" % (t.file, leaks, area, item, len(t.nodes)))

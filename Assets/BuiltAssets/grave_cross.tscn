@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Wood"]
+albedo_color = Color(0.33, 0.24, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Earth"]
+albedo_color = Color(0.22, 0.17, 0.12, 1)
+roughness = 1.0
+
+[sub_resource type="BoxMesh" id="Post"]
+material = SubResource("Wood")
+size = Vector3(0.14, 1.15, 0.14)
+
+[sub_resource type="BoxMesh" id="Beam"]
+material = SubResource("Wood")
+size = Vector3(0.6, 0.14, 0.14)
+
+[sub_resource type="BoxMesh" id="Mound"]
+material = SubResource("Earth")
+size = Vector3(0.75, 0.18, 1.5)
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(0.8, 1.15, 1.85)
+
+[node name="GraveCross" type="StaticBody3D"]
+
+[node name="Post" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0)
+mesh = SubResource("Post")
+
+[node name="Beam" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0)
+mesh = SubResource("Beam")
+
+[node name="Mound" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0.95)
+mesh = SubResource("Mound")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, 0.8)
+shape = SubResource("Shape")
