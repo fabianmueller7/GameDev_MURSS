@@ -40,6 +40,8 @@ extends CharacterBody3D
 @onready var mesh: MeshInstance3D = $MeshInstance3D
 @onready var vision_light: SpotLight3D = $SpotLight3D
 
+var patrol_positions: Array[Vector3] = []   # filled by the spawner
+
 var player: Player
 var patrol_index := -1
 var chasing := false
@@ -119,9 +121,9 @@ func _move(delta: float) -> void:
 			agent.target_position = player.global_position
 	elif distracted:
 		_check_distraction_arrival(delta)
-	elif agent.is_navigation_finished() and not patrol_points.is_empty():
-		patrol_index = (patrol_index + 1) % patrol_points.size()
-		agent.target_position = patrol_points[patrol_index].global_position
+	elif agent.is_navigation_finished() and _patrol_count() > 0:
+		patrol_index = (patrol_index + 1) % _patrol_count()
+		agent.target_position = _patrol_pos(patrol_index)
 
 	# Delegate behavior modifications to components if they exist
 
@@ -303,17 +305,17 @@ func _stop_chase() -> void:
 
 
 func _return_to_patrol() -> void:
-	if patrol_points.is_empty():
+	if _patrol_count() == 0:
 		return
 	var closest_index := 0
 	var closest_distance := INF
-	for i in patrol_points.size():
-		var d := global_position.distance_to(patrol_points[i].global_position)
+	for i in _patrol_count():
+		var d := global_position.distance_to(_patrol_pos(i))
 		if d < closest_distance:
 			closest_distance = d
 			closest_index = i
 	patrol_index = closest_index
-	agent.target_position = patrol_points[patrol_index].global_position
+	agent.target_position = _patrol_pos(patrol_index)
 	
 func ordered_to_chase(player: Player) -> void:
 	is_alerted_from_afar = true
@@ -452,3 +454,19 @@ func _exit_tree() -> void:
 		chasing = false
 		if is_instance_valid(MusicManager) and MusicManager.is_inside_tree():
 			MusicManager.update_chase_state(false)
+			
+			
+func set_patrol_waypoints(points: Array[Vector3]) -> void:
+	patrol_positions = points
+	patrol_index = 0
+	if not patrol_positions.is_empty():
+		agent.target_position = patrol_positions[0]
+
+
+# Works with both spawned waypoints (Vector3) and hand-placed Node3D patrol points
+func _patrol_count() -> int:
+	return patrol_positions.size() if not patrol_positions.is_empty() else patrol_points.size()
+
+
+func _patrol_pos(i: int) -> Vector3:
+	return patrol_positions[i] if not patrol_positions.is_empty() else patrol_points[i].global_position
