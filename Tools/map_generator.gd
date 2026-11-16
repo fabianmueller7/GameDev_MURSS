@@ -1,0 +1,482 @@
+@tool
+extends Node3D
+## Generates village maps out of the tiles in res://Tiles and saves them as playable levels.
+##
+## How to use (in the editor):
+##   1. Open Tools/map_generator.tscn.
+##   2. Set size etc. in the inspector and press "New Map" (random seed) or "Generate" (current seed):
+##      the map appears as a preview.
+##   3. Press "Save Level": writes res://Levels/Generated/generated_level_<seed>.tscn with the map,
+##      a baked navmesh, the player, door + end zone and item markers. Enemies are not placed yet.
+##
+## Layout: a maze on a grid (randomized depth-first search) with some extra connections (loops)
+## and optionally one 2x2 plaza. Every cell then gets a tile whose open sides match its connections.
+
+const TILE_SIZE := 12.0
+const TILE_DIR := "res://Tiles"
+
+# Tile files are picked up automatically by their name prefix (new variants just need the right name)
+const SHAPE_PREFIX := {
+	"dead_end": "dead_end_tile_",
+	"straight": "i_tile_",
+	"corner": "l_tile_",
+	"t": "t_tile_",
+	"cross": "x_tile_",
+	"plaza": "plaza_tile_",
+}
+# Open sides of each shape as the tiles are built (before rotating). N = -Z, S = +Z, E = +X, W = -X
+const DEFAULT_OPEN := {
+	"dead_end": ["S"],
+	"straight": ["N", "S"],
+	"corner": ["N", "E"],
+	"t": ["E", "S", "W"],
+	"cross": ["N", "E", "S", "W"],
+}
+# Rotating a tile by +90° around Y moves each side one step along this list (S -> E -> N -> W -> S)
+const ROTATION_ORDER := ["N", "W", "S", "E"]
+const DIRS := {"N": Vector2i(0, -1), "S": Vector2i(0, 1), "E": Vector2i(1, 0), "W": Vector2i(-1, 0)}
+const OPPOSITE := {"N": "S", "S": "N", "E": "W", "W": "E"}
+# Loops never remove dead ends below this number (start, goal and item spots live there)
+const MIN_DEAD_ENDS := 3
+
+# Door position in a dead-end tile (entry at +Z), door scene spans x 0..2.1 from its origin
+const DOOR_LOCAL := Vector3(-1.05, 0.0, 5.5)
+
+const PLAYER_SCENE := "res://Assets/Player/player.tscn"
+const DOOR_SCENE := "res://Assets/door.tscn"
+const END_ZONE_SCENE := "res://Assets/end_zone.tscn"
+const ITEM_SPAWNER_SCRIPT := "res://item_spawner.gd"
+
+@export var map_seed := 1
+@export_range(3, 12) var width := 5
+@export_range(3, 12) var height := 5
+## Chance per wall between two cells to be opened up as well, so there is more than one way around
+@export_range(0.0, 0.6, 0.05) var loop_chance := 0.15
+## One 2x2 plaza somewhere inside the map (needs at least 4x4 cells)
+@export var with_plaza := true
+## How many coin markers are placed (the ItemSpawner picks coin_count of them at runtime)
+@export var coin_markers := 6
+@export_dir var output_folder := "res://Levels/Generated"
+
+@export_tool_button("New Map", "RandomNumberGenerator") var new_map_button = new_map
+@export_tool_button("Generate", "Reload") var generate_button = generate
+@export_tool_button("Save Level", "Save") var save_button = save_level
+@export_tool_button("Clear Preview", "Remove") var clear_button = clear_preview
+
+var _rng := RandomNumberGenerator.new()
+var _open := {}                    # Vector2i cell -> Array of open sides ("N", "E", ...)
+var _plaza: Array[Vector2i] = []   # the 4 plaza cells, top-left first
+var _tiles := {}                   # Vector2i cell -> tile instance
+var _level: Node3D                 # preview / level being built
+var _start := Vector2i(-1, -1)     # cell where the player starts
+var _goal := Vector2i(-1, -1)      # cell with the end zone (and the door)
+
+
+# ---------------------------------------------------------------- buttons
+
+# Picks a new random seed and generates (the seed shows in the inspector, so a good map can be made again)
+func new_map() -> void:
+	map_seed = randi_range(1, 999999)
+	notify_property_list_changed()
+	generate()
+
+
+# Same seed = same map
+func generate() -> void:
+	clear_preview()
+	_rng.seed = map_seed
+	var files := _collect_tile_files()
+	if files.is_empty():
+		return
+	# Start and goal need two dead ends: very small maps can come out without, then roll again
+	for _attempt in 20:
+		_build_layout()
+		if _open.keys().filter(_is_dead_end).size() >= 2:
+			break
+	_build_level(files)
+	print(_layout_ascii())
+
+
+func save_level() -> void:
+	if _level == null or _level.name != _level_name():
+		generate()
+	if _level == null:
+		return
+	DirAccess.make_dir_recursive_absolute(output_folder)
+	var scene := PackedScene.new()
+	var err := scene.pack(_level)
+	if err != OK:
+		push_error("Map generator: could not pack the level (%s)" % error_string(err))
+		return
+	var path := "%s/generated_level_%d.tscn" % [output_folder, map_seed]
+	err = ResourceSaver.save(scene, path)
+	if err != OK:
+		push_error("Map generator: could not save %s (%s)" % [path, error_string(err)])
+		return
+	if Engine.is_editor_hint():
+		EditorInterface.get_resource_filesystem().scan()
+	print("Map generator: saved ", path)
+
+
+func clear_preview() -> void:
+	if _level and is_instance_valid(_level):
+		_level.free()
+	_level = null
+	_tiles.clear()
+
+
+func _level_name() -> String:
+	return "GeneratedLevel%d" % map_seed
+
+
+# ---------------------------------------------------------------- layout
+
+func _build_layout() -> void:
+	_open.clear()
+	_plaza.clear()
+	for y in height:
+		for x in width:
+			_open[Vector2i(x, y)] = []
+
+	# The plaza is never at the border: it has no walls of its own, its neighbours close it off
+	if with_plaza and width >= 4 and height >= 4:
+		var p := Vector2i(_rng.randi_range(1, width - 3), _rng.randi_range(1, height - 3))
+		_plaza = [p, p + Vector2i(1, 0), p + Vector2i(0, 1), p + Vector2i(1, 1)]
+		_connect(p, "E")
+		_connect(p, "S")
+		_connect(p + Vector2i(1, 0), "S")
+		_connect(p + Vector2i(0, 1), "E")
+
+	# Randomized depth-first search ("recursive backtracker"): every cell becomes reachable
+	var visited := {}
+	var stack: Array[Vector2i] = []
+	_visit(Vector2i(_rng.randi_range(0, width - 1), _rng.randi_range(0, height - 1)), visited, stack)
+	while not stack.is_empty():
+		var cur: Vector2i = stack.back()
+		var options: Array[String] = []
+		for side in DIRS:
+			var n: Vector2i = cur + DIRS[side]
+			if _inside(n) and not visited.has(n):
+				options.append(side)
+		if options.is_empty():
+			stack.pop_back()
+			continue
+		var chosen: String = options[_rng.randi() % options.size()]
+		_connect(cur, chosen)
+		_visit(cur + DIRS[chosen], visited, stack)
+
+	# Loops: open some extra connections so a guard does not block the only way,
+	# but keep enough dead ends for the start, the goal and item spots
+	var dead_ends := 0
+	for cell in _open:
+		if _is_dead_end(cell):
+			dead_ends += 1
+	for y in height:
+		for x in width:
+			var cell := Vector2i(x, y)
+			for side in ["E", "S"]:
+				var n: Vector2i = cell + DIRS[side]
+				if _inside(n) and not _open[cell].has(side) and _rng.randf() < loop_chance:
+					var lost := int(_is_dead_end(cell)) + int(_is_dead_end(n))
+					if dead_ends - lost < MIN_DEAD_ENDS:
+						continue
+					_connect(cell, side)
+					dead_ends -= lost
+
+
+func _visit(cell: Vector2i, visited: Dictionary, stack: Array[Vector2i]) -> void:
+	var group: Array[Vector2i] = [cell]
+	if _plaza.has(cell):
+		group = _plaza
+	for c in group:
+		if not visited.has(c):
+			visited[c] = true
+			stack.append(c)
+
+
+func _connect(cell: Vector2i, side: String) -> void:
+	var n: Vector2i = cell + DIRS[side]
+	if not _open[cell].has(side):
+		_open[cell].append(side)
+	if not _open[n].has(OPPOSITE[side]):
+		_open[n].append(OPPOSITE[side])
+
+
+func _inside(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.y >= 0 and cell.x < width and cell.y < height
+
+
+# Which shape and how many 90° steps turn its default open sides into the wanted ones
+func _shape_for(sides: Array) -> Array:
+	for shape in DEFAULT_OPEN:
+		var base: Array = DEFAULT_OPEN[shape]
+		if base.size() != sides.size():
+			continue
+		for k in 4:
+			var matches := true
+			for s in base:
+				if not sides.has(_rotate_side(s, k)):
+					matches = false
+					break
+			if matches:
+				return [shape, k]
+	return []
+
+
+func _rotate_side(side: String, steps: int) -> String:
+	return ROTATION_ORDER[(ROTATION_ORDER.find(side) + steps) % 4]
+
+
+# Number of steps from one cell to every other cell
+func _distances(from: Vector2i) -> Dictionary:
+	var dist := {from: 0}
+	var queue: Array[Vector2i] = [from]
+	while not queue.is_empty():
+		var c: Vector2i = queue.pop_front()
+		for side in _open[c]:
+			var n: Vector2i = c + DIRS[side]
+			if not dist.has(n):
+				dist[n] = dist[c] + 1
+				queue.append(n)
+	return dist
+
+
+# ---------------------------------------------------------------- level
+
+func _collect_tile_files() -> Dictionary:
+	var files := {}
+	for shape in SHAPE_PREFIX:
+		files[shape] = []
+	for f in DirAccess.get_files_at(TILE_DIR):
+		if not f.ends_with(".tscn"):
+			continue
+		for shape in SHAPE_PREFIX:
+			if f.begins_with(SHAPE_PREFIX[shape]):
+				files[shape].append(TILE_DIR + "/" + f)
+	for shape in files:
+		files[shape].sort()  # same order on every machine, so a seed always gives the same map
+		if files[shape].is_empty() and (shape != "plaza" or with_plaza):
+			push_error("Map generator: no tiles found for '%s' (%s*.tscn in %s)" % [shape, SHAPE_PREFIX[shape], TILE_DIR])
+			return {}
+	return files
+
+
+func _build_level(files: Dictionary) -> void:
+	_level = Node3D.new()
+	_level.name = _level_name()
+	add_child(_level)  # inside the tree: needed for baking and global positions (not saved with this scene)
+
+	var env_node := WorldEnvironment.new()
+	env_node.name = "WorldEnvironment"
+	var env := Environment.new()
+	env.background_mode = Environment.BG_COLOR
+	env.ambient_light_energy = 0.0
+	env.reflected_light_source = Environment.REFLECTION_SOURCE_DISABLED
+	env_node.environment = env
+	env_node.camera_attributes = CameraAttributesPractical.new()
+	_add(env_node, _level)
+
+	var nav := NavigationRegion3D.new()
+	nav.name = "NavigationRegion3D"
+	var navmesh := NavigationMesh.new()
+	navmesh.agent_radius = 0.3
+	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
+	nav.navigation_mesh = navmesh
+	_add(nav, _level)
+	var map := Node3D.new()
+	map.name = "Map"
+	_add(map, nav)
+
+	# Tiles
+	_tiles.clear()
+	for y in height:
+		for x in width:
+			var cell := Vector2i(x, y)
+			if _plaza.has(cell):
+				if cell != _plaza[0]:
+					continue
+				var plaza := _add_tile(_pick(files["plaza"]), map, "Plaza_%d_%d" % [x, y])
+				plaza.position = Vector3((x + 0.5) * TILE_SIZE, 0, (y + 0.5) * TILE_SIZE)
+				plaza.rotation.y = deg_to_rad(90 * _rng.randi_range(0, 3))
+				for c in _plaza:
+					_tiles[c] = plaza
+				continue
+			var shape_rot := _shape_for(_open[cell])
+			var shape: String = shape_rot[0]
+			var tile := _add_tile(_pick(files[shape]), map, "%s_%d_%d" % [shape, x, y])
+			tile.position = Vector3(x * TILE_SIZE, 0, y * TILE_SIZE)
+			tile.rotation.y = deg_to_rad(90 * shape_rot[1])
+			_tiles[cell] = tile
+
+	nav.bake_navigation_mesh(false)
+	_place_gameplay()
+
+
+func _add_tile(path: String, parent: Node, node_name: String) -> Node3D:
+	var tile: Node3D = load(path).instantiate()
+	tile.name = node_name
+	_add(tile, parent)
+	return tile
+
+
+func _add(node: Node, parent: Node) -> void:
+	parent.add_child(node)
+	node.owner = _level
+
+
+func _pick(list: Array):
+	return list[_rng.randi() % list.size()]
+
+
+func _shuffle(list: Array) -> void:
+	for i in range(list.size() - 1, 0, -1):
+		var j := _rng.randi_range(0, i)
+		var tmp = list[i]
+		list[i] = list[j]
+		list[j] = tmp
+
+
+func _is_dead_end(cell: Vector2i) -> bool:
+	return not _plaza.has(cell) and _open[cell].size() == 1
+
+
+# A free spot in a cell: the tile's ItemSpawn marker (dead ends), else the middle of the street
+func _spot(cell: Vector2i) -> Vector3:
+	var marker: Node3D = _tiles[cell].get_node_or_null("ItemSpawn") as Node3D
+	if marker:
+		return _level.to_local(marker.global_position)
+	return Vector3(cell.x * TILE_SIZE, 0.5, cell.y * TILE_SIZE)
+
+
+func _place_gameplay() -> void:
+	# Start and goal: the two dead ends that are farthest apart
+	var dead_ends: Array[Vector2i] = []
+	for cell in _open:
+		if _is_dead_end(cell):
+			dead_ends.append(cell)
+	var start: Vector2i = dead_ends[0] if not dead_ends.is_empty() else Vector2i(0, 0)
+	var goal := start
+	var best := -1
+	for a in dead_ends:
+		var d := _distances(a)
+		for b in dead_ends:
+			if d[b] > best:
+				best = d[b]
+				start = a
+				goal = b
+	if goal == start:
+		# (almost) no dead ends: goal is simply the farthest street cell
+		var d := _distances(start)
+		for cell in d:
+			if not _plaza.has(cell) and d[cell] > d[goal]:
+				goal = cell
+	if _rng.randf() < 0.5 and _is_dead_end(start) and _is_dead_end(goal):
+		var tmp := start
+		start = goal
+		goal = tmp
+	_start = start
+	_goal = goal
+
+	# Player
+	var player: Node3D = load(PLAYER_SCENE).instantiate()
+	player.name = "Player"
+	_add(player, _level)
+	player.position = _spot(start) + Vector3(0, 0.5, 0)
+
+	# Goal: end zone inside the goal dead end, door at its entry (the key opens it)
+	var end_zone: Node3D = load(END_ZONE_SCENE).instantiate()
+	end_zone.name = "EndZone"
+	_add(end_zone, _level)
+	var goal_spot := _spot(goal)
+	end_zone.position = Vector3(goal_spot.x, 0, goal_spot.z)
+	if _is_dead_end(goal):
+		var door: Node3D = load(DOOR_SCENE).instantiate()
+		door.name = "Door"
+		_add(door, _level)
+		door.transform = _tiles[goal].transform * Transform3D(Basis.IDENTITY, DOOR_LOCAL)
+	else:
+		push_warning("Map generator: the goal is not a dead end, no door placed")
+
+	# Item markers: key and bomb far away from the start, dead ends first; coins anywhere else
+	var from_start := _distances(start)
+	var cells: Array[Vector2i] = []
+	for cell in _open:
+		if cell != start and cell != goal and not _plaza.has(cell):
+			cells.append(cell)
+	_shuffle(cells)  # random order among cells with the same distance
+	cells.sort_custom(func(a, b):
+		var da: int = from_start[a] + (100 if _is_dead_end(a) else 0)
+		var db: int = from_start[b] + (100 if _is_dead_end(b) else 0)
+		return da > db)
+	var key_cells: Array[Vector2i] = []
+	var bomb_cells: Array[Vector2i] = []
+	for i in mini(6, cells.size()):
+		if i % 2 == 0:
+			key_cells.append(cells[i])
+		else:
+			bomb_cells.append(cells[i])
+	var coin_cells := cells.slice(6)
+	_shuffle(coin_cells)
+	coin_cells = coin_cells.slice(0, coin_markers)
+
+	var markers := Node3D.new()
+	markers.name = "ItemMarkers"
+	_add(markers, _level)
+	var spawner := Node3D.new()
+	spawner.name = "ItemSpawner"
+	spawner.set_script(load(ITEM_SPAWNER_SCRIPT))
+	_add(spawner, _level)
+	var key_points: Array[Marker3D] = []
+	var bomb_points: Array[Marker3D] = []
+	var coin_points: Array[Marker3D] = []
+	for c in key_cells:
+		key_points.append(_marker(markers, "KeyMarker", c))
+	for c in bomb_cells:
+		bomb_points.append(_marker(markers, "BombMarker", c))
+	for c in coin_cells:
+		coin_points.append(_marker(markers, "CoinMarker", c))
+	# coins can also lie on the plaza
+	if not _plaza.is_empty():
+		var patrol: Node = _tiles[_plaza[0]].get_node_or_null("PatrolPoints")
+		if patrol and patrol.get_child_count() > 0:
+			var p: Node3D = patrol.get_child(_rng.randi() % patrol.get_child_count())
+			var m := Marker3D.new()
+			m.name = "CoinMarkerPlaza"
+			_add(m, markers)
+			m.position = _level.to_local(p.global_position)
+			coin_points.append(m)
+	spawner.set("key_spawn_points", key_points)
+	spawner.set("bomb_spawn_points", bomb_points)
+	spawner.set("coin_spawn_points", coin_points)
+
+
+func _marker(parent: Node, prefix: String, cell: Vector2i) -> Marker3D:
+	var m := Marker3D.new()
+	m.name = "%s_%d_%d" % [prefix, cell.x, cell.y]
+	_add(m, parent)
+	m.position = _spot(cell)
+	return m
+
+
+# ---------------------------------------------------------------- debug
+
+func _layout_ascii() -> String:
+	var lines := ["Map %d (%dx%d, seed %d):" % [map_seed, width, height, map_seed]]
+	for y in height:
+		var top := ""
+		var mid := ""
+		for x in width:
+			var cell := Vector2i(x, y)
+			var sides: Array = _open[cell]
+			var c := "P" if _plaza.has(cell) else ("*" if _is_dead_end(cell) else "+")
+			if cell == _start:
+				c = "S"
+			elif cell == _goal:
+				c = "Z"
+			top += "+" + (" " if sides.has("N") else "-") + "+"
+			mid += (" " if sides.has("W") else "|") + c + (" " if sides.has("E") else "|")
+		lines.append(top)
+		lines.append(mid)
+	lines.append("S = start  Z = goal (door + end zone)  * = dead end  P = plaza  + = street")
+	lines.append("Start cell %s, goal cell %s, %d steps apart" % [_start, _goal, _distances(_start).get(_goal, -1)])
+	return "\n".join(lines)
