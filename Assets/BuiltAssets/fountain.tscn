@@ -1,13 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d0knn70dsriun"]
 
 [sub_resource type="StandardMaterial3D" id="Stone"]
 albedo_color = Color(0.5, 0.5, 0.53, 1)
 roughness = 0.9
-
-[sub_resource type="StandardMaterial3D" id="Water"]
-albedo_color = Color(0.16, 0.3, 0.42, 1)
-metallic = 0.3
-roughness = 0.08
 
 [sub_resource type="CylinderMesh" id="Basin"]
 material = SubResource("Stone")
@@ -15,6 +10,11 @@ top_radius = 1.7
 bottom_radius = 1.8
 height = 0.6
 radial_segments = 24
+
+[sub_resource type="StandardMaterial3D" id="Water"]
+albedo_color = Color(0.16, 0.3, 0.42, 1)
+metallic = 0.3
+roughness = 0.08
 
 [sub_resource type="CylinderMesh" id="WaterDisc"]
 material = SubResource("Water")
@@ -48,28 +48,30 @@ radial_segments = 16
 height = 1.2
 radius = 1.8
 
-[node name="Fountain" type="StaticBody3D"]
+[node name="Fountain" type="StaticBody3D" unique_id=611804838]
+collision_layer = 2
+collision_mask = 0
 
-[node name="Basin" type="MeshInstance3D" parent="."]
+[node name="Basin" type="MeshInstance3D" parent="." unique_id=1440016327]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 mesh = SubResource("Basin")
 
-[node name="Water" type="MeshInstance3D" parent="."]
+[node name="Water" type="MeshInstance3D" parent="." unique_id=194198662]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 mesh = SubResource("WaterDisc")
 
-[node name="Pillar" type="MeshInstance3D" parent="."]
+[node name="Pillar" type="MeshInstance3D" parent="." unique_id=1966892622]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("Pillar")
 
-[node name="Bowl" type="MeshInstance3D" parent="."]
+[node name="Bowl" type="MeshInstance3D" parent="." unique_id=820801539]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0)
 mesh = SubResource("Bowl")
 
-[node name="BowlWater" type="MeshInstance3D" parent="."]
+[node name="BowlWater" type="MeshInstance3D" parent="." unique_id=1537635597]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.09, 0)
 mesh = SubResource("BowlWater")
 
-[node name="Collision" type="CollisionShape3D" parent="."]
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1631396115]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("Shape")

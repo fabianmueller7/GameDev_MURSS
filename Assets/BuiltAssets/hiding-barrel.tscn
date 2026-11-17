@@ -25,6 +25,8 @@ radius = 1.8
 [node name="HidingBarrel" type="Node3D" unique_id=690875661 groups=["hiding_spot"]]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1919346008]
+collision_layer = 2
+collision_mask = 0
 
 [node name="Barrel" parent="StaticBody3D" unique_id=1051980572 instance=ExtResource("1_barrel")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -44,6 +46,7 @@ light_energy = 0.8
 omni_range = 3.0
 
 [node name="InteractArea" type="Area3D" parent="." unique_id=309432338 node_paths=PackedStringArray("glow_light")]
+collision_mask = 4
 script = ExtResource("2_hide")
 glow_light = NodePath("../GlowLight")
 

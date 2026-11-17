@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dtwtvjbda88er"]
 
 [ext_resource type="PackedScene" uid="uid://dqtptg410ey71" path="res://Assets/Fantasy Town Assets/glTF/Corner_ExteriorWide_Wood.gltf" id="1_corner_exteriorwide_"]
 [ext_resource type="PackedScene" uid="uid://c5b84s0u2s7wt" path="res://Assets/Fantasy Town Assets/glTF/DoorFrame_Round_WoodDark.gltf" id="2_doorframe_round_wood"]
@@ -15,213 +15,222 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_house"]
 size = Vector3(6.2, 6, 12.2)
 
-[node name="Church" type="Node3D"]
+[node name="Church" type="Node3D" unique_id=418271138]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1351500608]
+collision_layer = 2
+collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=20854728]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_house")
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Model" type="Node3D" parent="." unique_id=352359038]
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_1" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_1" parent="Model" unique_id=570761080 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6)
 
-[node name="Window_Wide_Round1_1" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_1" parent="Model" unique_id=2103685053 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 6)
 
-[node name="Wall_UnevenBrick_Door_Round_1" parent="Model" instance=ExtResource("6_wall_unevenbrick_doo")]
+[node name="Wall_UnevenBrick_Door_Round_1" parent="Model" unique_id=905701367 instance=ExtResource("6_wall_unevenbrick_doo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 
-[node name="DoorFrame_Round_WoodDark_1" parent="Model" instance=ExtResource("2_doorframe_round_wood")]
+[node name="DoorFrame_Round_WoodDark_1" parent="Model" unique_id=69705037 instance=ExtResource("2_doorframe_round_wood")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 
-[node name="Door_1_Round_1" parent="Model" instance=ExtResource("3_door_1_round")]
+[node name="Door_1_Round_1" parent="Model" unique_id=1198641065 instance=ExtResource("3_door_1_round")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51, 0, 6)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_2" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_2" parent="Model" unique_id=2030070390 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
 
-[node name="Window_Wide_Round1_2" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_2" parent="Model" unique_id=945183204 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
 
-[node name="Wall_UnevenBrick_Straight_1" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_1" parent="Model" unique_id=1614052512 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, -6)
 
-[node name="Wall_UnevenBrick_Straight_2" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_2" parent="Model" unique_id=1000077510 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -6)
 
-[node name="Wall_UnevenBrick_Straight_3" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_3" parent="Model" unique_id=1537392563 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, -6)
 
-[node name="Wall_UnevenBrick_Straight_4" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_4" parent="Model" unique_id=1701512196 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 5)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_1" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_1" parent="Model" unique_id=1223639278 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 3)
 
-[node name="Window_Thin_Round1_1" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_1" parent="Model" unique_id=469113842 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 3)
 
-[node name="Wall_UnevenBrick_Straight_5" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_5" parent="Model" unique_id=1404788635 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 1)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_2" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_2" parent="Model" unique_id=1953627054 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -1)
 
-[node name="Window_Thin_Round1_2" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_2" parent="Model" unique_id=1989856331 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -1)
 
-[node name="Wall_UnevenBrick_Straight_6" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_6" parent="Model" unique_id=1614585364 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -3)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_3" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_3" parent="Model" unique_id=1380672122 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -5)
 
-[node name="Window_Thin_Round1_3" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_3" parent="Model" unique_id=592264267 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -5)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_4" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_4" parent="Model" unique_id=819351537 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -5)
 
-[node name="Window_Thin_Round1_4" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_4" parent="Model" unique_id=1004376967 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -5)
 
-[node name="Wall_UnevenBrick_Straight_7" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_7" parent="Model" unique_id=328190884 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -3)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_5" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_5" parent="Model" unique_id=1198036511 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -1)
 
-[node name="Window_Thin_Round1_5" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_5" parent="Model" unique_id=1844529385 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -1)
 
-[node name="Wall_UnevenBrick_Straight_8" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_8" parent="Model" unique_id=163962360 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 1)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_6" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_6" parent="Model" unique_id=172640415 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 3)
 
-[node name="Window_Thin_Round1_6" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_6" parent="Model" unique_id=571424263 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 3)
 
-[node name="Wall_UnevenBrick_Straight_9" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_9" parent="Model" unique_id=830760622 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 5)
 
-[node name="Corner_ExteriorWide_Wood_1" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_1" parent="Model" unique_id=664513423 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -6)
 
-[node name="Corner_ExteriorWide_Wood_2" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_2" parent="Model" unique_id=586391094 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 6)
 
-[node name="Corner_ExteriorWide_Wood_3" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_3" parent="Model" unique_id=2012712092 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -6)
 
-[node name="Corner_ExteriorWide_Wood_4" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_4" parent="Model" unique_id=296821944 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 6)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_7" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_7" parent="Model" unique_id=1403439926 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 6)
 
-[node name="Window_Thin_Round1_7" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_7" parent="Model" unique_id=1086233348 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 6)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_3" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_3" parent="Model" unique_id=147529412 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6)
 
-[node name="Window_Wide_Round1_3" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_3" parent="Model" unique_id=1160052317 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 6)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_8" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_8" parent="Model" unique_id=72620066 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 6)
 
-[node name="Window_Thin_Round1_8" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_8" parent="Model" unique_id=645376050 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 6)
 
-[node name="Wall_UnevenBrick_Straight_10" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_10" parent="Model" unique_id=1387598861 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 3, -6)
 
-[node name="Wall_UnevenBrick_Window_Thin_Round_9" parent="Model" instance=ExtResource("8_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Thin_Round_9" parent="Model" unique_id=1490346974 instance=ExtResource("8_wall_unevenbrick_win")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 3, -6)
 
-[node name="Window_Thin_Round1_9" parent="Model" instance=ExtResource("10_window_thin_round1")]
+[node name="Window_Thin_Round1_9" parent="Model" unique_id=326574896 instance=ExtResource("10_window_thin_round1")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 3, -6)
 
-[node name="Wall_UnevenBrick_Straight_11" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_11" parent="Model" unique_id=790964779 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 3, -6)
 
-[node name="Wall_UnevenBrick_Straight_12" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_12" parent="Model" unique_id=1587611261 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 5)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_4" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_4" parent="Model" unique_id=529155567 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 3)
 
-[node name="Window_Wide_Round1_4" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_4" parent="Model" unique_id=42375190 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 3)
 
-[node name="Wall_UnevenBrick_Straight_13" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_13" parent="Model" unique_id=2057793657 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 1)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_5" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_5" parent="Model" unique_id=1464477543 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -1)
 
-[node name="Window_Wide_Round1_5" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_5" parent="Model" unique_id=1581001174 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -1)
 
-[node name="Wall_UnevenBrick_Straight_14" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_14" parent="Model" unique_id=2005920400 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -3)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_6" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_6" parent="Model" unique_id=2029804621 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -5)
 
-[node name="Window_Wide_Round1_6" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_6" parent="Model" unique_id=1019944819 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -5)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_7" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_7" parent="Model" unique_id=229085900 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -5)
 
-[node name="Window_Wide_Round1_7" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_7" parent="Model" unique_id=490446752 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -5)
 
-[node name="Wall_UnevenBrick_Straight_15" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_15" parent="Model" unique_id=2039663134 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -3)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_8" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_8" parent="Model" unique_id=1363440911 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -1)
 
-[node name="Window_Wide_Round1_8" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_8" parent="Model" unique_id=2029236755 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -1)
 
-[node name="Wall_UnevenBrick_Straight_16" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_16" parent="Model" unique_id=2065507382 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 1)
 
-[node name="Wall_UnevenBrick_Window_Wide_Round_9" parent="Model" instance=ExtResource("9_wall_unevenbrick_win")]
+[node name="Wall_UnevenBrick_Window_Wide_Round_9" parent="Model" unique_id=957819825 instance=ExtResource("9_wall_unevenbrick_win")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 3)
 
-[node name="Window_Wide_Round1_9" parent="Model" instance=ExtResource("11_window_wide_round1")]
+[node name="Window_Wide_Round1_9" parent="Model" unique_id=2138257568 instance=ExtResource("11_window_wide_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 3)
 
-[node name="Wall_UnevenBrick_Straight_17" parent="Model" instance=ExtResource("7_wall_unevenbrick_str")]
+[node name="Wall_UnevenBrick_Straight_17" parent="Model" unique_id=309582959 instance=ExtResource("7_wall_unevenbrick_str")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 5)
 
-[node name="Corner_ExteriorWide_Wood_5" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_5" parent="Model" unique_id=1923074290 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -6)
 
-[node name="Corner_ExteriorWide_Wood_6" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_6" parent="Model" unique_id=1166861094 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, 6)
 
-[node name="Corner_ExteriorWide_Wood_7" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_7" parent="Model" unique_id=312367434 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, -6)
 
-[node name="Corner_ExteriorWide_Wood_8" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_8" parent="Model" unique_id=1019908554 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 6)
 
-[node name="Roof_RoundTiles_6x12_1" parent="Model" instance=ExtResource("5_roof_roundtiles_6x12")]
+[node name="Roof_RoundTiles_6x12_1" parent="Model" unique_id=1944787557 instance=ExtResource("5_roof_roundtiles_6x12")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 
-[node name="Roof_Front_Brick6_1" parent="Model" instance=ExtResource("4_roof_front_brick6")]
+[node name="Roof_Front_Brick6_1" parent="Model" unique_id=1401681090 instance=ExtResource("4_roof_front_brick6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 6)
 
-[node name="Roof_Front_Brick6_2" parent="Model" instance=ExtResource("4_roof_front_brick6")]
+[node name="Roof_Front_Brick6_2" parent="Model" unique_id=447345343 instance=ExtResource("4_roof_front_brick6")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 6, -6)
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=515141869]
+height = 12.0
+vertices = PackedVector3Array(-3.1, 0, -6.1, 3.1, 0, -6.1, 3.1, 0, 6.1, -3.1, 0, 6.1)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false

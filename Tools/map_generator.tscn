@@ -1,6 +1,16 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://byj3c6g21k1oq"]
 
-[ext_resource type="Script" path="res://Tools/map_generator.gd" id="1_gen"]
+[ext_resource type="Script" uid="uid://bkncgpjdhcyt6" path="res://Tools/map_generator.gd" id="1_gen"]
+[ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="2_24v51"]
+[ext_resource type="PackedScene" uid="uid://bya04ivvxbpqj" path="res://Assets/Enemy/paranoid_guard.tscn" id="3_uwdvt"]
+[ext_resource type="PackedScene" uid="uid://bpok6q5w1jyms" path="res://Assets/Enemy/watch_tower.tscn" id="4_5erfd"]
+[ext_resource type="PackedScene" uid="uid://dmresi5fmecqp" path="res://Assets/Enemy/guard_dog.tscn" id="5_dmi27"]
 
-[node name="MapGenerator" type="Node3D"]
+[node name="MapGenerator" type="Node3D" unique_id=1713565584]
 script = ExtResource("1_gen")
+map_seed = 318082
+base_enemy = ExtResource("2_24v51")
+paranoid_enemy = ExtResource("3_uwdvt")
+watchman = ExtResource("4_5erfd")
+guard_dog = ExtResource("5_dmi27")
+dog_reach = 3

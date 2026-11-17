@@ -5,6 +5,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	$VBoxContainer/GridContainer/Level1Button.pressed.connect(_on_level_selected.bind("res://Levels/level_1.tscn"))
+	$VBoxContainer/GridContainer/Level2Button.pressed.connect(_on_level_selected.bind("res://Levels/Generated/generated_level_2.tscn"))
 	$VBoxContainer/BackButton.pressed.connect(_on_back_pressed)
 
 func _on_level_selected(level_path: String) -> void:

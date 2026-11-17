@@ -1,15 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dgt1dqu3jhwvl"]
 
-[ext_resource type="Script" path="res://Assets/thrown_coin.gd" id="1_coin"]
+[ext_resource type="Script" uid="uid://blyu8tv4t6o1n" path="res://Assets/thrown_coin.gd" id="1_coin"]
 [ext_resource type="PackedScene" uid="uid://cb5oawl045atm" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Coin.gltf" id="2_model"]
 
-[node name="ThrownCoin" type="Node3D"]
+[node name="ThrownCoin" type="Node3D" unique_id=495879633]
 script = ExtResource("1_coin")
 
-[node name="Model" parent="." instance=ExtResource("2_model")]
+[node name="Model" parent="." unique_id=422125189 instance=ExtResource("2_model")]
 transform = Transform3D(6, 0, 0, 0, 0, 6, 0, -6, 0, 0, 0.05, 0)
 
-[node name="Glint" type="OmniLight3D" parent="."]
+[node name="Glint" type="OmniLight3D" parent="." unique_id=785798450]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 light_color = Color(1, 0.75, 0.3, 1)
 light_energy = 0.5
