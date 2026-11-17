@@ -1,14 +1,15 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/townhouse_tall.tscn" id="3_townhousetallt"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="4_cottagesmallts"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/longhouse_plaster.tscn" id="5_longhouseplast"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="6_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="6_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="7_benchgltf"]
 [ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="8_barrelgltf"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="9_cratewoodenglt"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Bench1"]
 size = Vector3(2.7767, 0.526, 0.5343)

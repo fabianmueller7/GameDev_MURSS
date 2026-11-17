@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/church.tscn" id="2_churchtscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/bell_tower.tscn" id="3_belltowertscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/fountain.tscn" id="4_fountaintscn"]
@@ -15,8 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="13_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://oyyw0crjea1i" path="res://Assets/Fantasy Town Assets/glTF/Prop_Wagon.gltf" id="14_propwagongltf"]
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="15_benchgltf"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="16_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="16_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="17_baggltf"]
+
 
 [sub_resource type="BoxShape3D" id="Box_CandleStick_Stand1"]
 size = Vector3(0.7323, 1.3046, 0.7313)

@@ -1,11 +1,12 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/longhouse_plaster.tscn" id="3_longhouseplast"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="4_cottagesmallts"]
 [ext_resource type="PackedScene" uid="uid://cqqgv54ibs4w0" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bucket_Wooden_1.gltf" id="5_bucketwooden1g"]
 [ext_resource type="PackedScene" uid="uid://dp1rivbirhuoj" path="res://Assets/Medival Props/MegaKit/Exports/glTF/FarmCrate_Empty.gltf" id="6_farmcrateempty"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Bucket_Wooden_11"]
 size = Vector3(0.4339, 0.2928, 0.3835)

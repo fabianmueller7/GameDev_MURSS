@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bd7n4snyjp2ma"]
 
 [ext_resource type="Script" uid="uid://dhe8n6s7qvhmo" path="res://Tiles/x_tile_variant_3.gd" id="1_1l6dp"]
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="2_k5uv7"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="3_k5uv7"]
-[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="3_x1c04"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="2_k5uv7"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="3_k5uv7"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/BuiltAssets/house.tscn" id="3_x1c04"]
+
 
 [node name="XTileVariant3" type="Node3D" unique_id=411416305]
 script = ExtResource("1_1l6dp")

@@ -1,11 +1,12 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/brick_house.tscn" id="3_brickhousetscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/gravestone.tscn" id="4_gravestonetscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/grave_cross.tscn" id="5_gravecrosstscn"]
 [ext_resource type="PackedScene" uid="uid://cws3cs4wiehch" path="res://Assets/Medival Props/MegaKit/Exports/glTF/CandleStick_Stand.gltf" id="6_candlesticksta"]
+
 
 [sub_resource type="BoxShape3D" id="Box_CandleStick_Stand1"]
 size = Vector3(0.7323, 1.3046, 0.7313)

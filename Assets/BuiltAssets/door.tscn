@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://o5l7t4wdfv1g"]
 
 [ext_resource type="PackedScene" uid="uid://x15iihn1vxcv" path="res://Assets/Fantasy Town Assets/FBX/Door_2_Flat.fbx" id="1_xfcwp"]
-[ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/door-trigger.gd" id="2_d0tpj"]
+[ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/BuiltAssets/door-trigger.gd" id="2_d0tpj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(2.2, 4.2, 4)

@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
 [ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="3_wallunevenbric"]
 [ext_resource type="PackedScene" uid="uid://oyyw0crjea1i" path="res://Assets/Fantasy Town Assets/glTF/Prop_Wagon.gltf" id="4_propwagongltf"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="5_cratewoodenglt"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="9_cottagesmallts"]
 [ext_resource type="PackedScene" uid="uid://cl1u0bmbtym83" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Holder.gltf" id="10_barrelholdergl"]
 [ext_resource type="PackedScene" uid="uid://7vc6lwx23na7" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Pot_1.gltf" id="11_pot1gltf"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)

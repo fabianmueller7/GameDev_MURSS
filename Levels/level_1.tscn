@@ -3,13 +3,14 @@
 [ext_resource type="PackedScene" uid="uid://ply3xwpbuycx" path="res://Assets/Player/player.tscn" id="1_f4pg2"]
 [ext_resource type="PackedScene" uid="uid://cm73x1hof36vw" path="res://Maps/map_1.tscn" id="2_62b6n"]
 [ext_resource type="Script" uid="uid://dk6al8wossxkg" path="res://item_spawner.gd" id="3_rs4xw"]
-[ext_resource type="PackedScene" uid="uid://o5l7t4wdfv1g" path="res://Assets/door.tscn" id="4_lk57d"]
-[ext_resource type="PackedScene" uid="uid://dx2cbpgbikrfp" path="res://Assets/end_zone.tscn" id="5_2hkqn"]
+[ext_resource type="PackedScene" uid="uid://o5l7t4wdfv1g" path="res://Assets/BuiltAssets/door.tscn" id="4_lk57d"]
+[ext_resource type="PackedScene" uid="uid://dx2cbpgbikrfp" path="res://Assets/BuiltAssets/end_zone.tscn" id="5_2hkqn"]
 [ext_resource type="PackedScene" uid="uid://bpok6q5w1jyms" path="res://Assets/Enemy/watch_tower.tscn" id="6_34erp"]
 [ext_resource type="PackedScene" uid="uid://dmresi5fmecqp" path="res://Assets/Enemy/guard_dog.tscn" id="7_k2bse"]
 [ext_resource type="PackedScene" uid="uid://bya04ivvxbpqj" path="res://Assets/Enemy/paranoid_guard.tscn" id="8_c7pbv"]
 [ext_resource type="PackedScene" uid="uid://bvgu0uuiqifox" path="res://Assets/Enemy/base_enemy.tscn" id="9_77l7m"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="10_1rr3k"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="10_1rr3k"]
+
 
 [sub_resource type="GDScript" id="GDScript_bdro6"]
 

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dx2cbpgbikrfp"]
 
-[ext_resource type="Script" uid="uid://5fgi3fkgkeoy" path="res://Assets/end_zone.gd" id="1_xdng2"]
+[ext_resource type="Script" uid="uid://5fgi3fkgkeoy" path="res://Assets/BuiltAssets/end_zone.gd" id="1_xdng2"]
+
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(2, 2, 2)

@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/manor_large.tscn" id="2_manorlargetscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="3_cottagesmallts"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/bell_tower.tscn" id="4_belltowertscn"]
@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="8_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="9_cratewoodenglt"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="10_baggltf"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="11_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="11_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://b5ad8a4mao6mo" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Table_Large.gltf" id="12_tablelargegltf"]
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="13_benchgltf"]
 [ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="14_barrelgltf"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://oyyw0crjea1i" path="res://Assets/Fantasy Town Assets/glTF/Prop_Wagon.gltf" id="16_propwagongltf"]
 [ext_resource type="PackedScene" uid="uid://duftk5bwxkjml" path="res://Assets/Fantasy Town Assets/glTF/Prop_ExteriorBorder_Straight1.gltf" id="17_propexteriorbo"]
 [ext_resource type="PackedScene" uid="uid://xla27vxe5wtx" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Stall_Cart_Empty.gltf" id="18_stallcartempty"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Stall_Empty1"]
 size = Vector3(1.8449, 2.6224, 0.9323)

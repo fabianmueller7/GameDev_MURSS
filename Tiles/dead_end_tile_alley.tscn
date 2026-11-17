@@ -1,14 +1,15 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/manor_large.tscn" id="3_manorlargetscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/townhouse_tall.tscn" id="4_townhousetallt"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="5_cottagesmallts"]
 [ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="6_wallunevenbric"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="7_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="7_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://dp1rivbirhuoj" path="res://Assets/Medival Props/MegaKit/Exports/glTF/FarmCrate_Empty.gltf" id="8_farmcrateempty"]
 [ext_resource type="PackedScene" uid="uid://cqqgv54ibs4w0" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bucket_Wooden_1.gltf" id="9_bucketwooden1g"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)

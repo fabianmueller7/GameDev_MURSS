@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="2_cottagesmallts"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/longhouse_plaster.tscn" id="3_longhouseplast"]
 [ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="4_wallunevenbric"]
@@ -12,7 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="10_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="11_cratewoodenglt"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="12_baggltf"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="13_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="13_hidingbarrelts"]
+
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)

@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://dx76jr02iblt5"]
 
-[ext_resource type="Script" uid="uid://rffpe43am6at" path="res://Assets/hud.gd" id="1_xjmqd"]
-[ext_resource type="Script" uid="uid://b41s5uapbxghe" path="res://Assets/pause_menu.gd" id="2_msxdw"]
-[ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Assets/death_menu.gd" id="3_cbyko"]
+[ext_resource type="Script" uid="uid://rffpe43am6at" path="res://Menues/hud.gd" id="1_xjmqd"]
+[ext_resource type="Script" uid="uid://b41s5uapbxghe" path="res://Menues/pause_menu.gd" id="2_msxdw"]
+[ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Menues/death_menu.gd" id="3_cbyko"]
+
 
 [node name="Hud" type="CanvasLayer" unique_id=1333986245]
 script = ExtResource("1_xjmqd")

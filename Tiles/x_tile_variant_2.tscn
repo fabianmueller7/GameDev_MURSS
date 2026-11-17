@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://ba0ecnxqtjl5q"]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="2_qtx5u"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="3_je38q"]
-[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="3_qc8ck"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="2_qtx5u"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="3_je38q"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/BuiltAssets/house.tscn" id="3_qc8ck"]
+
 
 [node name="XTileVariant2" type="Node3D" unique_id=411416305]
 
