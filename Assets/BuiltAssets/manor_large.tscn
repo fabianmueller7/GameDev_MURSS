@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c3lkcx85ujyit"]
 
 [ext_resource type="PackedScene" uid="uid://dqtptg410ey71" path="res://Assets/Fantasy Town Assets/glTF/Corner_ExteriorWide_Wood.gltf" id="1_corner_exteriorwide_"]
 [ext_resource type="PackedScene" uid="uid://c5b84s0u2s7wt" path="res://Assets/Fantasy Town Assets/glTF/DoorFrame_Round_WoodDark.gltf" id="2_doorframe_round_wood"]
@@ -20,201 +20,210 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_house"]
 size = Vector3(6.2, 6, 8.2)
 
-[node name="ManorLarge" type="Node3D"]
+[node name="ManorLarge" type="Node3D" unique_id=61391410]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1255516239]
+collision_layer = 2
+collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1951287984]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 shape = SubResource("BoxShape3D_house")
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Model" type="Node3D" parent="." unique_id=1269014228]
 
-[node name="Wall_Plaster_Window_Wide_Round_1" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_1" parent="Model" unique_id=254507182 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
 
-[node name="Window_Wide_Round1_1" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_1" parent="Model" unique_id=1024744247 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
 
-[node name="Wall_Plaster_Straight_1" parent="Model" instance=ExtResource("8_wall_plaster_straigh")]
+[node name="Wall_Plaster_Straight_1" parent="Model" unique_id=1491220253 instance=ExtResource("8_wall_plaster_straigh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="Wall_Plaster_Window_Wide_Round_2" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_2" parent="Model" unique_id=177148448 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
 
-[node name="Window_Wide_Round1_2" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_2" parent="Model" unique_id=1684452590 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
 
-[node name="Wall_Plaster_Window_Thin_Round_1" parent="Model" instance=ExtResource("9_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Thin_Round_1" parent="Model" unique_id=1424863466 instance=ExtResource("9_wall_plaster_window_")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, -4)
 
-[node name="Window_Thin_Round1_1" parent="Model" instance=ExtResource("15_window_thin_round1")]
+[node name="Window_Thin_Round1_1" parent="Model" unique_id=956352907 instance=ExtResource("15_window_thin_round1")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, -4)
 
-[node name="Wall_Plaster_Straight_2" parent="Model" instance=ExtResource("8_wall_plaster_straigh")]
+[node name="Wall_Plaster_Straight_2" parent="Model" unique_id=532360151 instance=ExtResource("8_wall_plaster_straigh")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -4)
 
-[node name="Wall_Plaster_Window_Thin_Round_2" parent="Model" instance=ExtResource("9_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Thin_Round_2" parent="Model" unique_id=2132271650 instance=ExtResource("9_wall_plaster_window_")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, -4)
 
-[node name="Window_Thin_Round1_2" parent="Model" instance=ExtResource("15_window_thin_round1")]
+[node name="Window_Thin_Round1_2" parent="Model" unique_id=1021564420 instance=ExtResource("15_window_thin_round1")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 0, -4)
 
-[node name="Wall_Plaster_Window_Wide_Round_3" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_3" parent="Model" unique_id=608196372 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 3)
 
-[node name="Window_Wide_Round1_3" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_3" parent="Model" unique_id=84432571 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 3)
 
-[node name="WindowShutters_Wide_Round_Closed_1" parent="Model" instance=ExtResource("13_windowshutters_wide_")]
+[node name="WindowShutters_Wide_Round_Closed_1" parent="Model" unique_id=143299713 instance=ExtResource("13_windowshutters_wide_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 3)
 
-[node name="Wall_Plaster_Door_Round_1" parent="Model" instance=ExtResource("7_wall_plaster_door_ro")]
+[node name="Wall_Plaster_Door_Round_1" parent="Model" unique_id=290191931 instance=ExtResource("7_wall_plaster_door_ro")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 1)
 
-[node name="DoorFrame_Round_WoodDark_1" parent="Model" instance=ExtResource("2_doorframe_round_wood")]
+[node name="DoorFrame_Round_WoodDark_1" parent="Model" unique_id=249021962 instance=ExtResource("2_doorframe_round_wood")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 1)
 
-[node name="Door_1_Round_1" parent="Model" instance=ExtResource("3_door_1_round")]
+[node name="Door_1_Round_1" parent="Model" unique_id=443675632 instance=ExtResource("3_door_1_round")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, 1.51)
 
-[node name="Wall_Plaster_Straight_3" parent="Model" instance=ExtResource("8_wall_plaster_straigh")]
+[node name="Wall_Plaster_Straight_3" parent="Model" unique_id=885266512 instance=ExtResource("8_wall_plaster_straigh")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -1)
 
-[node name="Wall_Plaster_Window_Wide_Round_4" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_4" parent="Model" unique_id=524072114 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -3)
 
-[node name="Window_Wide_Round1_4" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_4" parent="Model" unique_id=588329670 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -3)
 
-[node name="WindowShutters_Wide_Round_Closed_2" parent="Model" instance=ExtResource("13_windowshutters_wide_")]
+[node name="WindowShutters_Wide_Round_Closed_2" parent="Model" unique_id=93313474 instance=ExtResource("13_windowshutters_wide_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -3)
 
-[node name="Wall_Plaster_Straight_4" parent="Model" instance=ExtResource("8_wall_plaster_straigh")]
+[node name="Wall_Plaster_Straight_4" parent="Model" unique_id=1015261352 instance=ExtResource("8_wall_plaster_straigh")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -3)
 
-[node name="Wall_Plaster_Window_Wide_Round_5" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_5" parent="Model" unique_id=282889165 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -1)
 
-[node name="Window_Wide_Round1_5" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_5" parent="Model" unique_id=729855040 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, -1)
 
-[node name="Wall_Plaster_Window_Wide_Round_6" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_6" parent="Model" unique_id=1187106422 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 1)
 
-[node name="Window_Wide_Round1_6" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_6" parent="Model" unique_id=1866224120 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 1)
 
-[node name="Wall_Plaster_Straight_5" parent="Model" instance=ExtResource("8_wall_plaster_straigh")]
+[node name="Wall_Plaster_Straight_5" parent="Model" unique_id=923012664 instance=ExtResource("8_wall_plaster_straigh")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 0, 3)
 
-[node name="Corner_ExteriorWide_Wood_1" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_1" parent="Model" unique_id=1705704294 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -4)
 
-[node name="Corner_ExteriorWide_Wood_2" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_2" parent="Model" unique_id=1814881755 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 4)
 
-[node name="Corner_ExteriorWide_Wood_3" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_3" parent="Model" unique_id=1380474648 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -4)
 
-[node name="Corner_ExteriorWide_Wood_4" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_4" parent="Model" unique_id=1550962329 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
 
-[node name="Wall_Plaster_WoodGrid_1" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_1" parent="Model" unique_id=426059427 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 4)
 
-[node name="Wall_Plaster_Window_Wide_Round_7" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_7" parent="Model" unique_id=1821647775 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 
-[node name="Window_Wide_Round1_7" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_7" parent="Model" unique_id=768471437 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 
-[node name="WindowShutters_Wide_Round_Open_1" parent="Model" instance=ExtResource("14_windowshutters_wide_")]
+[node name="WindowShutters_Wide_Round_Open_1" parent="Model" unique_id=1921061356 instance=ExtResource("14_windowshutters_wide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 4)
 
-[node name="Wall_Plaster_WoodGrid_2" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_2" parent="Model" unique_id=969698680 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 4)
 
-[node name="Wall_Plaster_WoodGrid_3" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_3" parent="Model" unique_id=505550242 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 3, -4)
 
-[node name="Wall_Plaster_Window_Thin_Round_3" parent="Model" instance=ExtResource("9_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Thin_Round_3" parent="Model" unique_id=2095519524 instance=ExtResource("9_wall_plaster_window_")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 3, -4)
 
-[node name="Window_Thin_Round1_3" parent="Model" instance=ExtResource("15_window_thin_round1")]
+[node name="Window_Thin_Round1_3" parent="Model" unique_id=1255340843 instance=ExtResource("15_window_thin_round1")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 3, -4)
 
-[node name="Wall_Plaster_WoodGrid_4" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_4" parent="Model" unique_id=1669358372 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 3, -4)
 
-[node name="Wall_Plaster_Window_Wide_Round_8" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_8" parent="Model" unique_id=1394252124 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 3)
 
-[node name="Window_Wide_Round1_8" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_8" parent="Model" unique_id=671675240 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 3)
 
-[node name="WindowShutters_Wide_Round_Closed_3" parent="Model" instance=ExtResource("13_windowshutters_wide_")]
+[node name="WindowShutters_Wide_Round_Closed_3" parent="Model" unique_id=1250040771 instance=ExtResource("13_windowshutters_wide_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 3)
 
-[node name="Wall_Plaster_WoodGrid_5" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_5" parent="Model" unique_id=957198912 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, 1)
 
-[node name="Wall_Plaster_WoodGrid_6" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_6" parent="Model" unique_id=836799345 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -1)
 
-[node name="Wall_Plaster_Window_Wide_Round_9" parent="Model" instance=ExtResource("10_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Wide_Round_9" parent="Model" unique_id=155080489 instance=ExtResource("10_wall_plaster_window_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -3)
 
-[node name="Window_Wide_Round1_9" parent="Model" instance=ExtResource("16_window_wide_round1")]
+[node name="Window_Wide_Round1_9" parent="Model" unique_id=1528759439 instance=ExtResource("16_window_wide_round1")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -3)
 
-[node name="WindowShutters_Wide_Round_Closed_4" parent="Model" instance=ExtResource("13_windowshutters_wide_")]
+[node name="WindowShutters_Wide_Round_Closed_4" parent="Model" unique_id=1764478448 instance=ExtResource("13_windowshutters_wide_")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 3, -3)
 
-[node name="Wall_Plaster_WoodGrid_7" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_7" parent="Model" unique_id=1769190198 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -3)
 
-[node name="Wall_Plaster_Window_Thin_Round_4" parent="Model" instance=ExtResource("9_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Thin_Round_4" parent="Model" unique_id=1377497335 instance=ExtResource("9_wall_plaster_window_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -1)
 
-[node name="Window_Thin_Round1_4" parent="Model" instance=ExtResource("15_window_thin_round1")]
+[node name="Window_Thin_Round1_4" parent="Model" unique_id=513457423 instance=ExtResource("15_window_thin_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -1)
 
-[node name="WindowShutters_Thin_Round_Closed_1" parent="Model" instance=ExtResource("12_windowshutters_thin_")]
+[node name="WindowShutters_Thin_Round_Closed_1" parent="Model" unique_id=1762850230 instance=ExtResource("12_windowshutters_thin_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, -1)
 
-[node name="Wall_Plaster_Window_Thin_Round_5" parent="Model" instance=ExtResource("9_wall_plaster_window_")]
+[node name="Wall_Plaster_Window_Thin_Round_5" parent="Model" unique_id=987007570 instance=ExtResource("9_wall_plaster_window_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 1)
 
-[node name="Window_Thin_Round1_5" parent="Model" instance=ExtResource("15_window_thin_round1")]
+[node name="Window_Thin_Round1_5" parent="Model" unique_id=548347076 instance=ExtResource("15_window_thin_round1")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 1)
 
-[node name="WindowShutters_Thin_Round_Closed_2" parent="Model" instance=ExtResource("12_windowshutters_thin_")]
+[node name="WindowShutters_Thin_Round_Closed_2" parent="Model" unique_id=1978229118 instance=ExtResource("12_windowshutters_thin_")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 1)
 
-[node name="Wall_Plaster_WoodGrid_8" parent="Model" instance=ExtResource("11_wall_plaster_woodgri")]
+[node name="Wall_Plaster_WoodGrid_8" parent="Model" unique_id=712648348 instance=ExtResource("11_wall_plaster_woodgri")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -3, 3, 3)
 
-[node name="Corner_ExteriorWide_Wood_5" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_5" parent="Model" unique_id=1635995281 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -4)
 
-[node name="Corner_ExteriorWide_Wood_6" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_6" parent="Model" unique_id=1080972797 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, 4)
 
-[node name="Corner_ExteriorWide_Wood_7" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_7" parent="Model" unique_id=1468515977 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, -4)
 
-[node name="Corner_ExteriorWide_Wood_8" parent="Model" instance=ExtResource("1_corner_exteriorwide_")]
+[node name="Corner_ExteriorWide_Wood_8" parent="Model" unique_id=1459078396 instance=ExtResource("1_corner_exteriorwide_")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3, 4)
 
-[node name="Roof_RoundTiles_6x8_1" parent="Model" instance=ExtResource("6_roof_roundtiles_6x8")]
+[node name="Roof_RoundTiles_6x8_1" parent="Model" unique_id=1749960804 instance=ExtResource("6_roof_roundtiles_6x8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
 
-[node name="Roof_Front_Brick6_1" parent="Model" instance=ExtResource("5_roof_front_brick6")]
+[node name="Roof_Front_Brick6_1" parent="Model" unique_id=258343841 instance=ExtResource("5_roof_front_brick6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 4)
 
-[node name="Roof_Front_Brick6_2" parent="Model" instance=ExtResource("5_roof_front_brick6")]
+[node name="Roof_Front_Brick6_2" parent="Model" unique_id=1769620624 instance=ExtResource("5_roof_front_brick6")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 6, -4)
 
-[node name="Prop_Chimney_1" parent="Model" instance=ExtResource("4_prop_chimney")]
+[node name="Prop_Chimney_1" parent="Model" unique_id=489596504 instance=ExtResource("4_prop_chimney")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 6.79, -2)
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." unique_id=1170760651]
+height = 10.0
+vertices = PackedVector3Array(-3.1, 0, -4.1, 3.1, 0, -4.1, 3.1, 0, 4.1, -3.1, 0, 4.1)
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_enabled = false

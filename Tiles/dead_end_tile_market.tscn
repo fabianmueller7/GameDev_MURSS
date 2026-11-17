@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cbhqvgoum445k"]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="2_cottagesmallts"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/longhouse_plaster.tscn" id="3_longhouseplast"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://74r5iippio14" path="res://Assets/BuiltAssets/cottage_small.tscn" id="2_cottagesmallts"]
+[ext_resource type="PackedScene" uid="uid://7s8l2hpdaxcf" path="res://Assets/BuiltAssets/longhouse_plaster.tscn" id="3_longhouseplast"]
 [ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="4_wallunevenbric"]
 [ext_resource type="PackedScene" uid="uid://dkytl22k40je2" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Stall_Empty.gltf" id="5_stallemptygltf"]
 [ext_resource type="PackedScene" uid="uid://xla27vxe5wtx" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Stall_Cart_Empty.gltf" id="6_stallcartempty"]
@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="10_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="11_cratewoodenglt"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="12_baggltf"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="13_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="13_hidingbarrelts"]
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)
@@ -80,263 +80,264 @@ size = Vector3(0.8423, 0.8785, 0.9083)
 [sub_resource type="BoxShape3D" id="Box_Bag1"]
 size = Vector3(0.6552, 0.7992, 0.5444)
 
-[node name="DeadEndTileMarket" type="Node3D"]
+[node name="DeadEndTileMarket" type="Node3D" unique_id=553513636]
 
-[node name="Floor" parent="." instance=ExtResource("1_tilefloortscn")]
-[node name="Buildings" type="Node3D" parent="."]
+[node name="Floor" parent="." unique_id=1192089434 instance=ExtResource("1_tilefloortscn")]
 
-[node name="Walls" type="Node3D" parent="."]
+[node name="Buildings" type="Node3D" parent="." unique_id=969749591]
 
-[node name="Props" type="Node3D" parent="."]
-
-[node name="Lights" type="Node3D" parent="."]
-
-[node name="Cottage1" parent="Buildings" instance=ExtResource("2_cottagesmallts")]
+[node name="Cottage1" parent="Buildings" unique_id=1196493673 instance=ExtResource("2_cottagesmallts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1, 0, -4)
 
-[node name="Longhouse1" parent="Buildings" instance=ExtResource("3_longhouseplast")]
+[node name="Longhouse1" parent="Buildings" unique_id=1064246465 instance=ExtResource("3_longhouseplast")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.1, 0, -4)
 
-[node name="Wall_UnevenBrick_Straight1" type="StaticBody3D" parent="Walls"]
+[node name="Walls" type="Node3D" parent="." unique_id=616700044]
+
+[node name="Wall_UnevenBrick_Straight1" type="StaticBody3D" parent="Walls" unique_id=76267048]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, -1)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight1" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight1" unique_id=102678458 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight1"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight1" unique_id=10732976]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight1")
 
-[node name="Wall_UnevenBrick_Straight2" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight2" type="StaticBody3D" parent="Walls" unique_id=582897055]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 1)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight2" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight2" unique_id=1515471082 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight2"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight2" unique_id=1362253268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight2")
 
-[node name="Wall_UnevenBrick_Straight3" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight3" type="StaticBody3D" parent="Walls" unique_id=671551468]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 3)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight3" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight3" unique_id=1187074414 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight3"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight3" unique_id=1920192413]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight3")
 
-[node name="Wall_UnevenBrick_Straight4" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight4" type="StaticBody3D" parent="Walls" unique_id=148850648]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.65, 0, 5)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight4" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight4" unique_id=50717922 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight4"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight4" unique_id=1891031158]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight4")
 
-[node name="Wall_UnevenBrick_Straight5" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight5" type="StaticBody3D" parent="Walls" unique_id=517308704]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, -1)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight5" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight5" unique_id=654335811 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight5"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight5" unique_id=763645633]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight5")
 
-[node name="Wall_UnevenBrick_Straight6" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight6" type="StaticBody3D" parent="Walls" unique_id=1202195408]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 1)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight6" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight6" unique_id=1431497824 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight6"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight6" unique_id=1199444559]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight6")
 
-[node name="Wall_UnevenBrick_Straight7" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight7" type="StaticBody3D" parent="Walls" unique_id=422934371]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 3)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight7" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight7" unique_id=1147815874 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight7"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight7" unique_id=93897638]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight7")
 
-[node name="Wall_UnevenBrick_Straight8" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight8" type="StaticBody3D" parent="Walls" unique_id=1358175403]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 5.65, 0, 5)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight8" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight8" unique_id=669494467 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight8"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight8" unique_id=1356456278]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight8")
 
-[node name="Wall_UnevenBrick_Straight9" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight9" type="StaticBody3D" parent="Walls" unique_id=1482031515]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -5, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight9" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight9" unique_id=503325010 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight9"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight9" unique_id=87387235]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight9")
 
-[node name="Wall_UnevenBrick_Straight10" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight10" type="StaticBody3D" parent="Walls" unique_id=181015271]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -3, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight10" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight10" unique_id=1084296408 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight10"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight10" unique_id=2098004909]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight10")
 
-[node name="Wall_UnevenBrick_Straight11" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight11" type="StaticBody3D" parent="Walls" unique_id=1212006975]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.5, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight11" instance=ExtResource("4_wallunevenbric")]
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight11" unique_id=1409455437 instance=ExtResource("4_wallunevenbric")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight11"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight11" unique_id=862741731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight11")
 
-[node name="Wall_UnevenBrick_Straight12" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight12" type="StaticBody3D" parent="Walls" unique_id=1283559240]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight12" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight12" unique_id=1663351169 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight12"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight12" unique_id=655095531]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight12")
 
-[node name="Wall_UnevenBrick_Straight13" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight13" type="StaticBody3D" parent="Walls" unique_id=1452105715]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight13" instance=ExtResource("4_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight13" unique_id=1350331035 instance=ExtResource("4_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight13"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight13" unique_id=982537005]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight13")
 
-[node name="Wall_UnevenBrick_Straight14" type="StaticBody3D" parent="Walls"]
+[node name="Wall_UnevenBrick_Straight14" type="StaticBody3D" parent="Walls" unique_id=91034959]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.5, 0, 5.65)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight14" instance=ExtResource("4_wallunevenbric")]
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight14" unique_id=1187713451 instance=ExtResource("4_wallunevenbric")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight14"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight14" unique_id=162782006]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight14")
 
-[node name="Stall_Empty1" type="StaticBody3D" parent="Props"]
+[node name="Props" type="Node3D" parent="." unique_id=133997509]
+
+[node name="Stall_Empty1" type="StaticBody3D" parent="Props" unique_id=508435422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.3)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Empty1" instance=ExtResource("5_stallemptygltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Empty1" unique_id=970750774 instance=ExtResource("5_stallemptygltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty1" unique_id=1663728217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3112, 0.0054)
 shape = SubResource("Box_Stall_Empty1")
 
-[node name="Stall_Empty2" type="StaticBody3D" parent="Props"]
+[node name="Stall_Empty2" type="StaticBody3D" parent="Props" unique_id=295950523]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, 0.3)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Empty2" instance=ExtResource("5_stallemptygltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Empty2" unique_id=1718789241 instance=ExtResource("5_stallemptygltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty2" unique_id=1976522003]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3112, 0.0054)
 shape = SubResource("Box_Stall_Empty2")
 
-[node name="Stall_Cart_Empty1" type="StaticBody3D" parent="Props"]
+[node name="Stall_Cart_Empty1" type="StaticBody3D" parent="Props" unique_id=994766186]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.3, 0, 3.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Cart_Empty1" instance=ExtResource("6_stallcartempty")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Cart_Empty1" unique_id=1426159489 instance=ExtResource("6_stallcartempty")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Cart_Empty1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Cart_Empty1" unique_id=839989411]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5965, 1.314, 0)
 shape = SubResource("Box_Stall_Cart_Empty1")
 
-[node name="Table_Large1" type="StaticBody3D" parent="Props"]
+[node name="Table_Large1" type="StaticBody3D" parent="Props" unique_id=939248782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 0, 3.4)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Table_Large1" instance=ExtResource("7_tablelargegltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Table_Large1" unique_id=1396696818 instance=ExtResource("7_tablelargegltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Table_Large1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Table_Large1" unique_id=1475860698]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.408, 0.0063)
 shape = SubResource("Box_Table_Large1")
 
-[node name="FarmCrate_Apple1" parent="Props" instance=ExtResource("8_farmcrateapple")]
+[node name="FarmCrate_Apple1" parent="Props" unique_id=259803103 instance=ExtResource("8_farmcrateapple")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0.81, 3.4)
 
-[node name="FarmCrate_Carrot1" parent="Props" instance=ExtResource("9_farmcratecarro")]
+[node name="FarmCrate_Carrot1" parent="Props" unique_id=1378260491 instance=ExtResource("9_farmcratecarro")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.1, 0.81, 3.35)
 
-[node name="Barrel_Apples1" type="StaticBody3D" parent="Props"]
+[node name="Barrel_Apples1" type="StaticBody3D" parent="Props" unique_id=1359029091]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 0, 1)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel_Apples1" instance=ExtResource("10_barrelapplesgl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel_Apples1" unique_id=962710578 instance=ExtResource("10_barrelapplesgl")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples1" unique_id=1978655965]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
 shape = SubResource("Box_Barrel_Apples1")
 
-[node name="FarmCrate_Apple2" type="StaticBody3D" parent="Props"]
+[node name="FarmCrate_Apple2" type="StaticBody3D" parent="Props" unique_id=1483947459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9, 0, 1.75)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/FarmCrate_Apple2" instance=ExtResource("8_farmcrateapple")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/FarmCrate_Apple2" unique_id=1213376916 instance=ExtResource("8_farmcrateapple")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Apple2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Apple2" unique_id=248545362]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1139, 0)
 shape = SubResource("Box_FarmCrate_Apple2")
 
-[node name="Crate_Wooden1" type="StaticBody3D" parent="Props"]
+[node name="Crate_Wooden1" type="StaticBody3D" parent="Props" unique_id=1238897897]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 1.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Crate_Wooden1" instance=ExtResource("11_cratewoodenglt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Crate_Wooden1" unique_id=642192827 instance=ExtResource("11_cratewoodenglt")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden1" unique_id=1192924538]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
 shape = SubResource("Box_Crate_Wooden1")
 
-[node name="Bag1" type="StaticBody3D" parent="Props"]
+[node name="Bag1" type="StaticBody3D" parent="Props" unique_id=1554107651]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 1)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Bag1" instance=ExtResource("12_baggltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Bag1" unique_id=1507733843 instance=ExtResource("12_baggltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Bag1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Bag1" unique_id=903600459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0022, 0.402, 0.0283)
 shape = SubResource("Box_Bag1")
 
-[node name="HidingBarrel1" parent="Props" instance=ExtResource("13_hidingbarrelts")]
+[node name="HidingBarrel1" parent="Props" unique_id=662626000 instance=ExtResource("13_hidingbarrelts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7, 0, 4.8)
 
-[node name="Light1" type="OmniLight3D" parent="Lights"]
+[node name="Lights" type="Node3D" parent="." unique_id=1554502467]
+
+[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=328412176]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 2.4, 1)
 light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 1
 omni_range = 4.5
 
-[node name="Light2" type="OmniLight3D" parent="Lights"]
+[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1518567268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 2.4, 1.6)
 light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 1
 omni_range = 4.5
 
-[node name="ItemSpawn" type="Marker3D" parent="."]
+[node name="ItemSpawn" type="Marker3D" parent="." unique_id=1174030522]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0.5, -1.05)

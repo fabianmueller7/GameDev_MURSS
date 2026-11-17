@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cwhfv8fdxj7dy"]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/church.tscn" id="2_churchtscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/bell_tower.tscn" id="3_belltowertscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/fountain.tscn" id="4_fountaintscn"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://dtwtvjbda88er" path="res://Assets/BuiltAssets/church.tscn" id="2_churchtscn"]
+[ext_resource type="PackedScene" uid="uid://366tg35xq16l" path="res://Assets/BuiltAssets/bell_tower.tscn" id="3_belltowertscn"]
+[ext_resource type="PackedScene" uid="uid://d0knn70dsriun" path="res://Assets/BuiltAssets/fountain.tscn" id="4_fountaintscn"]
 [ext_resource type="PackedScene" uid="uid://cws3cs4wiehch" path="res://Assets/Medival Props/MegaKit/Exports/glTF/CandleStick_Stand.gltf" id="5_candlesticksta"]
 [ext_resource type="PackedScene" uid="uid://xla27vxe5wtx" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Stall_Cart_Empty.gltf" id="6_stallcartempty"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="7_cratewoodenglt"]
@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="13_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://oyyw0crjea1i" path="res://Assets/Fantasy Town Assets/glTF/Prop_Wagon.gltf" id="14_propwagongltf"]
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="15_benchgltf"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="16_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="16_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="17_baggltf"]
 
 [sub_resource type="BoxShape3D" id="Box_CandleStick_Stand1"]
@@ -75,298 +75,297 @@ size = Vector3(0.8423, 0.8785, 0.9083)
 [sub_resource type="BoxShape3D" id="Box_Bag1"]
 size = Vector3(0.6552, 0.7992, 0.5444)
 
-[node name="PlazaTileChurch" type="Node3D"]
+[node name="PlazaTileChurch" type="Node3D" unique_id=666459446]
 
-[node name="Floor1" parent="." instance=ExtResource("1_tilefloortscn")]
+[node name="Floor1" parent="." unique_id=1054279598 instance=ExtResource("1_tilefloortscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
 
-[node name="Floor2" parent="." instance=ExtResource("1_tilefloortscn")]
+[node name="Floor2" parent="." unique_id=1441479727 instance=ExtResource("1_tilefloortscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)
 
-[node name="Floor3" parent="." instance=ExtResource("1_tilefloortscn")]
+[node name="Floor3" parent="." unique_id=2091280946 instance=ExtResource("1_tilefloortscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6)
 
-[node name="Floor4" parent="." instance=ExtResource("1_tilefloortscn")]
+[node name="Floor4" parent="." unique_id=2041875003 instance=ExtResource("1_tilefloortscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
 
-[node name="Buildings" type="Node3D" parent="."]
+[node name="Buildings" type="Node3D" parent="." unique_id=1632017095]
 
-[node name="Walls" type="Node3D" parent="."]
-
-[node name="Props" type="Node3D" parent="."]
-
-[node name="Lights" type="Node3D" parent="."]
-
-[node name="PatrolPoints" type="Node3D" parent="."]
-
-[node name="Church1" parent="Buildings" instance=ExtResource("2_churchtscn")]
+[node name="Church1" parent="Buildings" unique_id=706662263 instance=ExtResource("2_churchtscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.5)
 
-[node name="BellTower1" parent="Buildings" instance=ExtResource("3_belltowertscn")]
+[node name="BellTower1" parent="Buildings" unique_id=510285253 instance=ExtResource("3_belltowertscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.7, 0, -9.7)
 
-[node name="Fountain1" parent="Props" instance=ExtResource("4_fountaintscn")]
+[node name="Walls" type="Node3D" parent="." unique_id=1234698205]
+
+[node name="Props" type="Node3D" parent="." unique_id=1904118874]
+
+[node name="Fountain1" parent="Props" unique_id=707930610 instance=ExtResource("4_fountaintscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
 
-[node name="CandleStick_Stand1" type="StaticBody3D" parent="Props"]
+[node name="CandleStick_Stand1" type="StaticBody3D" parent="Props" unique_id=2026839471]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 1.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/CandleStick_Stand1" instance=ExtResource("5_candlesticksta")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/CandleStick_Stand1" unique_id=679059824 instance=ExtResource("5_candlesticksta")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/CandleStick_Stand1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/CandleStick_Stand1" unique_id=1263709113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0005, 0.6523, 0)
 shape = SubResource("Box_CandleStick_Stand1")
 
-[node name="Light1" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.6, 1.6)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4
-
-[node name="CandleStick_Stand2" type="StaticBody3D" parent="Props"]
+[node name="CandleStick_Stand2" type="StaticBody3D" parent="Props" unique_id=1951438330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 0, 1.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/CandleStick_Stand2" instance=ExtResource("5_candlesticksta")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/CandleStick_Stand2" unique_id=1055771664 instance=ExtResource("5_candlesticksta")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/CandleStick_Stand2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/CandleStick_Stand2" unique_id=1996717468]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0005, 0.6523, 0)
 shape = SubResource("Box_CandleStick_Stand2")
 
-[node name="Light2" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 1.6, 1.6)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4
-
-[node name="Stall_Cart_Empty1" type="StaticBody3D" parent="Props"]
+[node name="Stall_Cart_Empty1" type="StaticBody3D" parent="Props" unique_id=1297555380]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.2, 0, -10.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Cart_Empty1" instance=ExtResource("6_stallcartempty")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Cart_Empty1" unique_id=1049585394 instance=ExtResource("6_stallcartempty")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Cart_Empty1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Cart_Empty1" unique_id=1479176565]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5965, 1.314, 0)
 shape = SubResource("Box_Stall_Cart_Empty1")
 
-[node name="Crate_Wooden1" type="StaticBody3D" parent="Props"]
+[node name="Crate_Wooden1" type="StaticBody3D" parent="Props" unique_id=1237627550]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.4, 0, -8.5)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Crate_Wooden1" instance=ExtResource("7_cratewoodenglt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Crate_Wooden1" unique_id=1148149145 instance=ExtResource("7_cratewoodenglt")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden1" unique_id=1990208826]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
 shape = SubResource("Box_Crate_Wooden1")
 
-[node name="Crate_Wooden2" type="StaticBody3D" parent="Props"]
+[node name="Crate_Wooden2" type="StaticBody3D" parent="Props" unique_id=267610026]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 9.4, 0, -8.5)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Crate_Wooden2" instance=ExtResource("7_cratewoodenglt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Crate_Wooden2" unique_id=345051844 instance=ExtResource("7_cratewoodenglt")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden2" unique_id=1778317443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
 shape = SubResource("Box_Crate_Wooden2")
 
-[node name="Barrel1" type="StaticBody3D" parent="Props"]
+[node name="Barrel1" type="StaticBody3D" parent="Props" unique_id=2064652012]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2, 0, -8.4)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel1" instance=ExtResource("8_barrelgltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel1" unique_id=851367887 instance=ExtResource("8_barrelgltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel1" unique_id=1697725235]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
 shape = SubResource("Box_Barrel1")
 
-[node name="Barrel_Holder1" type="StaticBody3D" parent="Props"]
+[node name="Barrel_Holder1" type="StaticBody3D" parent="Props" unique_id=1962487255]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 11, 0, -10)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel_Holder1" instance=ExtResource("9_barrelholdergl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel_Holder1" unique_id=385010967 instance=ExtResource("9_barrelholdergl")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Holder1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Holder1" unique_id=1017890777]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6256, 0.0185)
 shape = SubResource("Box_Barrel_Holder1")
 
-[node name="Stall_Empty1" type="StaticBody3D" parent="Props"]
+[node name="Stall_Empty1" type="StaticBody3D" parent="Props" unique_id=192954976]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 9)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Empty1" instance=ExtResource("10_stallemptygltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Empty1" unique_id=733865975 instance=ExtResource("10_stallemptygltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty1" unique_id=2023958934]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3112, 0.0054)
 shape = SubResource("Box_Stall_Empty1")
 
-[node name="Stall_Empty2" type="StaticBody3D" parent="Props"]
+[node name="Stall_Empty2" type="StaticBody3D" parent="Props" unique_id=1768403522]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 9)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Stall_Empty2" instance=ExtResource("10_stallemptygltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Stall_Empty2" unique_id=2133965265 instance=ExtResource("10_stallemptygltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Stall_Empty2" unique_id=814536022]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3112, 0.0054)
 shape = SubResource("Box_Stall_Empty2")
 
-[node name="FarmCrate_Apple1" type="StaticBody3D" parent="Props"]
+[node name="FarmCrate_Apple1" type="StaticBody3D" parent="Props" unique_id=1718844662]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 10.1)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/FarmCrate_Apple1" instance=ExtResource("11_farmcrateapple")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/FarmCrate_Apple1" unique_id=802709830 instance=ExtResource("11_farmcrateapple")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Apple1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Apple1" unique_id=451829126]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1139, 0)
 shape = SubResource("Box_FarmCrate_Apple1")
 
-[node name="FarmCrate_Carrot1" type="StaticBody3D" parent="Props"]
+[node name="FarmCrate_Carrot1" type="StaticBody3D" parent="Props" unique_id=465427318]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 10.2)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/FarmCrate_Carrot1" instance=ExtResource("12_farmcratecarro")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/FarmCrate_Carrot1" unique_id=2110044880 instance=ExtResource("12_farmcratecarro")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Carrot1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Carrot1" unique_id=1658323241]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1977, -0.0764)
 shape = SubResource("Box_FarmCrate_Carrot1")
 
-[node name="Barrel_Apples1" type="StaticBody3D" parent="Props"]
+[node name="Barrel_Apples1" type="StaticBody3D" parent="Props" unique_id=969620515]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.4, 0, 11.2)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel_Apples1" instance=ExtResource("13_barrelapplesgl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel_Apples1" unique_id=1295400664 instance=ExtResource("13_barrelapplesgl")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples1" unique_id=1330088271]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
 shape = SubResource("Box_Barrel_Apples1")
 
-[node name="Prop_Wagon1" type="StaticBody3D" parent="Props"]
+[node name="Prop_Wagon1" type="StaticBody3D" parent="Props" unique_id=44511426]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -8.6, 0, 9.6)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Prop_Wagon1" instance=ExtResource("14_propwagongltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Prop_Wagon1" unique_id=1303538296 instance=ExtResource("14_propwagongltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Prop_Wagon1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Prop_Wagon1" unique_id=1261836176]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0037, 0.7677, -1.1384)
 shape = SubResource("Box_Prop_Wagon1")
 
-[node name="Barrel2" type="StaticBody3D" parent="Props"]
+[node name="Barrel2" type="StaticBody3D" parent="Props" unique_id=1511969978]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2, 0, 8.2)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel2" instance=ExtResource("8_barrelgltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel2" unique_id=168782839 instance=ExtResource("8_barrelgltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel2" unique_id=370257507]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
 shape = SubResource("Box_Barrel2")
 
-[node name="Barrel_Apples2" type="StaticBody3D" parent="Props"]
+[node name="Barrel_Apples2" type="StaticBody3D" parent="Props" unique_id=1562384958]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.4, 0, 8.2)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Barrel_Apples2" instance=ExtResource("13_barrelapplesgl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Barrel_Apples2" unique_id=1704481962 instance=ExtResource("13_barrelapplesgl")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Barrel_Apples2" unique_id=1145792137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4524, 0)
 shape = SubResource("Box_Barrel_Apples2")
 
-[node name="Bench1" type="StaticBody3D" parent="Props"]
+[node name="Bench1" type="StaticBody3D" parent="Props" unique_id=50153652]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.3, 0, 0)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Bench1" instance=ExtResource("15_benchgltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Bench1" unique_id=1657619754 instance=ExtResource("15_benchgltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Bench1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Bench1" unique_id=1200496043]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.263, 0.005)
 shape = SubResource("Box_Bench1")
 
-[node name="Bench2" type="StaticBody3D" parent="Props"]
+[node name="Bench2" type="StaticBody3D" parent="Props" unique_id=1159743263]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.3, 0, 0)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Bench2" instance=ExtResource("15_benchgltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Bench2" unique_id=1031819366 instance=ExtResource("15_benchgltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Bench2"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Bench2" unique_id=965020141]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.263, 0.005)
 shape = SubResource("Box_Bench2")
 
-[node name="HidingBarrel1" parent="Props" instance=ExtResource("16_hidingbarrelts")]
+[node name="HidingBarrel1" parent="Props" unique_id=1270285375 instance=ExtResource("16_hidingbarrelts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8, 0, -3)
 
-[node name="HidingBarrel2" parent="Props" instance=ExtResource("16_hidingbarrelts")]
+[node name="HidingBarrel2" parent="Props" unique_id=1753413069 instance=ExtResource("16_hidingbarrelts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.8, 0, 3)
 
-[node name="Crate_Wooden3" type="StaticBody3D" parent="Props"]
+[node name="Crate_Wooden3" type="StaticBody3D" parent="Props" unique_id=226198281]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.9, 0, 3.2)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Crate_Wooden3" instance=ExtResource("7_cratewoodenglt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Crate_Wooden3" unique_id=357246302 instance=ExtResource("7_cratewoodenglt")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden3"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Crate_Wooden3" unique_id=641479268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0047, 0.4392, 0)
 shape = SubResource("Box_Crate_Wooden3")
 
-[node name="Bag1" type="StaticBody3D" parent="Props"]
+[node name="Bag1" type="StaticBody3D" parent="Props" unique_id=503766145]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.8, 0, -3)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Bag1" instance=ExtResource("17_baggltf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Bag1" unique_id=1812629340 instance=ExtResource("17_baggltf")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Bag1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Bag1" unique_id=60287235]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0022, 0.402, 0.0283)
 shape = SubResource("Box_Bag1")
 
-[node name="Light3" type="OmniLight3D" parent="Lights"]
+[node name="Lights" type="Node3D" parent="." unique_id=1402708728]
+
+[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=1269193434]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.6, 1.6)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.9
+omni_range = 4.0
+
+[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1328867810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 1.6, 1.6)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.9
+omni_range = 4.0
+
+[node name="Light3" type="OmniLight3D" parent="Lights" unique_id=584042153]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 5.5)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="Light4" type="OmniLight3D" parent="Lights"]
+[node name="Light4" type="OmniLight3D" parent="Lights" unique_id=188484110]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.8, 0)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="Light5" type="OmniLight3D" parent="Lights"]
+[node name="Light5" type="OmniLight3D" parent="Lights" unique_id=47055351]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.8, 0)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="Light6" type="OmniLight3D" parent="Lights"]
+[node name="Light6" type="OmniLight3D" parent="Lights" unique_id=1352517159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.8, 9)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="Light7" type="OmniLight3D" parent="Lights"]
+[node name="Light7" type="OmniLight3D" parent="Lights" unique_id=1940880823]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.8, 9)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="Light8" type="OmniLight3D" parent="Lights"]
+[node name="Light8" type="OmniLight3D" parent="Lights" unique_id=1060340575]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.8, -9.5)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.9
 omni_range = 5.5
 
-[node name="PatrolPoint1" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoints" type="Node3D" parent="." unique_id=1819470629]
+
+[node name="PatrolPoint1" type="Marker3D" parent="PatrolPoints" unique_id=1598309830]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 2.5)
 
-[node name="PatrolPoint2" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoint2" type="Marker3D" parent="PatrolPoints" unique_id=303370580]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, 2.5)
 
-[node name="PatrolPoint3" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoint3" type="Marker3D" parent="PatrolPoints" unique_id=304792972]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, 9)
 
-[node name="PatrolPoint4" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoint4" type="Marker3D" parent="PatrolPoints" unique_id=2007082004]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 9)
 
-[node name="PatrolPoint5" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoint5" type="Marker3D" parent="PatrolPoints" unique_id=1460660243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, -6)
 
-[node name="PatrolPoint6" type="Marker3D" parent="PatrolPoints"]
+[node name="PatrolPoint6" type="Marker3D" parent="PatrolPoints" unique_id=1448184639]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, -6)
-

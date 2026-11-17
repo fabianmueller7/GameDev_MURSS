@@ -43,8 +43,8 @@ const MIN_DEAD_ENDS := 3
 const DOOR_LOCAL := Vector3(-1.05, 0.0, 5.5)
 
 const PLAYER_SCENE := "res://Assets/Player/player.tscn"
-const DOOR_SCENE := "res://Assets/door.tscn"
-const END_ZONE_SCENE := "res://Assets/end_zone.tscn"
+const DOOR_SCENE := "res://Assets/BuiltAssets/door.tscn"
+const END_ZONE_SCENE := "res://Assets/BuiltAssets/end_zone.tscn"
 const ITEM_SPAWNER_SCRIPT := "res://item_spawner.gd"
 
 @export var map_seed := 1
@@ -63,6 +63,30 @@ const ITEM_SPAWNER_SCRIPT := "res://item_spawner.gd"
 @export_tool_button("Save Level", "Save") var save_button = save_level
 @export_tool_button("Clear Preview", "Remove") var clear_button = clear_preview
 
+@export_group("Enemies")
+## Enemies per map cell (0 = none). A 5x5 map at 0.25 gets 6 enemies
+@export_range(0.0, 1.0, 0.05) var enemy_density := 0.25
+@export var base_enemy: PackedScene
+@export var paranoid_enemy: PackedScene
+@export var watchman: PackedScene
+@export var guard_dog: PackedScene
+## Shares of the enemy types (normalized automatically)
+@export_range(0.0, 1.0, 0.05) var base_share := 0.40
+@export_range(0.0, 1.0, 0.05) var paranoid_share := 0.25
+@export_range(0.0, 1.0, 0.05) var watchman_share := 0.20
+@export_range(0.0, 1.0, 0.05) var dog_share := 0.15
+## How far an enemy patrols, in cells (1 cell = 12 m of street). 0 = stands still
+@export_range(0, 8) var base_reach := 2
+@export_range(0, 8) var paranoid_reach := 2
+@export_range(0, 8) var dog_reach := 4
+@export_range(0, 8) var watchman_reach := 0
+## No enemy closer than this many cells to the player start (and none in the goal cell)
+@export_range(0, 8) var min_steps_from_start := 1
+## Spawn height above the navmesh
+@export var enemy_spawn_height := 0.0
+## Optional: a NavigationMesh with settings you tuned (agent radius, layers, ...). It is copied for every bake.
+@export var navmesh_template: NavigationMesh
+
 var _rng := RandomNumberGenerator.new()
 var _open := {}                    # Vector2i cell -> Array of open sides ("N", "E", ...)
 var _plaza: Array[Vector2i] = []   # the 4 plaza cells, top-left first
@@ -70,6 +94,15 @@ var _tiles := {}                   # Vector2i cell -> tile instance
 var _level: Node3D                 # preview / level being built
 var _start := Vector2i(-1, -1)     # cell where the player starts
 var _goal := Vector2i(-1, -1)      # cell with the end zone (and the door)
+var _enemies_root: Node3D
+var _patrols_root: Node3D
+var _walkable := {}                  # Vector2i cell -> navmesh height at the cell centre (only cells the player can reach)
+
+# Navmesh polygons, read back from the baked NavigationMesh
+var _nav_polys: Array[PackedVector2Array] = []
+var _nav_rects: Array[Rect2] = []
+var _nav_comp: Array[int] = []       # connected piece each polygon belongs to
+var _nav_height: Array[float] = []
 
 
 # ---------------------------------------------------------------- buttons
@@ -278,10 +311,7 @@ func _build_level(files: Dictionary) -> void:
 
 	var nav := NavigationRegion3D.new()
 	nav.name = "NavigationRegion3D"
-	var navmesh := NavigationMesh.new()
-	navmesh.agent_radius = 0.3
-	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
-	nav.navigation_mesh = navmesh
+	nav.navigation_mesh = _make_navmesh()
 	_add(nav, _level)
 	var map := Node3D.new()
 	map.name = "Map"
@@ -310,6 +340,7 @@ func _build_level(files: Dictionary) -> void:
 
 	nav.bake_navigation_mesh(false)
 	_place_gameplay()
+	_place_enemies(nav.navigation_mesh)
 
 
 func _add_tile(path: String, parent: Node, node_name: String) -> Node3D:
@@ -456,6 +487,239 @@ func _marker(parent: Node, prefix: String, cell: Vector2i) -> Marker3D:
 	_add(m, parent)
 	m.position = _spot(cell)
 	return m
+	
+	
+# ---------------------------------------------------------------- enemies
+
+func _make_navmesh() -> NavigationMesh:
+	if navmesh_template:
+		return navmesh_template.duplicate() as NavigationMesh   # keeps your tuned settings
+	var navmesh := NavigationMesh.new()
+	navmesh.agent_radius = 0.6
+	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
+	navmesh.geometry_collision_mask = 0b11   # layer 1 (floor) + layer 2 (houses)
+	return navmesh
+
+
+func _cell_center(cell: Vector2i) -> Vector2:
+	return Vector2(cell.x * TILE_SIZE, cell.y * TILE_SIZE)   # x, z
+
+
+func _place_enemies(navmesh: NavigationMesh) -> void:
+	var plan := _enemy_plan(roundi(width * height * enemy_density))
+	if plan.is_empty():
+		return
+
+	_walkable = _find_walkable_cells(navmesh)
+	var from_start := _distances(_start)
+	var free: Array[Vector2i] = []
+	for cell: Vector2i in _walkable:
+		if cell != _start and cell != _goal and from_start[cell] >= min_steps_from_start:
+			free.append(cell)
+
+	if free.size() < plan.size():
+		push_warning("Map generator: only %d free cells for %d enemies" % [free.size(), plan.size()])
+		plan.resize(free.size())
+	if plan.is_empty():
+		return
+
+	_enemies_root = Node3D.new()
+	_enemies_root.name = "Enemies"
+	_add(_enemies_root, _level)
+	_patrols_root = Node3D.new()
+	_patrols_root.name = "Patrols"
+	_add(_patrols_root, _level)
+
+	var taken: Array[Vector2i] = []
+	var steps_to_nearest := {}   # cell -> walking steps to the closest enemy placed so far
+
+	for def in plan:
+		if def.scene == null:
+			push_warning("Map generator: no scene assigned for '%s' enemies, skipped" % def.name)
+			continue
+
+		# Cells farthest from all enemies so far come first (random order among equals)
+		var candidates := free.filter(func(c): return not taken.has(c))
+		_shuffle(candidates)
+		candidates.sort_custom(func(a, b): return steps_to_nearest.get(a, 999) > steps_to_nearest.get(b, 999))
+
+		var placed := false
+		for cell: Vector2i in candidates:
+			var stops: Array[Vector2i] = []
+			if def.reach > 0:
+				stops = _patrol_cells(cell, def.reach)
+				if stops.size() < 2:
+					continue   # would just stand there: try the next cell
+			_spawn_enemy(def, cell, stops, taken.size())
+			taken.append(cell)
+			var d := _distances(cell)
+			for c in d:
+				steps_to_nearest[c] = mini(steps_to_nearest.get(c, 999), d[c])
+			placed = true
+			break
+		if not placed:
+			push_warning("Map generator: no valid cell found for a '%s' enemy" % def.name)
+
+	print("Map generator: placed %d / %d enemies" % [taken.size(), plan.size()])
+
+
+# Exact number per type (largest-remainder rounding), shuffled with the seeded RNG
+func _enemy_plan(count: int) -> Array[Dictionary]:
+	var plan: Array[Dictionary] = []
+	if count <= 0:
+		return plan
+	var defs: Array[Dictionary] = [
+		{"name": "base", "scene": base_enemy, "share": base_share, "reach": base_reach},
+		{"name": "paranoid", "scene": paranoid_enemy, "share": paranoid_share, "reach": paranoid_reach},
+		{"name": "watchman", "scene": watchman, "share": watchman_share, "reach": watchman_reach},
+		{"name": "dog", "scene": guard_dog, "share": dog_share, "reach": dog_reach},
+	]
+	var total := 0.0
+	for d in defs:
+		total += d.share
+	if total <= 0.0:
+		return plan
+
+	var counts: Array[int] = []
+	var remainders: Array = []
+	var assigned := 0
+	for i in defs.size():
+		var exact: float = count * defs[i].share / total
+		counts.append(int(exact))
+		assigned += int(exact)
+		remainders.append([exact - int(exact), i])
+	remainders.sort_custom(func(a, b): return a[0] > b[0])
+	for k in mini(count - assigned, remainders.size()):
+		counts[remainders[k][1]] += 1
+
+	for i in defs.size():
+		for n in counts[i]:
+			plan.append(defs[i])
+	_shuffle(plan)
+	return plan
+
+
+# Up to 3 patrol stops about `reach` cells away, as spread out as possible (by walking steps)
+func _patrol_cells(origin: Vector2i, reach: int) -> Array[Vector2i]:
+	var d := _distances(origin)
+	var pool: Array[Vector2i] = []
+	for c: Vector2i in d:
+		if _walkable.has(c) and d[c] >= maxi(1, reach - 1) and d[c] <= reach:
+			pool.append(c)
+	_shuffle(pool)
+
+	var stops: Array[Vector2i] = []
+	while stops.size() < 3 and not pool.is_empty():
+		var stop_dists: Array[Dictionary] = []
+		for s in stops:
+			stop_dists.append(_distances(s))
+		var best_i := 0
+		var best_score := -1
+		for i in pool.size():
+			var score := 999
+			for sd in stop_dists:
+				score = mini(score, sd[pool[i]])
+			if score > best_score:
+				best_score = score
+				best_i = i
+		stops.append(pool.pop_at(best_i))
+	return stops
+
+
+func _spawn_enemy(def: Dictionary, cell: Vector2i, stops: Array[Vector2i], index: int) -> void:
+	var enemy := (def.scene as PackedScene).instantiate() as Node3D
+	enemy.name = "%s_%02d" % [def.name, index]
+	_add(enemy, _enemies_root)
+	var c := _cell_center(cell)
+	enemy.position = Vector3(c.x, _walkable[cell] + enemy_spawn_height, c.y)
+
+	if stops.is_empty():
+		return   # watchman: stands still
+
+	# Real Marker3D nodes, so the route is saved in the level and editable in the editor
+	var markers: Array[Node3D] = []
+	for i in stops.size():
+		var sc := _cell_center(stops[i])
+		var marker := Marker3D.new()
+		marker.name = "%s_WP%d" % [enemy.name, i]
+		_add(marker, _patrols_root)
+		marker.position = Vector3(sc.x, _walkable[stops[i]], sc.y)
+		markers.append(marker)
+	enemy.set("patrol_points", markers)
+
+
+# ---- navmesh analysis (reads the baked polygons, no NavigationServer needed) ----
+
+# Cells whose centre lies on the part of the navmesh that is connected to the player start
+func _find_walkable_cells(navmesh: NavigationMesh) -> Dictionary:
+	_read_navmesh(navmesh)
+	var spot := _spot(_start)
+	var start_poly := _nav_poly_at(spot.x, spot.z)
+	if start_poly < 0:
+		push_warning("Map generator: the player start is not on the navmesh, no enemies placed")
+		return {}
+
+	var cells := {}
+	for cell: Vector2i in _open:
+		var c := _cell_center(cell)
+		var i := _nav_poly_at(c.x, c.y)
+		if i >= 0 and _nav_comp[i] == _nav_comp[start_poly]:
+			cells[cell] = _nav_height[i]
+	return cells
+
+
+# Polygons that share a vertex belong to the same connected piece (union-find over vertices)
+func _read_navmesh(navmesh: NavigationMesh) -> void:
+	_nav_polys.clear()
+	_nav_rects.clear()
+	_nav_comp.clear()
+	_nav_height.clear()
+
+	var verts := navmesh.get_vertices()
+	var parent: Array[int] = []
+	for i in verts.size():
+		parent.append(i)
+
+	var polys: Array[PackedInt32Array] = []
+	for i in navmesh.get_polygon_count():
+		var poly := navmesh.get_polygon(i)
+		if poly.size() < 3:
+			continue
+		var outline := PackedVector2Array()
+		var height := 0.0
+		for idx in poly:
+			outline.append(Vector2(verts[idx].x, verts[idx].z))
+			height += verts[idx].y
+			var ra := _find(parent, idx)
+			var rb := _find(parent, poly[0])
+			if ra != rb:
+				parent[ra] = rb
+		var rect := Rect2(outline[0], Vector2.ZERO)
+		for p in outline:
+			rect = rect.expand(p)
+		polys.append(poly)
+		_nav_polys.append(outline)
+		_nav_rects.append(rect.grow(0.01))
+		_nav_height.append(height / poly.size())
+
+	for poly in polys:
+		_nav_comp.append(_find(parent, poly[0]))
+
+
+func _find(parent: Array[int], i: int) -> int:
+	while parent[i] != i:
+		parent[i] = parent[parent[i]]
+		i = parent[i]
+	return i
+
+
+# Index of the navmesh polygon under this ground position, or -1 if it isn't walkable there
+func _nav_poly_at(x: float, z: float) -> int:
+	var p := Vector2(x, z)
+	for i in _nav_polys.size():
+		if _nav_rects[i].has_point(p) and Geometry2D.is_point_in_polygon(p, _nav_polys[i]):
+			return i
+	return -1
 
 
 # ---------------------------------------------------------------- debug

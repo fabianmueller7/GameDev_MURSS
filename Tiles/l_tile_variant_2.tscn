@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://dtxyphqqhklxq"]
 
 [ext_resource type="Script" uid="uid://dotik1hftrswp" path="res://Tiles/l_tile_variant_2.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="2_floor"]
-[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="3_house"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="5_wall"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="6_barrel"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="2_floor"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/BuiltAssets/house.tscn" id="3_house"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="5_wall"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="6_barrel"]
+
 
 [node name="LTileVariant2" type="Node3D" unique_id=1007320611]
 script = ExtResource("1_script")

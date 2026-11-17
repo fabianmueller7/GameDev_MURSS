@@ -1,11 +1,9 @@
 [gd_scene format=3 uid="uid://bpok6q5w1jyms"]
 
 [ext_resource type="Script" uid="uid://cycs24lt81dy0" path="res://Assets/Enemy/watch_tower.gd" id="1_pt4wx"]
-
-[ext_resource type="PackedScene" path="res://Assets/Enemy/watchman.glb" id="2_watch"]
+[ext_resource type="PackedScene" uid="uid://cnc1fj2niggsc" path="res://Assets/Enemy/watchman.glb" id="2_watch"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_wfn8x"]
-height = 10.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pt4wx"]
 
@@ -18,6 +16,7 @@ model_scene = ExtResource("2_watch")
 attack_animation = ""
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=914742871]
+layers = 7
 mesh = SubResource("CapsuleMesh_wfn8x")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=3672598]

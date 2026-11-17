@@ -1,12 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://3as8psprto5c"]
 
-[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/tile_floor.tscn" id="1_tilefloortscn"]
-[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/wall.tscn" id="2_walltscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/manor_large.tscn" id="3_manorlargetscn"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/townhouse_tall.tscn" id="4_townhousetallt"]
-[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/cottage_small.tscn" id="5_cottagesmallts"]
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_tilefloortscn"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_walltscn"]
+[ext_resource type="PackedScene" uid="uid://c3lkcx85ujyit" path="res://Assets/BuiltAssets/manor_large.tscn" id="3_manorlargetscn"]
+[ext_resource type="PackedScene" uid="uid://bynvp1a8vwoat" path="res://Assets/BuiltAssets/townhouse_tall.tscn" id="4_townhousetallt"]
+[ext_resource type="PackedScene" uid="uid://74r5iippio14" path="res://Assets/BuiltAssets/cottage_small.tscn" id="5_cottagesmallts"]
 [ext_resource type="PackedScene" uid="uid://dkpmlowfacefh" path="res://Assets/Fantasy Town Assets/glTF/Wall_UnevenBrick_Straight.gltf" id="6_wallunevenbric"]
-[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/hiding-barrel.tscn" id="7_hidingbarrelts"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="7_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://dp1rivbirhuoj" path="res://Assets/Medival Props/MegaKit/Exports/glTF/FarmCrate_Empty.gltf" id="8_farmcrateempty"]
 [ext_resource type="PackedScene" uid="uid://cqqgv54ibs4w0" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bucket_Wooden_1.gltf" id="9_bucketwooden1g"]
 
@@ -19,103 +19,103 @@ size = Vector3(0.7138, 0.2278, 0.4142)
 [sub_resource type="BoxShape3D" id="Box_Bucket_Wooden_11"]
 size = Vector3(0.4339, 0.2928, 0.3835)
 
-[node name="DeadEndTileAlley" type="Node3D"]
+[node name="DeadEndTileAlley" type="Node3D" unique_id=1874802110]
 
-[node name="Floor" parent="." instance=ExtResource("1_tilefloortscn")]
-[node name="Buildings" type="Node3D" parent="."]
+[node name="Floor" parent="." unique_id=1788374338 instance=ExtResource("1_tilefloortscn")]
 
-[node name="Walls" type="Node3D" parent="."]
+[node name="Buildings" type="Node3D" parent="." unique_id=526369870]
 
-[node name="Props" type="Node3D" parent="."]
-
-[node name="Lights" type="Node3D" parent="."]
-
-[node name="Fence1" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 5.85)
-
-[node name="Fence2" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 5.85)
-
-[node name="Fence3" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -5.85)
-
-[node name="Fence4" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.85)
-
-[node name="Fence5" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -5.85)
-
-[node name="Fence6" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, -3.5)
-
-[node name="Fence7" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, 0)
-
-[node name="Fence8" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, 3.5)
-
-[node name="Fence9" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, -3.5)
-
-[node name="Fence10" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, 0)
-
-[node name="Fence11" parent="Walls" instance=ExtResource("2_walltscn")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, 3.5)
-
-[node name="Manor1" parent="Buildings" instance=ExtResource("3_manorlargetscn")]
+[node name="Manor1" parent="Buildings" unique_id=712381982 instance=ExtResource("3_manorlargetscn")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, -3)
 
-[node name="Townhouse1" parent="Buildings" instance=ExtResource("4_townhousetallt")]
+[node name="Townhouse1" parent="Buildings" unique_id=1658594136 instance=ExtResource("4_townhousetallt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.1, 0, 3)
 
-[node name="Cottage1" parent="Buildings" instance=ExtResource("5_cottagesmallts")]
+[node name="Cottage1" parent="Buildings" unique_id=2066953827 instance=ExtResource("5_cottagesmallts")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3.1, 0, 4)
 
-[node name="Wall_UnevenBrick_Straight1" type="StaticBody3D" parent="Walls"]
+[node name="Walls" type="Node3D" parent="." unique_id=11974784]
+
+[node name="Fence1" parent="Walls" unique_id=678202593 instance=ExtResource("2_walltscn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 5.85)
+
+[node name="Fence2" parent="Walls" unique_id=1124692518 instance=ExtResource("2_walltscn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 5.85)
+
+[node name="Fence3" parent="Walls" unique_id=1843311364 instance=ExtResource("2_walltscn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -5.85)
+
+[node name="Fence4" parent="Walls" unique_id=1752174909 instance=ExtResource("2_walltscn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.85)
+
+[node name="Fence5" parent="Walls" unique_id=500151656 instance=ExtResource("2_walltscn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -5.85)
+
+[node name="Fence6" parent="Walls" unique_id=2013785935 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, -3.5)
+
+[node name="Fence7" parent="Walls" unique_id=1372774173 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, 0)
+
+[node name="Fence8" parent="Walls" unique_id=1798325386 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, 3.5)
+
+[node name="Fence9" parent="Walls" unique_id=269974999 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, -3.5)
+
+[node name="Fence10" parent="Walls" unique_id=208918577 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, 0)
+
+[node name="Fence11" parent="Walls" unique_id=1303873750 instance=ExtResource("2_walltscn")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, 3.5)
+
+[node name="Wall_UnevenBrick_Straight1" type="StaticBody3D" parent="Walls" unique_id=1663938470]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.5, 0, 1)
+collision_layer = 2
 
-[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight1" instance=ExtResource("6_wallunevenbric")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Walls/Wall_UnevenBrick_Straight1" unique_id=685749397 instance=ExtResource("6_wallunevenbric")]
 
-[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight1"]
+[node name="Collision" type="CollisionShape3D" parent="Walls/Wall_UnevenBrick_Straight1" unique_id=1319836540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5613, -0.1108)
 shape = SubResource("Box_Wall_UnevenBrick_Straight1")
 
-[node name="HidingBarrel1" parent="Props" instance=ExtResource("7_hidingbarrelts")]
+[node name="Props" type="Node3D" parent="." unique_id=18964244]
+
+[node name="HidingBarrel1" parent="Props" unique_id=345556319 instance=ExtResource("7_hidingbarrelts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.65, 0, 1)
 
-[node name="FarmCrate_Empty1" type="StaticBody3D" parent="Props"]
+[node name="FarmCrate_Empty1" type="StaticBody3D" parent="Props" unique_id=591743253]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.76, 0, 5)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/FarmCrate_Empty1" instance=ExtResource("8_farmcrateempty")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/FarmCrate_Empty1" unique_id=1054194435 instance=ExtResource("8_farmcrateempty")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Empty1"]
+[node name="Collision" type="CollisionShape3D" parent="Props/FarmCrate_Empty1" unique_id=615738428]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1139, 0)
 shape = SubResource("Box_FarmCrate_Empty1")
 
-[node name="Bucket_Wooden_11" type="StaticBody3D" parent="Props"]
+[node name="Bucket_Wooden_11" type="StaticBody3D" parent="Props" unique_id=2023015939]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.82, 0, 3)
+collision_layer = 2
 
-[node name="Mesh" parent="Props/Bucket_Wooden_11" instance=ExtResource("9_bucketwooden1g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Mesh" parent="Props/Bucket_Wooden_11" unique_id=1338818151 instance=ExtResource("9_bucketwooden1g")]
 
-[node name="Collision" type="CollisionShape3D" parent="Props/Bucket_Wooden_11"]
+[node name="Collision" type="CollisionShape3D" parent="Props/Bucket_Wooden_11" unique_id=1659911800]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001, 0.1471, -0.0077)
 shape = SubResource("Box_Bucket_Wooden_11")
 
-[node name="Light1" type="OmniLight3D" parent="Lights"]
+[node name="Lights" type="Node3D" parent="." unique_id=2041424106]
+
+[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=1198565225]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 2.4, 1)
 light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 1
 omni_range = 4.5
 
-[node name="Light2" type="OmniLight3D" parent="Lights"]
+[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1044932140]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 4.5)
 light_color = Color(1, 0.7, 0.4, 1)
 light_energy = 0.6
-omni_range = 4
+omni_range = 4.0
 
-[node name="ItemSpawn" type="Marker3D" parent="."]
+[node name="ItemSpawn" type="Marker3D" parent="." unique_id=893374798]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 0.5, 1)

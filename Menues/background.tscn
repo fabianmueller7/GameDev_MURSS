@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://b7m0qcda0v6qr"]
 
-[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/house.tscn" id="2_u7cx7"]
+[ext_resource type="PackedScene" uid="uid://bevunoamjsphp" path="res://Assets/BuiltAssets/house.tscn" id="2_u7cx7"]
 [ext_resource type="PackedScene" uid="uid://bi3d33qdu4ngs" path="res://Assets/Player/spy_character.glb" id="3_iynih"]
 [ext_resource type="PackedScene" uid="uid://hdwrqsv3ybyq" path="res://Assets/floor.tscn" id="4_u7cx7"]
+
 
 [sub_resource type="Environment" id="Environment_ifpyu"]
 background_mode = 2

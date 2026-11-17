@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b2ksfp6yi6dev"]
 
 [ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="1_barrel"]
-[ext_resource type="Script" path="res://Assets/hiding_barrel.gd" id="2_hide"]
+[ext_resource type="Script" uid="uid://bx0h2r8c0uwn" path="res://Assets/BuiltAssets/hiding_barrel.gd" id="2_hide"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_body"]
 height = 1.8
@@ -20,35 +20,37 @@ bottom_radius = 0.6
 height = 0.02
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_area"]
-height = 2.0
 radius = 1.8
 
 [node name="HidingBarrel" type="Node3D" unique_id=690875661 groups=["hiding_spot"]]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1919346008]
+collision_layer = 2
+collision_mask = 0
 
-[node name="Barrel" parent="StaticBody3D" instance=ExtResource("1_barrel")]
+[node name="Barrel" parent="StaticBody3D" unique_id=1051980572 instance=ExtResource("1_barrel")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=787274850]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CylinderShape3D_body")
 
-[node name="GlowLid" type="MeshInstance3D" parent="."]
+[node name="GlowLid" type="MeshInstance3D" parent="." unique_id=1105915963]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.81, 0)
 mesh = SubResource("CylinderMesh_glow")
 
-[node name="GlowLight" type="OmniLight3D" parent="."]
+[node name="GlowLight" type="OmniLight3D" parent="." unique_id=421381609]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
 light_color = Color(0.3, 0.6, 1, 1)
 light_energy = 0.8
 omni_range = 3.0
 
-[node name="InteractArea" type="Area3D" parent="." node_paths=PackedStringArray("glow_light")]
+[node name="InteractArea" type="Area3D" parent="." unique_id=309432338 node_paths=PackedStringArray("glow_light")]
+collision_mask = 4
 script = ExtResource("2_hide")
 glow_light = NodePath("../GlowLight")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractArea" unique_id=587999018]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CylinderShape3D_area")
 

@@ -6,6 +6,8 @@
 radius = 0.2
 
 [node name="Collectible" type="Area3D" unique_id=1109923837]
+collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_s4df5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=221441659]

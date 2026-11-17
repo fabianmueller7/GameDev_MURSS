@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://o5l7t4wdfv1g"]
 
 [ext_resource type="PackedScene" uid="uid://x15iihn1vxcv" path="res://Assets/Fantasy Town Assets/FBX/Door_2_Flat.fbx" id="1_xfcwp"]
-[ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/door-trigger.gd" id="2_d0tpj"]
+[ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/BuiltAssets/door-trigger.gd" id="2_d0tpj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(2.2, 4.2, 4)
@@ -20,6 +20,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 2.1, 0)
 shape = SubResource("BoxShape3D_ifpyu")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=216270988]
+collision_layer = 2
+collision_mask = 0
 
 [node name="Door_2_Flat" parent="StaticBody3D" unique_id=82635607 instance=ExtResource("1_xfcwp")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
