@@ -8,6 +8,8 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pt4wx"]
 
 [node name="WatchTower" type="CharacterBody3D" unique_id=1404722595 groups=["enemy"]]
+collision_layer = 8
+collision_mask = 7
 script = ExtResource("1_pt4wx")
 patrol_speed = 0.0
 chase_speed = 0.0
