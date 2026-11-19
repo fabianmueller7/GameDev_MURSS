@@ -495,7 +495,7 @@ func _make_navmesh() -> NavigationMesh:
 	if navmesh_template:
 		return navmesh_template.duplicate() as NavigationMesh   # keeps your tuned settings
 	var navmesh := NavigationMesh.new()
-	navmesh.agent_radius = 0.6
+	navmesh.agent_radius = 0.5
 	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
 	navmesh.geometry_collision_mask = 0b11   # layer 1 (floor) + layer 2 (houses)
 	return navmesh
