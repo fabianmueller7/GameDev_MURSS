@@ -12,6 +12,7 @@ size = Vector3(2.1, 4.2, 0.2)
 [node name="Door" type="Node3D" unique_id=1128666931]
 
 [node name="Area3D" type="Area3D" parent="." unique_id=645502569 node_paths=PackedStringArray("door_body")]
+collision_mask = 4
 script = ExtResource("2_d0tpj")
 door_body = NodePath("../StaticBody3D")
 
