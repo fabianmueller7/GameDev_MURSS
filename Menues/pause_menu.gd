@@ -18,6 +18,7 @@ func _ready() -> void:
 	
 	# Connect buttons
 	$VBoxContainer/ResumeButton.pressed.connect(_on_resume_pressed)
+	$VBoxContainer/RespawnButton.pressed.connect(_on_respawn_pressed)
 	$VBoxContainer/MenuButton.pressed.connect(_on_main_menu_pressed)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -28,6 +29,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_resume_pressed() -> void:
 	is_paused = false
+
+# In case the player got stuck: back to the start of the level without reloading it.
+# Inventory, items and enemies stay as they are; chasing enemies give up.
+func _on_respawn_pressed() -> void:
+	is_paused = false
+	var player := get_tree().get_first_node_in_group("player") as Player
+	if player:
+		player.respawn()
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if enemy.has_method("on_player_respawned"):
+			enemy.on_player_respawned()
+	GameManager.show_message.emit("You respawned at the start.")
 
 func _on_main_menu_pressed() -> void:
 	# Always unpause before changing scenes, otherwise the new scene will start frozen!

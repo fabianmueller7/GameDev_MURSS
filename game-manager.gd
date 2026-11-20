@@ -8,6 +8,8 @@ var slots: Array = []
 var slot_uses: Array = []
 var selected_slot: int = 0
 var current_level_path: String = "res://Levels/level_1.tscn"
+# Settings chosen on the Level Generator page (empty = the defaults of Tools/map_generator.tscn)
+var generator_settings: Dictionary = {}
 
 
 # Signal to notify HUD or other systems of changes

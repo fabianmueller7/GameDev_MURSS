@@ -16,4 +16,10 @@ func load_selected_level() -> void:
 	if level_resource:
 		# Instantiate it and add it as a child of the container
 		var level_instance = level_resource.instantiate()
+		# Level Generator page: build a new map from its settings instead of loading a saved level
+		var is_generator: bool = level_instance.has_method("apply_settings")
+		if is_generator:
+			level_instance.apply_settings(GameManager.generator_settings)
 		level_container.add_child(level_instance)
+		if is_generator:
+			level_instance.generate()

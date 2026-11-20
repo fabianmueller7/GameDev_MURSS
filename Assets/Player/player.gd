@@ -9,7 +9,6 @@ const SPRINT_SPEED = BASE_SPEED * 1.2  # Sprinting (Shift): 20% faster than the 
 # Stamina goes from 0.0 (empty) to 1.0 (full)
 const MAX_SPRINT_TIME = 5.0  # Seconds of sprinting with full stamina
 const STAMINA_REGEN = 0.1    # Regenerates 10% per second while not sprinting
-const JUMP_VELOCITY = 4.5
 const DROP_DISTANCE = 1.5
 const KNIFE_RANGE = 2.0
 
@@ -318,9 +317,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
