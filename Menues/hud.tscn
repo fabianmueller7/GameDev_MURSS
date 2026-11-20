@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://rffpe43am6at" path="res://Menues/hud.gd" id="1_xjmqd"]
 [ext_resource type="Script" uid="uid://b41s5uapbxghe" path="res://Menues/pause_menu.gd" id="2_msxdw"]
 [ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Menues/death_menu.gd" id="3_cbyko"]
+[ext_resource type="Script" path="res://Menues/map_overlay.gd" id="9_mapoverlay"]
 
 
 [node name="Hud" type="CanvasLayer" unique_id=1333986245]
@@ -55,6 +56,16 @@ max_value = 1.0
 step = 0.001
 value = 1.0
 show_percentage = false
+
+[node name="MapOverlay" type="Control" parent="."]
+mouse_filter = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_mapoverlay")
 
 [node name="PauseMenu" type="Control" parent="." unique_id=1062024452]
 process_mode = 3

@@ -27,7 +27,7 @@ func _ready() -> void:
 	update_inventory()
 
 	# Show the initial objective text at the beginning of the play
-	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nWASD: move   Shift: sprint   F: interact / pick up   E: use item   Q: drop   Left/Right: switch slot", 6.0)
+	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nWASD: move   Shift: sprint   F: interact / pick up   E: use item   Q: drop   Left/Right: switch slot   M: map", 6.0)
 
 func build_inventory_slots() -> void:
 	for i in GameManager.SLOT_COUNT:
