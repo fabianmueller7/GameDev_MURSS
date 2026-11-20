@@ -7,7 +7,10 @@ extends Node3D
 ##   2. Set size etc. in the inspector and press "New Map" (random seed) or "Generate" (current seed):
 ##      the map appears as a preview.
 ##   3. Press "Save Level": writes res://Levels/Generated/generated_level_<seed>.tscn with the map,
-##      a baked navmesh, the player, door + end zone and item markers. Enemies are not placed yet.
+##      a baked navmesh, the player, door + end zone, item markers and enemies with patrol routes.
+##
+## In the game: the "Level Generator" page (Menues/level_generator.tscn) sets the values listed in
+## SETTING_NAMES and plays the map right away (game_container.gd calls apply_settings() + generate()).
 ##
 ## Layout: a maze on a grid (randomized depth-first search) with some extra connections (loops)
 ## and optionally one 2x2 plaza. Every cell then gets a tile whose open sides match its connections.
@@ -38,6 +41,14 @@ const DIRS := {"N": Vector2i(0, -1), "S": Vector2i(0, 1), "E": Vector2i(1, 0), "
 const OPPOSITE := {"N": "S", "S": "N", "E": "W", "W": "E"}
 # Loops never remove dead ends below this number (start, goal and item spots live there)
 const MIN_DEAD_ENDS := 3
+
+# Settings the in-game Level Generator page can change (plain values only, no scenes)
+const SETTING_NAMES: Array[String] = [
+	"map_seed", "width", "height", "loop_chance", "with_plaza", "coin_markers",
+	"enemy_density", "base_share", "paranoid_share", "watchman_share", "dog_share",
+	"base_reach", "paranoid_reach", "dog_reach", "watchman_reach",
+	"min_steps_from_start", "enemy_spawn_height",
+]
 
 # Door position in a dead-end tile (entry at +Z), door scene spans x 0..2.1 from its origin
 const DOOR_LOCAL := Vector3(-1.05, 0.0, 5.5)
@@ -146,9 +157,23 @@ func save_level() -> void:
 	if err != OK:
 		push_error("Map generator: could not save %s (%s)" % [path, error_string(err)])
 		return
-	if Engine.is_editor_hint():
-		EditorInterface.get_resource_filesystem().scan()
+	# (EditorInterface via Engine: the name does not exist in exported games and would break the script)
+	if Engine.is_editor_hint() and Engine.has_singleton("EditorInterface"):
+		Engine.get_singleton("EditorInterface").get_resource_filesystem().scan()
 	print("Map generator: saved ", path)
+
+
+func get_settings() -> Dictionary:
+	var settings := {}
+	for setting in SETTING_NAMES:
+		settings[setting] = get(setting)
+	return settings
+
+
+func apply_settings(settings: Dictionary) -> void:
+	for setting in settings:
+		if SETTING_NAMES.has(setting):
+			set(setting, settings[setting])
 
 
 func clear_preview() -> void:
@@ -281,11 +306,12 @@ func _collect_tile_files() -> Dictionary:
 	for shape in SHAPE_PREFIX:
 		files[shape] = []
 	for f in DirAccess.get_files_at(TILE_DIR):
-		if not f.ends_with(".tscn"):
+		var file := f.trim_suffix(".remap")   # exported games list scenes as .tscn.remap
+		if not file.ends_with(".tscn"):
 			continue
 		for shape in SHAPE_PREFIX:
-			if f.begins_with(SHAPE_PREFIX[shape]):
-				files[shape].append(TILE_DIR + "/" + f)
+			if file.begins_with(SHAPE_PREFIX[shape]):
+				files[shape].append(TILE_DIR + "/" + file)
 	for shape in files:
 		files[shape].sort()  # same order on every machine, so a seed always gives the same map
 		if files[shape].is_empty() and (shape != "plaza" or with_plaza):

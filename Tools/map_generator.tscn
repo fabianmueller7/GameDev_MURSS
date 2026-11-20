@@ -8,9 +8,14 @@
 
 [node name="MapGenerator" type="Node3D" unique_id=1713565584]
 script = ExtResource("1_gen")
-map_seed = 318082
+map_seed = 421275
+width = 7
+height = 7
+loop_chance = 0.2
+coin_markers = 3
 base_enemy = ExtResource("2_24v51")
 paranoid_enemy = ExtResource("3_uwdvt")
 watchman = ExtResource("4_5erfd")
 guard_dog = ExtResource("5_dmi27")
+watchman_share = 0.15
 dog_reach = 3

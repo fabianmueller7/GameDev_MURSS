@@ -295,6 +295,14 @@ func _end_distraction() -> void:
 	_return_to_patrol()
 
 
+# The player respawned at the start (pause menu "Respawn"): stop chasing and leave them alone for a moment
+func on_player_respawned() -> void:
+	attacking = false
+	if chasing:
+		_stop_chase()
+	cooldown_timer = give_up_cooldown
+
+
 func _stop_chase() -> void:
 	chasing = false
 	is_alerted_from_afar = false

@@ -95,6 +95,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Continue"
 
+[node name="RespawnButton" type="Button" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Respawn"
+
 [node name="MenuButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=1592274633]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
