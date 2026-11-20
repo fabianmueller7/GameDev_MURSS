@@ -91,9 +91,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05, 0, -2.6)
 
 [node name="Grave11" parent="Props" unique_id=1067336646 instance=ExtResource("4_gravestonetscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.05, 0, -4.7)
+collision_layer = 0
 
 [node name="Grave12" parent="Props" unique_id=770257836 instance=ExtResource("5_gravecrosstscn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.05, 0, -2.6)
+collision_layer = 0
 
 [node name="CandleStick_Stand1" type="StaticBody3D" parent="Props" unique_id=1637261424]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 0.75)

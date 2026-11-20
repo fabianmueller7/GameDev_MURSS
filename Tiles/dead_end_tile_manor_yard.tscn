@@ -439,4 +439,4 @@ light_color = Color(1, 0.7, 0.4, 1)
 omni_range = 4.5
 
 [node name="ItemSpawn" type="Marker3D" parent="." unique_id=1271046360]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.85, 0.5, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.85, 0.5, 1.1330404)
