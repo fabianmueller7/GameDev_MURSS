@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://cr523uenw7yqq"]
 
+[ext_resource type="Material" path="res://Assets/BuiltAssets/floor_brick_light.tres" id="1_floormat"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ifpyu"]
 size = Vector3(12, 0.2, 12)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ifpyu"]
+material = ExtResource("1_floormat")
 size = Vector3(12, 0.2, 12)
 
 [node name="Floor" type="Node3D" unique_id=1785901491 groups=["navigation_mesh_source_group"]]
