@@ -1,7 +1,7 @@
 class_name GuardDogComponent
 extends Node
 
-@export var hearing_radius := 6.0
+@export var hearing_radius := 5.0
 
 # Barking while hunting the player
 @export var bark_sounds: Array[AudioStream] = [

@@ -4,12 +4,12 @@ extends CharacterBody3D
 @export var patrol_points: Array[Node3D] = []
 @export var patrol_speed := 2.0
 @export var chase_speed := 4.5
-@export var detect_range := 8.0
+@export var detect_range := 7.0
 @export var lose_range := 12.0
 @export var max_chase_time := 7.0
 @export var give_up_cooldown := 3.0
 @export var view_angle := 35.0
-@export var catch_distance := 1.2
+@export var catch_distance := 1.4
 @export var eye_height := 0.5
 
 # Path following: keep away from corners without changing the navmesh agent radius
@@ -271,7 +271,7 @@ func _update_chase_state(delta: float) -> void:
 		var spotted := false
 
 		# Standard sight check
-		if distance < detect_range and in_view and _can_see_player():
+		if distance < _current_detect_range() and in_view and _can_see_player():
 			spotted = true
 
 		# Delegate detection rules if the Guard Dog component is attached
@@ -328,9 +328,19 @@ func _current_view_angle() -> float:
 	return distracted_view_angle if distracted else view_angle
 
 
-# The spotlight smoothly follows the current field of view
+# Paranoid guards see less far while looking back over their shoulder. The look-back only
+# happens on the normal patrol, so it doesn't count while chasing, distracted or investigating.
+func _current_detect_range() -> float:
+	if paranoid_component and not chasing and not distracted and investigate_timer <= 0.0:
+		return detect_range * paranoid_component.detect_range_scale()
+	return detect_range
+
+
+# The spotlight smoothly follows the current field of view and range
 func _update_view_cone(delta: float) -> void:
-	vision_light.spot_angle = lerpf(vision_light.spot_angle, _current_view_angle(), minf(delta * 5.0, 1.0))
+	var t := minf(delta * 5.0, 1.0)
+	vision_light.spot_angle = lerpf(vision_light.spot_angle, _current_view_angle(), t)
+	vision_light.spot_range = lerpf(vision_light.spot_range, _current_detect_range(), t)
 
 
 # Called by a thrown coin that landed nearby
