@@ -7,7 +7,7 @@
 [sub_resource type="PrismMesh" id="PrismMesh_44ru2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2oc5h"]
-size = Vector3(0.5087738, 0.50341797, 0.4945984)
+size = Vector3(0.4, 0.503, 0.4)
 
 [node name="GuardDog" unique_id=248082598 instance=ExtResource("1_o88y2")]
 patrol_speed = 3.5
@@ -24,7 +24,7 @@ transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 mesh = SubResource("PrismMesh_44ru2")
 
 [node name="CollisionShape3D" parent="." index="1" unique_id=1885320086]
-transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0.0004043579, -0.0036621094, -0.0071868896)
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, 0, 0)
 shape = SubResource("BoxShape3D_2oc5h")
 
 [node name="GuardDogComponent" type="Node" parent="." index="4" unique_id=1726390483]

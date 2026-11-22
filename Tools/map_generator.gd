@@ -95,6 +95,9 @@ const ITEM_SPAWNER_SCRIPT := "res://item_spawner.gd"
 @export_range(0, 8) var min_steps_from_start := 1
 ## Spawn height above the navmesh
 @export var enemy_spawn_height := 0.0
+## Watchmen stand still, so they are only placed where the player can walk around them.
+## Room the player keeps from the watchtower on the way around (on top of both collision radii)
+@export var watchman_pass_margin := 0.3
 ## Optional: a NavigationMesh with settings you tuned (agent radius, layers, ...). It is copied for every bake.
 @export var navmesh_template: NavigationMesh
 
@@ -114,6 +117,7 @@ var _nav_polys: Array[PackedVector2Array] = []
 var _nav_rects: Array[Rect2] = []
 var _nav_comp: Array[int] = []       # connected piece each polygon belongs to
 var _nav_height: Array[float] = []
+var _start_comp := -1                # connected piece of the navmesh the player starts on
 
 
 # ---------------------------------------------------------------- buttons
@@ -522,6 +526,11 @@ func _make_navmesh() -> NavigationMesh:
 		return navmesh_template.duplicate() as NavigationMesh   # keeps your tuned settings
 	var navmesh := NavigationMesh.new()
 	navmesh.agent_radius = 0.5
+	# CharacterBody3D can't step up. With the default of 0.25 low props (crates) count as walkable,
+	# the path leads over them and the enemies get stuck in front of them. All floors are at the
+	# same height (slopes are covered by agent_max_slope), so no climbing is needed. Godot floors
+	# this value to whole cell_height steps anyway, so e.g. 0.1 would also end up as 0.
+	navmesh.agent_max_climb = 0.0
 	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
 	navmesh.geometry_collision_mask = 0b11   # layer 1 (floor) + layer 2 (houses)
 	return navmesh
@@ -576,7 +585,12 @@ func _place_enemies(navmesh: NavigationMesh) -> void:
 				stops = _patrol_cells(cell, def.reach)
 				if stops.size() < 2:
 					continue   # would just stand there: try the next cell
-			_spawn_enemy(def, cell, stops, taken.size())
+			var spot: Variant = null
+			if def.name == "watchman":
+				spot = _watchman_spot(cell, def.scene)
+				if spot == null:
+					continue   # no room to walk around it in this cell (e.g. a narrow street): try the next cell
+			_spawn_enemy(def, cell, stops, taken.size(), spot)
 			taken.append(cell)
 			var d := _distances(cell)
 			for c in d:
@@ -652,12 +666,15 @@ func _patrol_cells(origin: Vector2i, reach: int) -> Array[Vector2i]:
 	return stops
 
 
-func _spawn_enemy(def: Dictionary, cell: Vector2i, stops: Array[Vector2i], index: int) -> void:
+func _spawn_enemy(def: Dictionary, cell: Vector2i, stops: Array[Vector2i], index: int, spot: Variant = null) -> void:
 	var enemy := (def.scene as PackedScene).instantiate() as Node3D
 	enemy.name = "%s_%02d" % [def.name, index]
 	_add(enemy, _enemies_root)
-	var c := _cell_center(cell)
-	enemy.position = Vector3(c.x, _walkable[cell] + enemy_spawn_height, c.y)
+	if spot != null:
+		enemy.position = (spot as Vector3) + Vector3.UP * enemy_spawn_height
+	else:
+		var c := _cell_center(cell)
+		enemy.position = Vector3(c.x, _walkable[cell] + enemy_spawn_height, c.y)
 
 	if stops.is_empty():
 		return   # watchman: stands still
@@ -674,6 +691,76 @@ func _spawn_enemy(def: Dictionary, cell: Vector2i, stops: Array[Vector2i], index
 	enemy.set("patrol_points", markers)
 
 
+# ---- watchman placement ----
+
+const WATCHMAN_RING_SAMPLES := 48
+var _radius_cache := {}
+
+# The spot in this cell closest to its centre where a watchtower doesn't block the way, or null.
+# The player's centre can come no closer to the tower than both collision radii (+ margin): on
+# that circle around the tower the player has to find a way past it.
+func _watchman_spot(cell: Vector2i, scene: PackedScene) -> Variant:
+	var ring := _collision_radius(scene) + _collision_radius(load(PLAYER_SCENE)) + watchman_pass_margin
+	var c := _cell_center(cell)
+	var offsets: Array[Vector2] = []
+	var steps := int(TILE_SIZE * 0.5) - 1   # 1 m grid over the cell, not right at its edge
+	for ix in range(-steps, steps + 1):
+		for iz in range(-steps, steps + 1):
+			offsets.append(Vector2(ix, iz))
+	offsets.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.length_squared() < b.length_squared())
+
+	for off in offsets:
+		var p := c + off
+		var i := _nav_poly_at(p.x, p.y)
+		if i < 0 or _nav_comp[i] != _start_comp:
+			continue
+		if _can_walk_around(p, ring):
+			return Vector3(p.x, _nav_height[i], p.y)
+	return null
+
+
+# Looks at the circle the player walks on around the tower and counts its walkable stretches:
+#   all of it walkable -> open space all around: fine
+#   one stretch        -> the tower stands at a wall, the player passes on the open side: fine
+#   two or more        -> the tower plugs a street, the parts on both sides only meet through it
+func _can_walk_around(center: Vector2, radius: float) -> bool:
+	var free: Array[bool] = []
+	for k in WATCHMAN_RING_SAMPLES:
+		var a := TAU * k / WATCHMAN_RING_SAMPLES
+		var q := center + Vector2(cos(a), sin(a)) * radius
+		var i := _nav_poly_at(q.x, q.y)
+		free.append(i >= 0 and _nav_comp[i] == _start_comp)
+
+	var stretches := 0
+	for k in WATCHMAN_RING_SAMPLES:
+		if free[k] and not free[k - 1]:   # free[-1] is the last sample: the circle wraps around
+			stretches += 1
+	if stretches == 0:
+		return free[0]   # all walkable or all blocked
+	return stretches == 1
+
+
+# Radius of the scene's collision shape on the ground (scale included)
+func _collision_radius(scene: PackedScene) -> float:
+	if _radius_cache.has(scene):
+		return _radius_cache[scene]
+	var radius := 0.5
+	var node := scene.instantiate()
+	for child in node.get_children():
+		if child is CollisionShape3D and child.shape:
+			var s: Vector3 = child.scale
+			var shape: Shape3D = child.shape
+			if shape is CapsuleShape3D or shape is CylinderShape3D or shape is SphereShape3D:
+				radius = shape.radius * maxf(s.x, s.z)
+			elif shape is BoxShape3D:
+				# Corner of the box: it can stand rotated
+				radius = Vector2(shape.size.x * s.x, shape.size.z * s.z).length() * 0.5
+			break
+	node.free()
+	_radius_cache[scene] = radius
+	return radius
+
+
 # ---- navmesh analysis (reads the baked polygons, no NavigationServer needed) ----
 
 # Cells whose centre lies on the part of the navmesh that is connected to the player start
@@ -684,6 +771,7 @@ func _find_walkable_cells(navmesh: NavigationMesh) -> Dictionary:
 	if start_poly < 0:
 		push_warning("Map generator: the player start is not on the navmesh, no enemies placed")
 		return {}
+	_start_comp = _nav_comp[start_poly]
 
 	var cells := {}
 	for cell: Vector2i in _open:
