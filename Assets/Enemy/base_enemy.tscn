@@ -6,6 +6,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_n0ixs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7xya6"]
+radius = 0.35
 
 [node name="BaseEnemy" type="CharacterBody3D" unique_id=248082598 groups=["enemy"]]
 collision_layer = 8

@@ -522,6 +522,11 @@ func _make_navmesh() -> NavigationMesh:
 		return navmesh_template.duplicate() as NavigationMesh   # keeps your tuned settings
 	var navmesh := NavigationMesh.new()
 	navmesh.agent_radius = 0.5
+	# CharacterBody3D can't step up. With the default of 0.25 low props (crates) count as walkable,
+	# the path leads over them and the enemies get stuck in front of them. All floors are at the
+	# same height (slopes are covered by agent_max_slope), so no climbing is needed. Godot floors
+	# this value to whole cell_height steps anyway, so e.g. 0.1 would also end up as 0.
+	navmesh.agent_max_climb = 0.0
 	navmesh.geometry_parsed_geometry_type = NavigationMesh.PARSED_GEOMETRY_STATIC_COLLIDERS
 	navmesh.geometry_collision_mask = 0b11   # layer 1 (floor) + layer 2 (houses)
 	return navmesh

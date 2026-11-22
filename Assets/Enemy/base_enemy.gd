@@ -12,6 +12,12 @@ extends CharacterBody3D
 @export var catch_distance := 1.2
 @export var eye_height := 0.5
 
+# Path following: keep away from corners without changing the navmesh agent radius
+@export var nav_agent_radius := 0.5   # Must match agent_radius of the NavigationMesh
+@export var corner_clearance := 0.2   # Extra distance kept from corners, on top of the radius difference
+@export var waypoint_slack := 0.15    # A path point counts as reached this close (measured on the ground)
+@export var stuck_time := 0.8         # Seconds barely moving before a patrolling enemy skips its waypoint
+
 @export var patrol_color := Color(0.8, 0.15, 0.15)
 @export var chase_color := Color(1.0, 0.5, 0.0)
 
@@ -57,6 +63,11 @@ var distract_target: Vector3
 var distract_arrived := false
 var distract_stuck_timer := 0.0
 
+# How much fatter the enemy is than the navmesh assumes, and how long it has been stuck
+var radius_gap := 0.0
+var stuck_timer := 0.0
+var path_point := 0              # Index of the path point we are walking to (see _steer_point)
+
 # References to optional aggregated components found in children
 var paranoid_component: Node = null
 var dog_component: Node = null
@@ -79,6 +90,14 @@ func _ready() -> void:
 	vision_light.spot_range = detect_range
 	vision_light.spot_angle = view_angle
 	vision_light.light_color = patrol_color
+
+	# The navmesh keeps paths nav_agent_radius away from walls. If the capsule is wider,
+	# the difference is added to every corner, so the body still clears the wall.
+	radius_gap = maxf(_body_radius(self) - nav_agent_radius, 0.0)
+	# We step through the path ourselves (see _steer_point), the agent's own index is not used
+	agent.path_changed.connect(func() -> void: path_point = 0)
+	# Targets close to a wall (waypoints, coins) can be up to radius_gap out of the capsule's reach
+	agent.target_desired_distance = maxf(agent.target_desired_distance, radius_gap + 0.25)
 
 	# Aggregate components dynamically from children nodes
 	paranoid_component = get_node_or_null("ParanoidComponent")
@@ -131,7 +150,7 @@ func _move(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 	else:
-		var direction := agent.get_next_path_position() - global_position
+		var direction := _steer_point() - global_position
 		direction.y = 0
 		direction = direction.normalized()
 		
@@ -147,6 +166,73 @@ func _move(delta: float) -> void:
 			look_at(global_position + direction, Vector3.UP)
 
 	move_and_slide()
+	_check_stuck(delta, speed)
+
+
+# Wants to walk but hardly moves (e.g. a gap the navmesh allows but the capsule doesn't fit
+# through): a patrolling enemy gives up on this waypoint and walks to the next one.
+# Chasing ends on its own through max_chase_time, coins through distract_stuck_timer.
+func _check_stuck(delta: float, speed: float) -> void:
+	var real := get_real_velocity()
+	real.y = 0
+	var trying := speed > 0.0 and not agent.is_navigation_finished()
+	stuck_timer = stuck_timer + delta if trying and real.length() < speed * 0.25 else 0.0
+	if stuck_timer > stuck_time:
+		stuck_timer = 0.0
+		if not chasing and not distracted and _patrol_count() > 1:
+			patrol_index = (patrol_index + 1) % _patrol_count()
+			agent.target_position = _patrol_pos(patrol_index)
+
+
+# The point the enemy actually walks to: the next point of the path, but at a corner pushed away
+# from the wall the path bends around.
+# We step through the path ourselves instead of using the agent's path index: the agent compares
+# 3D distances, and since our origin sits in the middle of the body while the navmesh floats at a
+# varying height above the floor, a small path_desired_distance would often never be reached.
+# Here only the distance on the ground counts.
+func _steer_point() -> Vector3:
+	agent.get_next_path_position()  # Must be called every frame: keeps the agent's path up to date
+	var path := agent.get_current_navigation_path()
+	if path.is_empty():
+		return global_position
+	path_point = clampi(path_point, 0, path.size() - 1)
+	var target := _path_target(path, path_point)
+	while path_point < path.size() - 1 and _flat_distance_to(target) < waypoint_slack:
+		path_point += 1
+		target = _path_target(path, path_point)
+	return target
+
+
+func _path_target(path: PackedVector3Array, i: int) -> Vector3:
+	if i <= 0 or i >= path.size() - 1:
+		return path[i]  # Start or final target: nothing to round
+	return _offset_corner(path[i - 1], path[i], path[i + 1])
+
+
+func _flat_distance_to(point: Vector3) -> float:
+	var d := point - global_position
+	d.y = 0
+	return d.length()
+
+
+func _offset_corner(prev: Vector3, corner: Vector3, next: Vector3) -> Vector3:
+	var to_prev := prev - corner
+	var to_next := next - corner
+	to_prev.y = 0
+	to_next.y = 0
+	if to_prev.length() < 0.01 or to_next.length() < 0.01:
+		return corner
+	# The two directions add up to a vector pointing into the obstacle the path wraps around
+	var inward := to_prev.normalized() + to_next.normalized()
+	if inward.length() < 0.1:
+		return corner  # Nearly straight: no real corner here
+	var pushed := corner - inward.normalized() * _corner_offset()
+	# In narrow corridors the push could leave the navmesh: clamp it back onto it
+	return NavigationServer3D.map_get_closest_point(agent.get_navigation_map(), pushed)
+
+
+func _corner_offset() -> float:
+	return radius_gap + corner_clearance
 
 
 func _update_chase_state(delta: float) -> void:
@@ -298,6 +384,7 @@ func _end_distraction() -> void:
 # The player respawned at the start (pause menu "Respawn"): stop chasing and leave them alone for a moment
 func on_player_respawned() -> void:
 	attacking = false
+	stuck_timer = 0.0
 	if chasing:
 		_stop_chase()
 	cooldown_timer = give_up_cooldown
