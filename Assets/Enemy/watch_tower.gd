@@ -4,6 +4,7 @@ extends Enemy
 @export var rotation_interval := 5.0  # Time spent looking in one direction
 @export var rotation_angle_step := 90.0 # Degrees to rotate each interval
 @export var alarm_hold_time := 1.0      # Keeps ringing this long after losing sight of the player
+@export var alert_radius := 36.0        # Only guards this close (on the ground, 3 cells of 12 m) hear the alarm
 
 var watch_timer := 0.0
 var target_yaw := 0.0
@@ -78,9 +79,9 @@ func _update_chase_state(delta: float) -> void:
 func _alert_nearby_guards() -> void:
 	alarm_timer = alarm_hold_time
 	print("Watchtower spotted the player! Alerting guards...")
-	# Find all enemies in a radius or group and force them to chase
+	# Only the guards within alert_radius hear the bell and join the chase
 	for node in get_tree().get_nodes_in_group("enemy"):
-		if node is Enemy and not node is Watchtower:
+		if node is Enemy and not node is Watchtower and _flat_distance_to(node.global_position) <= alert_radius:
 			node.ordered_to_chase(player)
 
 
