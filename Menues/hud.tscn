@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b41s5uapbxghe" path="res://Menues/pause_menu.gd" id="2_msxdw"]
 [ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Menues/death_menu.gd" id="3_cbyko"]
 [ext_resource type="Script" path="res://Menues/map_overlay.gd" id="9_mapoverlay"]
+[ext_resource type="Script" path="res://Menues/victory_menu.gd" id="4_victory"]
 
 
 [node name="Hud" type="CanvasLayer" unique_id=1333986245]
@@ -156,6 +157,50 @@ theme_override_font_sizes/font_size = 32
 text = "Try again"
 
 [node name="MenuButton" type="Button" parent="DeathMenu/VBoxContainer" unique_id=671019604]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "To Main menu"
+
+[node name="VictoryMenu" type="Control" parent="."]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_victory")
+
+[node name="ColorRect" type="ColorRect" parent="VictoryMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.13, 0.25, 0.16, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryMenu"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -119.0
+offset_right = 316.0
+offset_bottom = 119.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VictoryMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Mission accomplished!"
+
+[node name="RestartButton" type="Button" parent="VictoryMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Restart level"
+
+[node name="MenuButton" type="Button" parent="VictoryMenu/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "To Main menu"
