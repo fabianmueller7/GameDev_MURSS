@@ -26,8 +26,10 @@ const SHAPE_PREFIX := {
 	"t": "t_tile_",
 	"cross": "x_tile_",
 	"plaza": "plaza_tile_",
+	"end": "end_tile_",
 }
 # Open sides of each shape as the tiles are built (before rotating). N = -Z, S = +Z, E = +X, W = -X
+# End tiles (the goal with the city gate) are built like dead ends: open to S only.
 const DEFAULT_OPEN := {
 	"dead_end": ["S"],
 	"straight": ["N", "S"],
@@ -318,7 +320,8 @@ func _collect_tile_files() -> Dictionary:
 				files[shape].append(TILE_DIR + "/" + file)
 	for shape in files:
 		files[shape].sort()  # same order on every machine, so a seed always gives the same map
-		if files[shape].is_empty() and (shape != "plaza" or with_plaza):
+		var optional: bool = shape == "end" or (shape == "plaza" and not with_plaza)
+		if files[shape].is_empty() and not optional:
 			push_error("Map generator: no tiles found for '%s' (%s*.tscn in %s)" % [shape, SHAPE_PREFIX[shape], TILE_DIR])
 			return {}
 	return files
@@ -347,6 +350,9 @@ func _build_level(files: Dictionary) -> void:
 	map.name = "Map"
 	_add(map, nav)
 
+	# Start and goal first: the goal cell gets an end tile (city gate) instead of a normal dead end
+	_choose_start_goal()
+
 	# Tiles
 	_tiles.clear()
 	for y in height:
@@ -363,6 +369,8 @@ func _build_level(files: Dictionary) -> void:
 				continue
 			var shape_rot := _shape_for(_open[cell])
 			var shape: String = shape_rot[0]
+			if cell == _goal and shape == "dead_end" and not files["end"].is_empty():
+				shape = "end"   # same open side as a dead end, so the same rotation fits
 			var tile := _add_tile(_pick(files[shape]), map, "%s_%d_%d" % [shape, x, y])
 			tile.position = Vector3(x * TILE_SIZE, 0, y * TILE_SIZE)
 			tile.rotation.y = deg_to_rad(90 * shape_rot[1])
@@ -409,8 +417,8 @@ func _spot(cell: Vector2i) -> Vector3:
 	return Vector3(cell.x * TILE_SIZE, 0.5, cell.y * TILE_SIZE)
 
 
-func _place_gameplay() -> void:
-	# Start and goal: the two dead ends that are farthest apart
+# Start and goal: the two dead ends that are farthest apart (the player always starts in a dead end)
+func _choose_start_goal() -> void:
 	var dead_ends: Array[Vector2i] = []
 	for cell in _open:
 		if _is_dead_end(cell):
@@ -438,13 +446,26 @@ func _place_gameplay() -> void:
 	_start = start
 	_goal = goal
 
+
+func _place_gameplay() -> void:
+	var start := _start
+	var goal := _goal
+
 	# Player
 	var player: Node3D = load(PLAYER_SCENE).instantiate()
 	player.name = "Player"
 	_add(player, _level)
 	player.position = _spot(start) + Vector3(0, 0.5, 0)
 
-	# Goal: end zone inside the goal dead end, door at its entry (the key opens it)
+	# Goal: the end tile brings its own city gate (opened with the key) and end zone behind it
+	if _tiles[goal].find_child("EndZone", true, false) == null:
+		_place_door_and_end_zone(goal)
+
+	_place_item_markers(start, goal)
+
+
+# Fallback without end tiles: end zone inside the goal dead end, door at its entry (the key opens it)
+func _place_door_and_end_zone(goal: Vector2i) -> void:
 	var end_zone: Node3D = load(END_ZONE_SCENE).instantiate()
 	end_zone.name = "EndZone"
 	_add(end_zone, _level)
@@ -458,6 +479,8 @@ func _place_gameplay() -> void:
 	else:
 		push_warning("Map generator: the goal is not a dead end, no door placed")
 
+
+func _place_item_markers(start: Vector2i, goal: Vector2i) -> void:
 	# Item markers: key and bomb far away from the start, dead ends first; coins anywhere else
 	var from_start := _distances(start)
 	var cells: Array[Vector2i] = []
@@ -855,6 +878,6 @@ func _layout_ascii() -> String:
 			mid += (" " if sides.has("W") else "|") + c + (" " if sides.has("E") else "|")
 		lines.append(top)
 		lines.append(mid)
-	lines.append("S = start  Z = goal (door + end zone)  * = dead end  P = plaza  + = street")
+	lines.append("S = start  Z = goal (city gate / door + end zone)  * = dead end  P = plaza  + = street")
 	lines.append("Start cell %s, goal cell %s, %d steps apart" % [_start, _goal, _distances(_start).get(_goal, -1)])
 	return "\n".join(lines)

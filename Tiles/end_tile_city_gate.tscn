@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://cr523uenw7yqq" path="res://Assets/BuiltAssets/tile_floor.tscn" id="1_floor"]
+[ext_resource type="PackedScene" uid="uid://bdv8ifo8w2083" path="res://Assets/BuiltAssets/wall.tscn" id="2_fence"]
+[ext_resource type="PackedScene" uid="uid://74r5iippio14" path="res://Assets/BuiltAssets/cottage_small.tscn" id="3_cottage"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/city_gate.tscn" id="4_gate"]
+[ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="5_barrel"]
+
+[node name="EndTileCityGate" type="Node3D"]
+
+[node name="Floor" parent="." instance=ExtResource("1_floor")]
+
+[node name="CityGate" parent="." instance=ExtResource("4_gate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="CottageWest" parent="Buildings" instance=ExtResource("3_cottage")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7, 0, 3.7)
+
+[node name="CottageEast" parent="Buildings" instance=ExtResource("3_cottage")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3.7, 0, 3.7)
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="FenceEntryWest" parent="Walls" instance=ExtResource("2_fence")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 5.85)
+
+[node name="FenceEntryEast" parent="Walls" instance=ExtResource("2_fence")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 5.85)
+
+[node name="FenceWest" parent="Walls" instance=ExtResource("2_fence")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.85, 0, -1.4)
+
+[node name="FenceEast" parent="Walls" instance=ExtResource("2_fence")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5.85, 0, -1.4)
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="HidingBarrel1" parent="Props" instance=ExtResource("5_barrel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, -3.2)
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="Light1" type="OmniLight3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 2.5)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 0.6
+omni_range = 4.0
