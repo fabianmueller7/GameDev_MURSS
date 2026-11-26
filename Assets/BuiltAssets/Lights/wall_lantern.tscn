@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://bbv0onm8yufrl" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Lantern_Wall.gltf" id="1_lantern"]
+[ext_resource type="Script" uid="uid://brlix78cixhda" path="res://Assets/flicker_light.gd" id="2_flicker"]
+
+[sub_resource type="StandardMaterial3D" id="Flame"]
+shading_mode = 0
+albedo_color = Color(1, 0.78, 0.4, 1)
+
+[sub_resource type="SphereMesh" id="FlameMesh"]
+material = SubResource("Flame")
+radius = 0.06
+height = 0.16
+radial_segments = 8
+rings = 4
+
+[node name="WallLantern" type="Node3D"]
+
+[node name="Lantern" parent="." instance=ExtResource("1_lantern")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+
+[node name="Flame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.6)
+mesh = SubResource("FlameMesh")
+
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.6)
+light_color = Color(1, 0.7, 0.4, 1)
+light_energy = 1.0
+omni_range = 5.0
+script = ExtResource("2_flicker")

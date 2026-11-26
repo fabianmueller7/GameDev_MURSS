@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Assets/BuiltAssets/Lights/window_light.gd" id="1_window"]
+[ext_resource type="Script" uid="uid://brlix78cixhda" path="res://Assets/flicker_light.gd" id="2_flicker"]
+
+[node name="WindowLight" type="Node3D"]
+script = ExtResource("1_window")
+
+[node name="Light" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0.7)
+light_color = Color(1, 0.72, 0.45, 1)
+light_energy = 0.75
+omni_range = 4.0
+script = ExtResource("2_flicker")
+energy_variation = 0.04
+speed = 1.0
+gust_chance = 0.0

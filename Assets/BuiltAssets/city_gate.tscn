@@ -6,6 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://b7r5vdffdmb1s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Torch_Metal.gltf" id="4_torch"]
 [ext_resource type="Script" uid="uid://dxeem2hat86te" path="res://Assets/BuiltAssets/door-trigger.gd" id="5_trigger"]
 [ext_resource type="PackedScene" uid="uid://dx2cbpgbikrfp" path="res://Assets/BuiltAssets/end_zone.tscn" id="6_endzone"]
+[ext_resource type="Script" path="res://Assets/flicker_light.gd" id="99_flicker"]
+
+[sub_resource type="StandardMaterial3D" id="TorchFlame"]
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.25, 1)
+
+[sub_resource type="SphereMesh" id="TorchFlameMesh"]
+material = SubResource("TorchFlame")
+radius = 0.09
+height = 0.32
+radial_segments = 8
+rings = 4
 
 [sub_resource type="BoxShape3D" id="Box_WallSide"]
 size = Vector3(4.7, 6.24, 0.8)
@@ -78,14 +90,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.2, 0.15)
 [node name="TorchRight" parent="." instance=ExtResource("4_torch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.2, 0.15)
 
+[node name="FlameTorchLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.65, 0.4)
+mesh = SubResource("TorchFlameMesh")
+
 [node name="LightLeft" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.6, 0.7)
+script = ExtResource("99_flicker")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.7, 0.55)
 light_color = Color(1, 0.62, 0.3, 1)
 light_energy = 1.2
 omni_range = 5.0
 
+[node name="FlameTorchRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.65, 0.4)
+mesh = SubResource("TorchFlameMesh")
+
 [node name="LightRight" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.6, 0.7)
+script = ExtResource("99_flicker")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.7, 0.55)
 light_color = Color(1, 0.62, 0.3, 1)
 light_energy = 1.2
 omni_range = 5.0

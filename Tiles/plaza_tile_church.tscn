@@ -17,6 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="15_benchgltf"]
 [ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="16_hidingbarrelts"]
 [ext_resource type="PackedScene" uid="uid://ck05mfmmj4m8s" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bag.gltf" id="17_baggltf"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/candle_light.tscn" id="98_candlelight"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/lamp_post.tscn" id="98_lamppost"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/wall_lantern.tscn" id="98_walllantern"]
 
 [sub_resource type="BoxShape3D" id="Box_CandleStick_Stand1"]
 size = Vector3(0.7323, 1.3046, 0.7313)
@@ -302,53 +305,29 @@ shape = SubResource("Box_Bag1")
 
 [node name="Lights" type="Node3D" parent="." unique_id=1402708728]
 
-[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=1269193434]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.6, 1.6)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="CandleLight1" parent="Lights" instance=ExtResource("98_candlelight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 1.6)
 
-[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1328867810]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 1.6, 1.6)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="CandleLight2" parent="Lights" instance=ExtResource("98_candlelight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 0, 1.6)
 
-[node name="Light3" type="OmniLight3D" parent="Lights" unique_id=584042153]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 5.5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="LampPost1" parent="Lights" instance=ExtResource("98_lamppost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 5.5)
 
-[node name="Light4" type="OmniLight3D" parent="Lights" unique_id=188484110]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.8, 0)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="LampPost2" parent="Lights" instance=ExtResource("98_lamppost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
 
-[node name="Light5" type="OmniLight3D" parent="Lights" unique_id=47055351]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.8, 0)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="LampPost3" parent="Lights" instance=ExtResource("98_lamppost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
 
-[node name="Light6" type="OmniLight3D" parent="Lights" unique_id=1352517159]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.8, 9)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="LampPost4" parent="Lights" instance=ExtResource("98_lamppost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 9)
 
-[node name="Light7" type="OmniLight3D" parent="Lights" unique_id=1940880823]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.8, 9)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="WallLantern1" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.0576, 1.9, 9)
 
-[node name="Light8" type="OmniLight3D" parent="Lights" unique_id=1060340575]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.8, -9.5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 5.5
+[node name="WallLantern2" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.0732, 1.9, -10.0701)
 
 [node name="PatrolPoints" type="Node3D" parent="." unique_id=1819470629]
 

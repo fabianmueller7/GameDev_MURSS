@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ceufi88i5mg3f" path="res://Assets/BuiltAssets/gravestone.tscn" id="4_gravestonetscn"]
 [ext_resource type="PackedScene" uid="uid://cj6kckbsu1rk0" path="res://Assets/BuiltAssets/grave_cross.tscn" id="5_gravecrosstscn"]
 [ext_resource type="PackedScene" uid="uid://cws3cs4wiehch" path="res://Assets/Medival Props/MegaKit/Exports/glTF/CandleStick_Stand.gltf" id="6_candlesticksta"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/candle_light.tscn" id="98_candlelight"]
 
 [sub_resource type="BoxShape3D" id="Box_CandleStick_Stand1"]
 size = Vector3(0.7323, 1.3046, 0.7313)
@@ -119,17 +120,11 @@ shape = SubResource("Box_CandleStick_Stand2")
 
 [node name="Lights" type="Node3D" parent="." unique_id=370012851]
 
-[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=1499088621]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 1.5, 0.75)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="CandleLight1" parent="Lights" instance=ExtResource("98_candlelight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 0.75)
 
-[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=94757249]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 1.5, 0.75)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="CandleLight2" parent="Lights" instance=ExtResource("98_candlelight")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7, 0, 0.75)
 
 [node name="Light3" type="OmniLight3D" parent="Lights" unique_id=910242579]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 3)

@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://3p4y665hqjus" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Bench.gltf" id="7_benchgltf"]
 [ext_resource type="PackedScene" uid="uid://b4sopxdj0eesr" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel.gltf" id="8_barrelgltf"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="9_cratewoodenglt"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/lamp_post.tscn" id="98_lamppost"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/window_light.tscn" id="98_windowlight"]
 
 [sub_resource type="BoxShape3D" id="Box_Bench1"]
 size = Vector3(2.7767, 0.526, 0.5343)
@@ -103,12 +105,8 @@ shape = SubResource("Box_Crate_Wooden1")
 
 [node name="Lights" type="Node3D" parent="." unique_id=1969258311]
 
-[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=481072463]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 2.4, 3)
-light_color = Color(1, 0.7, 0.4, 1)
+[node name="LampPost1" parent="Lights" instance=ExtResource("98_lamppost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0, 3)
 
-[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1581562935]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 2.6, -3)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.8
-omni_range = 4.5
+[node name="WindowLight1" parent="Lights" instance=ExtResource("98_windowlight")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, -3)

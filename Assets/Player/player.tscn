@@ -20,6 +20,8 @@ transform = Transform3D(1, 0, 0, 0, -0.012577365, 0.9999209, 0, -0.9999209, -0.0
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=720931264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shadow_enabled = true
+light_size = 0.4
+shadow_blur = 1.5
 
 [node name="Model" parent="." unique_id=214894827 instance=ExtResource("2_6miq6")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.08, 0)

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://74r5iippio14" path="res://Assets/BuiltAssets/cottage_small.tscn" id="3_cottage"]
 [ext_resource type="PackedScene" path="res://Assets/BuiltAssets/city_gate.tscn" id="4_gate"]
 [ext_resource type="PackedScene" uid="uid://b2ksfp6yi6dev" path="res://Assets/BuiltAssets/hiding-barrel.tscn" id="5_barrel"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/wall_lantern.tscn" id="98_walllantern"]
 
 [node name="EndTileCityGate" type="Node3D"]
 
@@ -42,8 +43,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, -3.2)
 
 [node name="Lights" type="Node3D" parent="."]
 
-[node name="Light1" type="OmniLight3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 2.5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.6
-omni_range = 4.0
+[node name="WallLantern1" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.6, 1.9, 3.7)

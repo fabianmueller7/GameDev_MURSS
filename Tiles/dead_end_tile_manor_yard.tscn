@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dbt8ikb1k4fte" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Apples.gltf" id="9_barrelapplesgl"]
 [ext_resource type="PackedScene" uid="uid://25aac5rbuoju" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Crate_Wooden.gltf" id="10_cratewoodenglt"]
 [ext_resource type="PackedScene" uid="uid://cl1u0bmbtym83" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Holder.gltf" id="11_barrelholdergl"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/wall_lantern.tscn" id="98_walllantern"]
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)
@@ -421,22 +422,14 @@ shape = SubResource("Box_Barrel_Holder1")
 
 [node name="Lights" type="Node3D" parent="." unique_id=538641520]
 
-[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=1982694334]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 2.4, 5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="WallLantern1" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1.6, 1.9, 5.55)
 
-[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=1176907196]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 2.4, 5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
-omni_range = 4.0
+[node name="WallLantern2" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.6, 1.9, 5.55)
 
-[node name="Light3" type="OmniLight3D" parent="Lights" unique_id=928767209]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.6, 0.9)
-light_color = Color(1, 0.7, 0.4, 1)
-omni_range = 4.5
+[node name="WallLantern3" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0.1)
 
 [node name="ItemSpawn" type="Marker3D" parent="." unique_id=1271046360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.85, 0.5, 1.1330404)

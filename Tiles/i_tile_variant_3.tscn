@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://74r5iippio14" path="res://Assets/BuiltAssets/cottage_small.tscn" id="9_cottagesmallts"]
 [ext_resource type="PackedScene" uid="uid://cl1u0bmbtym83" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Barrel_Holder.gltf" id="10_barrelholdergl"]
 [ext_resource type="PackedScene" uid="uid://7vc6lwx23na7" path="res://Assets/Medival Props/MegaKit/Exports/glTF/Pot_1.gltf" id="11_pot1gltf"]
+[ext_resource type="PackedScene" path="res://Assets/BuiltAssets/Lights/wall_lantern.tscn" id="98_walllantern"]
 
 [sub_resource type="BoxShape3D" id="Box_Wall_UnevenBrick_Straight1"]
 size = Vector3(2, 3.1227, 0.4065)
@@ -229,12 +230,8 @@ shape = SubResource("Box_Pot_11")
 
 [node name="Lights" type="Node3D" parent="." unique_id=2118565519]
 
-[node name="Light1" type="OmniLight3D" parent="Lights" unique_id=639092502]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, -3.5)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
+[node name="WallLantern1" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.05, 1.9, -3.5)
 
-[node name="Light2" type="OmniLight3D" parent="Lights" unique_id=853555710]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 3)
-light_color = Color(1, 0.7, 0.4, 1)
-light_energy = 0.9
+[node name="WallLantern2" parent="Lights" instance=ExtResource("98_walllantern")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.05, 1.9, 3)
