@@ -107,9 +107,13 @@ func _apply_look() -> void:
 # (Make sure your player node is added to a group named "player")
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
-		body.add_nearby_item(self)
-		GameManager.show_message.emit("Press F to pick up the %s" % item_name(item_type))
+		body.add_nearby_item(self)  # the hint is shown above the object (Menues/interaction_prompt.gd)
 
 func _on_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		body.remove_nearby_item(self)
+
+
+# Shown above the item while the player can pick it up (Menues/interaction_prompt.gd)
+func get_prompt(_player: Node) -> String:
+	return "[F] Pick up %s" % item_name(item_type)

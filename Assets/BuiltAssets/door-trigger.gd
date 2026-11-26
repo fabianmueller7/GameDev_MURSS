@@ -18,12 +18,7 @@ func _on_body_entered(body: Node3D) -> void:
 		return # Already open, let them through!
 
 	if body.is_in_group("player"):
-		body.add_nearby_target(self)
-		if GameManager.has_item(Collectible.ItemType.KEY):
-			GameManager.show_message.emit("The door is locked. Select the Key and press E to unlock it.")
-		else:
-			# Player does not have the key
-			GameManager.show_message.emit("The door is locked! You need a Key.")
+		body.add_nearby_target(self)  # the hint is shown above the object (Menues/interaction_prompt.gd)
 
 func _on_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):
@@ -50,3 +45,14 @@ func open_door() -> void:
 	# Simple visual swing open effect (rotates the door body over time)
 	var tween = create_tween()
 	tween.tween_property(door_body, "rotation:y", door_body.rotation.y + 1.57, 1.0) # Rotates ~90 degrees (1.57 radians)
+
+
+# Shown above the door (Menues/interaction_prompt.gd)
+func get_prompt(_player: Node) -> String:
+	if is_open:
+		return ""
+	if GameManager.get_selected_item() == Collectible.ItemType.KEY:
+		return "[E] Unlock"
+	if GameManager.has_item(Collectible.ItemType.KEY):
+		return "Select the Key, then [E]"
+	return "Locked: needs the Key"

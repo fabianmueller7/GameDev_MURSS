@@ -10,12 +10,7 @@ func _on_body_entered(body: Node3D) -> void:
 			GameManager.show_message.emit("You escaped through the gate!")
 			GameManager.win_level()
 			return
-		body.add_nearby_target(self)
-		if GameManager.has_item(Collectible.ItemType.BOMB):
-			GameManager.show_message.emit("This is the spot! Select the Bomb and press E to use it.")
-		else:
-			# Player arrived without the bomb -> Missing item message
-			GameManager.show_message.emit("You reached the end, but you are missing the Bomb!")
+		body.add_nearby_target(self)  # the hint is shown above the object (Menues/interaction_prompt.gd)
 
 func _on_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):
@@ -29,3 +24,14 @@ func try_use_item(item_type: Collectible.ItemType) -> bool:
 	GameManager.show_message.emit("You won! You successfully used the bomb to finish the game!")
 	GameManager.win_level()
 	return true
+
+
+# Shown above the target spot (Menues/interaction_prompt.gd)
+func get_prompt(_player: Node) -> String:
+	if not needs_bomb:
+		return ""
+	if GameManager.get_selected_item() == Collectible.ItemType.BOMB:
+		return "[E] Use the Bomb"
+	if GameManager.has_item(Collectible.ItemType.BOMB):
+		return "Select the Bomb, then [E]"
+	return "Needs the Bomb"

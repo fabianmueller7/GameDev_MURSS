@@ -9,13 +9,24 @@ var is_paused: bool = false:
 		# Toggle mouse visibility for UI interaction
 		if is_paused:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			_update_seed_label()
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Adjust if your game uses a different mode
+
+var seed_label: Label
 
 func _ready() -> void:
 	# Hide the pause menu on start
 	visible = false
 	
+	# Map seed of generated levels, under the title (so a good map can be shared)
+	seed_label = Label.new()
+	seed_label.add_theme_font_size_override("font_size", 24)
+	seed_label.add_theme_color_override("font_color", Color(1, 1, 1, 0.7))
+	$VBoxContainer.add_child(seed_label)
+	$VBoxContainer.move_child(seed_label, $VBoxContainer/Label.get_index() + 1)
+	seed_label.visible = false
+
 	# Connect buttons
 	$VBoxContainer/ResumeButton.pressed.connect(_on_resume_pressed)
 	$VBoxContainer/RespawnButton.pressed.connect(_on_respawn_pressed)
@@ -45,4 +56,15 @@ func _on_respawn_pressed() -> void:
 func _on_main_menu_pressed() -> void:
 	# Always unpause before changing scenes, otherwise the new scene will start frozen!
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Menues/main_menu.tscn")
+	SceneFader.change_scene("res://Menues/main_menu.tscn")
+
+
+# Generated levels are called GeneratedLevel<seed> (by the map generator, saved or built on the fly)
+func _update_seed_label() -> void:
+	if seed_label == null:
+		return
+	var scene := get_tree().current_scene
+	var level: Node = scene.find_child("GeneratedLevel*", true, false) if scene else null
+	seed_label.visible = level != null
+	if level:
+		seed_label.text = "Map seed: " + str(level.name).trim_prefix("GeneratedLevel")

@@ -26,8 +26,28 @@ func _ready() -> void:
 	build_inventory_slots()
 	update_inventory()
 
-	# Show the initial objective text at the beginning of the play
-	show_temp_message("Objective: Find the Key to open the door, collect the Bomb, and reach the end!\nWASD: move   Shift: sprint   F: interact / pick up   E: use item   Q: drop   Left/Right: switch slot   M: map", 6.0)
+	_add_extras()
+
+	# Objectives top left, controls bottom left (fade out after a few seconds)
+	message_label.text = ""
+
+
+# Objectives (top left) and prompts above objects go under the map overlay,
+# the red screen flashes above it but under the menus
+func _add_extras() -> void:
+	var map_index: int = $MapOverlay.get_index()
+	var tracker: Control = preload("res://Menues/objective_tracker.gd").new()
+	add_child(tracker)
+	move_child(tracker, map_index)
+	var prompt: Control = preload("res://Menues/interaction_prompt.gd").new()
+	add_child(prompt)
+	move_child(prompt, map_index + 1)
+	var controls: Control = preload("res://Menues/controls_hint.gd").new()
+	add_child(controls)
+	move_child(controls, map_index + 2)
+	var feedback: Control = preload("res://Menues/screen_feedback.gd").new()
+	add_child(feedback)
+	move_child(feedback, $PauseMenu.get_index())
 
 func build_inventory_slots() -> void:
 	for i in GameManager.SLOT_COUNT:

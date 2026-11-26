@@ -5,6 +5,7 @@ class_name Player
 const BASE_SPEED = 5.0
 const WALK_SPEED = BASE_SPEED * 0.7    # Normal walking: 30% slower than before
 const SPRINT_SPEED = BASE_SPEED * 1.2  # Sprinting (Shift): 20% faster than the old walking speed
+const SNEAK_SPEED = WALK_SPEED * 0.55  # Sneaking (Ctrl): slow and quiet
 
 # Stamina goes from 0.0 (empty) to 1.0 (full)
 const MAX_SPRINT_TIME = 5.0  # Seconds of sprinting with full stamina
@@ -14,6 +15,11 @@ const KNIFE_RANGE = 2.0
 
 # Using an item makes noise: enemies within this radius stop and turn towards the player
 @export var item_noise_radius := 6.0
+# Sprinting is loud: every sprint_noise_steps footsteps, enemies within this radius turn around
+@export var sprint_noise_radius := 5.0
+@export var sprint_noise_steps := 2
+# Footsteps are this much quieter while sneaking
+@export var sneak_volume_db := -14.0
 
 # Coin: thrown in the facing direction, lures enemies around the landing spot
 const THROWN_COIN_SCENE := preload("res://Assets/thrown_coin.tscn")
@@ -68,6 +74,9 @@ var stamina := 1.0
 # Set when stamina runs out; sprinting stays blocked until Shift is released
 var exhausted := false
 var is_sprinting := false
+# Sneaking (Ctrl): guard dogs can't hear you and enemies need longer to notice you
+var is_crouching := false
+var sprint_steps := 0
 
 var footstep_player: AudioStreamPlayer
 var breathing_player: AudioStreamPlayer
@@ -321,8 +330,10 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	is_sprinting = _update_stamina(direction != Vector3.ZERO, delta)
-	var speed := SPRINT_SPEED if is_sprinting else WALK_SPEED
+	is_crouching = Input.is_action_pressed("sneak")
+	# No sprinting while sneaking (and no stamina used for it)
+	is_sprinting = _update_stamina(direction != Vector3.ZERO and not is_crouching, delta)
+	var speed := SPRINT_SPEED if is_sprinting else (SNEAK_SPEED if is_crouching else WALK_SPEED)
 	if direction:
 		facing = direction
 		velocity.x = direction.x * speed
@@ -403,7 +414,16 @@ func _update_footsteps(delta: float) -> void:
 		step_distance -= stride_length
 		footstep_player.stream = footstep_sounds.pick_random()
 		footstep_player.pitch_scale = randf_range(0.92, 1.08)
+		footstep_player.volume_db = footstep_volume_db + (sneak_volume_db if is_crouching else 0.0)
 		footstep_player.play()
+		# Running is loud: enemies close by turn towards the noise
+		if is_sprinting:
+			sprint_steps += 1
+			if sprint_steps >= sprint_noise_steps:
+				sprint_steps = 0
+				make_noise(sprint_noise_radius)
+		else:
+			sprint_steps = 0
 
 
 # Heavy breathing while stamina regenerates, fades out once it is full (or we sprint again)
@@ -485,7 +505,7 @@ func _update_animation(direction: Vector3, delta: float) -> void:
 	anim_tree.set("parameters/move/blend_amount", move_blend)
 
 	# Speed up the walk cycle while sprinting so the feet keep up
-	var anim_target := SPRINT_SPEED / WALK_SPEED if is_sprinting else 1.0
+	var anim_target := SPRINT_SPEED / WALK_SPEED if is_sprinting else (SNEAK_SPEED / WALK_SPEED if is_crouching else 1.0)
 	walk_anim_speed = move_toward(walk_anim_speed, anim_target, delta * 4.0)
 	anim_tree.set("parameters/walk_speed/scale", walk_anim_speed)
 	

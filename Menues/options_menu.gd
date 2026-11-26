@@ -20,4 +20,4 @@ func _on_volume_changed(value: float) -> void:
 
 func _on_back_pressed() -> void:
 	# Return to whichever scene requested the options menu
-	get_tree().change_scene_to_file("res://Menues/main_menu.tscn")
+	SceneFader.change_scene("res://Menues/main_menu.tscn")

@@ -14,11 +14,11 @@ func _ready() -> void:
 
 func _on_play_pressed() -> void:
 	# Change to your main 3D game scene
-	get_tree().change_scene_to_file(level_select_path)
+	SceneFader.change_scene(level_select_path)
 
 func _on_options_pressed() -> void:
 	# Change to your main 3D game scene
-	get_tree().change_scene_to_file(options_scene_path)
+	SceneFader.change_scene(options_scene_path)
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()

@@ -18,6 +18,15 @@ extends CharacterBody3D
 @export var waypoint_slack := 0.15    # A path point counts as reached this close (measured on the ground)
 @export var stuck_time := 0.8         # Seconds barely moving before a patrolling enemy skips its waypoint
 
+# Suspicion: seeing the player fills a "?" above the enemy; when it is full ("!") the chase starts
+@export var detect_time := 0.9               # Seconds of seeing the player at the edge of the view before the chase
+@export var close_detect_boost := 1.5        # Up to (1 + this) times faster when the player is close
+@export var instant_detect_distance := 2.0   # Closer than this: spotted right away
+@export var sneak_detect_scale := 0.6        # Sneaking players fill the "?" this much slower
+@export var suspicion_fade_time := 2.0       # Seconds for a full "?" to empty again when the player is gone
+@export var look_at_suspicion := 0.4         # From this suspicion on the enemy stops and looks at the player
+@export var indicator_height := 1.8          # Height of the "?" / "!" above the enemy's origin
+
 @export var patrol_color := Color(0.8, 0.15, 0.15)
 @export var chase_color := Color(1.0, 0.5, 0.0)
 
@@ -62,6 +71,8 @@ var distract_wait_timer := 0.0
 var distract_target: Vector3
 var distract_arrived := false
 var distract_stuck_timer := 0.0
+var suspicion := 0.0                 # 0 = calm, 1 = spotted
+var indicator: Label3D
 
 # How much fatter the enemy is than the navmesh assumes, and how long it has been stuck
 var radius_gap := 0.0
@@ -104,6 +115,7 @@ func _ready() -> void:
 	dog_component = get_node_or_null("GuardDogComponent")
 
 	_setup_model()
+	_setup_indicator()
 
 func _physics_process(delta: float) -> void:
 	if attacking:
@@ -111,6 +123,7 @@ func _physics_process(delta: float) -> void:
 	_move(delta)  # Keeps chasing during the wind-up: the enemy lunges after the player
 	_check_player_contact()
 	_update_animation()
+	_update_indicator()
 
 
 func _move(delta: float) -> void:
@@ -280,8 +293,67 @@ func _update_chase_state(delta: float) -> void:
 			if _can_see_player():
 				spotted = true
 
-		if spotted:
+		if _add_suspicion(spotted, distance, delta):
 			start_chase()
+	else:
+		_add_suspicion(false, distance, delta)   # just gave up: the "?" empties
+
+
+# Fills the "?" while the player is seen (faster when close, slower when sneaking) and empties it
+# otherwise. Returns true once the enemy is sure: time to chase (or ring the alarm).
+func _add_suspicion(sees: bool, distance: float, delta: float) -> bool:
+	if sees:
+		if distance < instant_detect_distance:
+			suspicion = 1.0
+		else:
+			var closeness := 1.0 - clampf(distance / maxf(_current_detect_range(), 0.1), 0.0, 1.0)
+			var rate := (1.0 + close_detect_boost * closeness) / maxf(detect_time, 0.01)
+			if player.is_crouching:
+				rate *= sneak_detect_scale
+			suspicion = minf(suspicion + rate * delta, 1.0)
+		# Something moved over there: stop and have a closer look
+		if suspicion >= look_at_suspicion and suspicion < 1.0 and investigate_timer <= 0.0:
+			hear_noise(player.global_position)
+	else:
+		suspicion = maxf(suspicion - delta / maxf(suspicion_fade_time, 0.01), 0.0)
+	return suspicion >= 1.0
+
+
+# ---------------- "?" / "!" above the enemy ----------------
+
+func _setup_indicator() -> void:
+	indicator = Label3D.new()
+	indicator.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	indicator.no_depth_test = true   # visible above roofs too
+	indicator.font_size = 96
+	indicator.pixel_size = 0.006
+	indicator.outline_size = 18
+	indicator.outline_modulate = Color(0, 0, 0, 0.85)
+	indicator.position = Vector3(0, indicator_height, 0)
+	indicator.visible = false
+	add_child(indicator)
+
+
+# Chasing (or ringing the alarm for watchtowers)
+func _is_alarmed() -> bool:
+	return chasing
+
+
+func _update_indicator() -> void:
+	if indicator == null:
+		return
+	if _is_alarmed():
+		indicator.visible = true
+		indicator.text = "!"
+		indicator.modulate = Color(1.0, 0.35, 0.15)
+		indicator.scale = Vector3.ONE * 1.2
+	elif suspicion > 0.02:
+		indicator.visible = true
+		indicator.text = "?"
+		indicator.modulate = Color(1.0, 0.85, 0.25, lerpf(0.35, 1.0, suspicion))
+		indicator.scale = Vector3.ONE * lerpf(0.6, 1.1, suspicion)
+	else:
+		indicator.visible = false
 
 func _can_see_player() -> bool:
 	if player.is_hidden:
@@ -397,11 +469,13 @@ func on_player_respawned() -> void:
 	stuck_timer = 0.0
 	if chasing:
 		_stop_chase()
+	suspicion = 0.0
 	cooldown_timer = give_up_cooldown
 
 
 func _stop_chase() -> void:
 	chasing = false
+	suspicion = 0.0
 	is_alerted_from_afar = false
 	material.albedo_color = patrol_color
 	vision_light.light_color = patrol_color
@@ -431,9 +505,11 @@ func start_chase() -> void:
 	chase_timer = 0.0
 	investigate_timer = 0.0
 	distracted = false
+	suspicion = 1.0
 	if chasing:
 		return  # Already chasing (e.g. the watchtower keeps alerting us): just keep going
 	chasing = true
+	GameManager.player_spotted.emit()
 	material.albedo_color = chase_color
 	vision_light.light_color = chase_color
 	MusicManager.update_chase_state(true)

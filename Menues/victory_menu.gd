@@ -39,4 +39,4 @@ func _on_restart_pressed() -> void:
 func _on_main_menu_pressed() -> void:
 	# Always unpause before changing scenes, otherwise the new scene will start frozen!
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Menues/main_menu.tscn")
+	SceneFader.change_scene("res://Menues/main_menu.tscn")

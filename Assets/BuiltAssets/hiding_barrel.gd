@@ -31,9 +31,7 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
-		body.add_nearby_interactable(self)
-		if not body.is_hidden:
-			GameManager.show_message.emit("Press F to hide in the barrel.")
+		body.add_nearby_interactable(self)  # the hint is shown above the object (Menues/interaction_prompt.gd)
 
 
 func _on_body_exited(body: Node3D) -> void:
@@ -51,4 +49,10 @@ func interact(player: Player) -> void:
 	elif occupant == null:
 		occupant = player
 		player.enter_hiding_spot(self)
-		GameManager.show_message.emit("You are hiding. Press F to climb out.")
+
+
+# Shown above the barrel (Menues/interaction_prompt.gd)
+func get_prompt(player: Node) -> String:
+	if occupant == player:
+		return "[F] Climb out"
+	return "[F] Hide" if occupant == null else ""

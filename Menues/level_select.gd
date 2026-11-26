@@ -32,13 +32,13 @@ func _on_level_selected(level_path: String) -> void:
 	GameManager.current_level_path = level_path
 
 	# 2. Switch to the master container scene
-	get_tree().change_scene_to_file("res://game_container.tscn")
+	SceneFader.change_scene("res://game_container.tscn")
 	GameManager.reset_game()
 
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://Menues/main_menu.tscn")
+	SceneFader.change_scene("res://Menues/main_menu.tscn")
 
 
 func _on_generator_pressed() -> void:
-	get_tree().change_scene_to_file("res://Menues/level_generator.tscn")
+	SceneFader.change_scene("res://Menues/level_generator.tscn")

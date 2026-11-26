@@ -26,6 +26,7 @@ func _physics_process(delta: float) -> void:
 		_snap_model_to_floor()
 	_update_chase_state(delta)
 	_update_view_cone(delta)
+	_update_indicator()
 
 	# Watching a coin: narrow view until the time is up
 	if distracted:
@@ -46,6 +47,9 @@ func _physics_process(delta: float) -> void:
 	# Ring the bell while the player is in sight (and a moment longer), otherwise stand watch
 	alarm_timer = maxf(alarm_timer - delta, 0.0)
 	_play("Alarm" if alarm_timer > 0.0 else "Idle", 0.15)
+
+func _is_alarmed() -> bool:
+	return alarm_timer > 0.0
 
 # Heard a noise: turn towards it and keep looking there for investigate_time
 func hear_noise(source: Vector3) -> void:
@@ -72,11 +76,14 @@ func _update_chase_state(delta: float) -> void:
 	var forward := -global_transform.basis.z
 	var in_view := forward.angle_to(to_player) < deg_to_rad(_current_view_angle())
 
-	# If the watchtower sees the player, alert everyone instead of chasing
-	if distance < detect_range and in_view and _can_see_player():
+	# The "?" fills while it sees the player; once it is full the tower rings the alarm for everyone
+	var sees := distance < detect_range and in_view and _can_see_player()
+	if _add_suspicion(sees, distance, delta) and sees:
 		_alert_nearby_guards()
 
 func _alert_nearby_guards() -> void:
+	if alarm_timer <= 0.0:
+		GameManager.player_spotted.emit()
 	alarm_timer = alarm_hold_time
 	print("Watchtower spotted the player! Alerting guards...")
 	# Only the guards within alert_radius hear the bell and join the chase

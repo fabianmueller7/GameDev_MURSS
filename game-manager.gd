@@ -22,6 +22,7 @@ var completed_levels: Dictionary = {}
 signal inventory_updated
 signal show_message(text)
 signal player_died
+signal player_spotted   # an enemy just started chasing the player (or a watchtower rang the alarm)
 signal level_won
 signal stamina_changed(value: float, exhausted: bool)  # value: 0.0 (empty) to 1.0 (full)
 
@@ -112,4 +113,4 @@ func reset_game() -> void:
 	selected_slot = 0
 	inventory_updated.emit()
 	add_item(Collectible.ItemType.KNIFE, Collectible.MAX_USES[Collectible.ItemType.KNIFE])
-	get_tree().reload_current_scene()
+	SceneFader.reload_scene()

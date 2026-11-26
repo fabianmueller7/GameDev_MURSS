@@ -323,7 +323,7 @@ func _on_play_pressed() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	GameManager.current_level_path = GENERATOR_SCENE
-	get_tree().change_scene_to_file(GAME_SCENE)
+	SceneFader.change_scene(GAME_SCENE)
 	GameManager.reset_game()
 
 
@@ -335,4 +335,4 @@ func _on_reset_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	GameManager.generator_settings = _settings.duplicate()
-	get_tree().change_scene_to_file(LEVEL_SELECT_SCENE)
+	SceneFader.change_scene(LEVEL_SELECT_SCENE)
