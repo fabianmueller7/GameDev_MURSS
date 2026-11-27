@@ -9,6 +9,11 @@ extends Node3D
 ##   3. Press "Save Level": writes res://Levels/Generated/generated_level_<seed>.tscn with the map,
 ##      a baked navmesh, the player, door + end zone, item markers and enemies with patrol routes.
 ##
+## Goal: with use_final_tile (and a final_tile_*.tscn in res://Tiles) a big final tile is attached
+## outside the map, at the border cell farthest from the start: the player opens its door with the
+## key and blows up the rock dam with the bomb, the landslide buries the town ("Murgang") and the
+## level is won. Without it the goal is a dead end with the city gate (end_tile_*) or a door.
+##
 ## In the game: the "Level Generator" page (Menues/level_generator.tscn) sets the values listed in
 ## SETTING_NAMES and plays the map right away (game_container.gd calls apply_settings() + generate()).
 ##
@@ -27,6 +32,7 @@ const SHAPE_PREFIX := {
 	"cross": "x_tile_",
 	"plaza": "plaza_tile_",
 	"end": "end_tile_",
+	"final": "final_tile_",
 }
 # Open sides of each shape as the tiles are built (before rotating). N = -Z, S = +Z, E = +X, W = -X
 # End tiles (the goal with the city gate) are built like dead ends: open to S only.
@@ -49,7 +55,7 @@ const SETTING_NAMES: Array[String] = [
 	"map_seed", "width", "height", "loop_chance", "with_plaza", "coin_markers",
 	"enemy_density", "base_share", "paranoid_share", "watchman_share", "dog_share",
 	"base_reach", "paranoid_reach", "dog_reach", "watchman_reach",
-	"min_steps_from_start", "enemy_spawn_height",
+	"min_steps_from_start", "enemy_spawn_height", "use_final_tile",
 ]
 
 # Door position in a dead-end tile (entry at +Z), door scene spans x 0..2.1 from its origin
@@ -69,6 +75,9 @@ const ITEM_SPAWNER_SCRIPT := "res://item_spawner.gd"
 @export var with_plaza := true
 ## How many coin markers are placed (the ItemSpawner picks coin_count of them at runtime)
 @export var coin_markers := 6
+## Finale: a final tile (final_tile_*.tscn, bigger than the others) is attached outside the map at
+## the goal. Off: the goal is a dead end inside the map (city gate end tile or door + end zone).
+@export var use_final_tile := true
 @export_dir var output_folder := "res://Levels/Generated"
 
 @export_tool_button("New Map", "RandomNumberGenerator") var new_map_button = new_map
@@ -109,7 +118,9 @@ var _plaza: Array[Vector2i] = []   # the 4 plaza cells, top-left first
 var _tiles := {}                   # Vector2i cell -> tile instance
 var _level: Node3D                 # preview / level being built
 var _start := Vector2i(-1, -1)     # cell where the player starts
-var _goal := Vector2i(-1, -1)      # cell with the end zone (and the door)
+var _goal := Vector2i(-1, -1)      # cell with the end zone (and the door), or where the final tile is attached
+var _final_side := ""              # side of the goal cell the final tile is attached to ("" = no final tile)
+var _final_tile: Node3D
 var _enemies_root: Node3D
 var _patrols_root: Node3D
 var _walkable := {}                  # Vector2i cell -> navmesh height at the cell centre (only cells the player can reach)
@@ -299,7 +310,7 @@ func _distances(from: Vector2i) -> Dictionary:
 		var c: Vector2i = queue.pop_front()
 		for side in _open[c]:
 			var n: Vector2i = c + DIRS[side]
-			if not dist.has(n):
+			if _inside(n) and not dist.has(n):   # (the side to the final tile leads out of the map)
 				dist[n] = dist[c] + 1
 				queue.append(n)
 	return dist
@@ -320,7 +331,7 @@ func _collect_tile_files() -> Dictionary:
 				files[shape].append(TILE_DIR + "/" + file)
 	for shape in files:
 		files[shape].sort()  # same order on every machine, so a seed always gives the same map
-		var optional: bool = shape == "end" or (shape == "plaza" and not with_plaza)
+		var optional: bool = shape == "end" or shape == "final" or (shape == "plaza" and not with_plaza)
 		if files[shape].is_empty() and not optional:
 			push_error("Map generator: no tiles found for '%s' (%s*.tscn in %s)" % [shape, SHAPE_PREFIX[shape], TILE_DIR])
 			return {}
@@ -350,8 +361,12 @@ func _build_level(files: Dictionary) -> void:
 	map.name = "Map"
 	_add(map, nav)
 
-	# Start and goal first: the goal cell gets an end tile (city gate) instead of a normal dead end
-	_choose_start_goal()
+	# Start and goal first: the goal cell gets an end tile (city gate) instead of a normal dead end,
+	# or it opens to the outside where the final tile is attached
+	_final_side = ""
+	_final_tile = null
+	if not (use_final_tile and not files["final"].is_empty() and _choose_start_goal_final()):
+		_choose_start_goal()
 
 	# Tiles
 	_tiles.clear()
@@ -369,16 +384,32 @@ func _build_level(files: Dictionary) -> void:
 				continue
 			var shape_rot := _shape_for(_open[cell])
 			var shape: String = shape_rot[0]
-			if cell == _goal and shape == "dead_end" and not files["end"].is_empty():
+			if cell == _goal and _final_side == "" and shape == "dead_end" and not files["end"].is_empty():
 				shape = "end"   # same open side as a dead end, so the same rotation fits
 			var tile := _add_tile(_pick(files[shape]), map, "%s_%d_%d" % [shape, x, y])
 			tile.position = Vector3(x * TILE_SIZE, 0, y * TILE_SIZE)
 			tile.rotation.y = deg_to_rad(90 * shape_rot[1])
 			_tiles[cell] = tile
+	if _final_side != "":
+		_attach_final_tile(_pick(files["final"]), map)
 
 	nav.bake_navigation_mesh(false)
 	_place_gameplay()
 	_place_enemies(nav.navigation_mesh)
+	_place_final_guard()
+
+
+# The final tile sits outside the map, its entry (local +Z, like a dead end) at the goal cell's open side
+func _attach_final_tile(path: String, map: Node3D) -> void:
+	_final_tile = _add_tile(path, map, "Final_%s" % _final_side)
+	var depth: float = _final_tile.get_meta("depth", TILE_SIZE)
+	var out: Vector2i = DIRS[_final_side]
+	var outward := Vector3(out.x, 0, out.y)
+	_final_tile.position = Vector3(_goal.x * TILE_SIZE, 0, _goal.y * TILE_SIZE) + outward * (TILE_SIZE + depth) * 0.5
+	_final_tile.rotation.y = atan2(-outward.x, -outward.z)   # local +Z points back into the map
+	# How far the landslide may run: across the town, but not off the map (read by Finale/landslide.gd)
+	var cells_deep := height if out.x == 0 else width
+	_final_tile.set_meta("flow_reach", minf(cells_deep * TILE_SIZE - 4.0, 48.0))
 
 
 func _add_tile(path: String, parent: Node, node_name: String) -> Node3D:
@@ -447,6 +478,50 @@ func _choose_start_goal() -> void:
 	_goal = goal
 
 
+# With a final tile: the player starts in a dead end, the final tile is attached to a border cell as
+# far away as possible (ties: random). Returns false if there is no such pair.
+func _choose_start_goal_final() -> bool:
+	var best := -1
+	var pairs: Array = []
+	for a in _open:
+		if not _is_dead_end(a):
+			continue
+		var d := _distances(a)
+		for cell: Vector2i in d:
+			if cell == a or _plaza.has(cell) or _outward_sides(cell).is_empty():
+				continue
+			if d[cell] > best:
+				best = d[cell]
+				pairs.clear()
+			if d[cell] == best:
+				pairs.append([a, cell])
+	if pairs.is_empty():
+		return false
+	var pair: Array = pairs[_rng.randi() % pairs.size()]
+	_start = pair[0]
+	_goal = pair[1]
+	var sides := _outward_sides(_goal)
+	_final_side = sides[_rng.randi() % sides.size()]
+	_open[_goal].append(_final_side)   # the goal tile gets an opening towards the final tile
+	return true
+
+
+# Sides of a cell that face out of the map
+func _outward_sides(cell: Vector2i) -> Array[String]:
+	var sides: Array[String] = []
+	for side in DIRS:
+		if not _inside(cell + DIRS[side]):
+			sides.append(side)
+	return sides
+
+
+# Does the goal need the bomb? (the city gate does not: walking through it wins)
+func _goal_needs_bomb() -> bool:
+	var root: Node = _final_tile if _final_tile else _tiles[_goal]
+	var zone := root.find_child("EndZone", true, false)
+	return zone == null or bool(zone.get("needs_bomb"))
+
+
 func _place_gameplay() -> void:
 	var start := _start
 	var goal := _goal
@@ -457,8 +532,8 @@ func _place_gameplay() -> void:
 	_add(player, _level)
 	player.position = _spot(start) + Vector3(0, 0.5, 0)
 
-	# Goal: the end tile brings its own city gate (opened with the key) and end zone behind it
-	if _tiles[goal].find_child("EndZone", true, false) == null:
+	# Goal: the final tile and the end tile bring their own door (opened with the key) and end zone
+	if _final_tile == null and _tiles[goal].find_child("EndZone", true, false) == null:
 		_place_door_and_end_zone(goal)
 
 	_place_item_markers(start, goal)
@@ -494,10 +569,11 @@ func _place_item_markers(start: Vector2i, goal: Vector2i) -> void:
 		return da > db)
 	var key_cells: Array[Vector2i] = []
 	var bomb_cells: Array[Vector2i] = []
+	var needs_bomb := _goal_needs_bomb()
 	for i in mini(6, cells.size()):
 		if i % 2 == 0:
 			key_cells.append(cells[i])
-		else:
+		elif needs_bomb:
 			bomb_cells.append(cells[i])
 	var coin_cells := cells.slice(6)
 	_shuffle(coin_cells)
@@ -624,6 +700,39 @@ func _place_enemies(navmesh: NavigationMesh) -> void:
 			push_warning("Map generator: no valid cell found for a '%s' enemy" % def.name)
 
 	print("Map generator: placed %d / %d enemies" % [taken.size(), plan.size()])
+
+
+# One guard patrols the final tile (its PatrolPoints), if there are enemies at all.
+# The closed door separates its navmesh from the town, so it stays in there.
+func _place_final_guard() -> void:
+	if _final_tile == null or enemy_density <= 0.0 or base_enemy == null:
+		return
+	var points := _final_tile.get_node_or_null("PatrolPoints")
+	if points == null or points.get_child_count() == 0:
+		return
+	var enemies := _level.get_node_or_null("Enemies") as Node3D
+	if enemies == null:
+		enemies = Node3D.new()
+		enemies.name = "Enemies"
+		_add(enemies, _level)
+	var patrols := _level.get_node_or_null("Patrols") as Node3D
+	if patrols == null:
+		patrols = Node3D.new()
+		patrols.name = "Patrols"
+		_add(patrols, _level)
+	var enemy := base_enemy.instantiate() as Node3D
+	enemy.name = "final_guard"
+	_add(enemy, enemies)
+	var markers: Array[Node3D] = []
+	for i in points.get_child_count():
+		var marker := Marker3D.new()
+		marker.name = "final_guard_WP%d" % i
+		_add(marker, patrols)
+		var p := _level.to_local((points.get_child(i) as Node3D).global_position)
+		marker.position = Vector3(p.x, 0.0, p.z)
+		markers.append(marker)
+	enemy.position = markers[0].position + Vector3.UP * enemy_spawn_height
+	enemy.set("patrol_points", markers)
 
 
 # Exact number per type (largest-remainder rounding), shuffled with the seeded RNG
@@ -879,5 +988,7 @@ func _layout_ascii() -> String:
 		lines.append(top)
 		lines.append(mid)
 	lines.append("S = start  Z = goal (city gate / door + end zone)  * = dead end  P = plaza  + = street")
+	if _final_side != "":
+		lines.append("Final tile (landslide) attached on the %s side of the goal" % _final_side)
 	lines.append("Start cell %s, goal cell %s, %d steps apart" % [_start, _goal, _distances(_start).get(_goal, -1)])
 	return "\n".join(lines)

@@ -76,9 +76,12 @@ func _refresh() -> void:
 			lines.append(["Unlock the Door", all_open])
 		else:
 			lines.append(["Unlock the Doors (%d/%d)" % [opened, _doors.size()], all_open])
-	if _ends.any(func(e): return e.get("needs_bomb")):
-		lines.append(["Find the Bomb", GameManager.has_item(Collectible.ItemType.BOMB)])
-		lines.append(["Use the Bomb at the target", false])
+	var bomb_ends := _ends.filter(func(e): return e.get("needs_bomb"))
+	if not bomb_ends.is_empty():
+		var used: bool = bomb_ends.any(func(e): return e.get("bomb_used"))
+		var text = bomb_ends[0].get("objective")
+		lines.append(["Find the Bomb", used or GameManager.has_item(Collectible.ItemType.BOMB)])
+		lines.append([text if text else "Use the Bomb at the target", used])
 	elif not _ends.is_empty():
 		lines.append(["Escape through the exit", false])
 

@@ -14,10 +14,12 @@ extends Node
 
 @export_group("Mix")
 @export var music_volume_db := -4.0
-# Per-track offsets so the three versions sound equally loud (combat is mastered much louder)
+# Per-track offsets. Exploration and tension sound equally loud; combat is mastered louder anyway
+# and is meant to stand out during a chase: about 5 dB above exploration with these values
+# (measured: exploration -20.2 LUFS, tension -22.1, combat -16.7; combat peaks at -1.8 dBFS)
 @export var exploration_offset_db := 0.0
 @export var tension_offset_db := 1.5
-@export var combat_offset_db := -3.0
+@export var combat_offset_db := 2.0
 
 @export_group("Tension")
 @export var tension_far := 14.0   # Enemy further away than this: no tension at all
@@ -62,11 +64,11 @@ func _ready() -> void:
 	tension_player.play()
 	combat_player.play()
 
-	# Sound effects go to the Master bus so the music filter does not muffle them
+	# Sound effects go to the SFX bus so the music filter does not muffle them
 	detected_player = AudioStreamPlayer.new()
 	detected_player.stream = detected_sound
 	detected_player.volume_db = detected_volume_db
-	detected_player.bus = "Master"
+	detected_player.bus = "SFX"
 	add_child(detected_player)
 
 

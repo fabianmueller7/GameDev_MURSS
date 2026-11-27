@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b183v031syw0h" path="res://Menues/options_menu.gd" id="1_0yk1o"]
 [ext_resource type="PackedScene" uid="uid://b7m0qcda0v6qr" path="res://Menues/background.tscn" id="2_k8r48"]
+[ext_resource type="PackedScene" path="res://Menues/volume_settings.tscn" id="3_volume"]
 
 [node name="OptionsMenu" type="Control" unique_id=1073645018]
 layout_mode = 3
@@ -27,22 +28,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Options"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=2010775420]
+[node name="VolumeSettings" parent="VBoxContainer" instance=ExtResource("3_volume")]
 layout_mode = 2
-
-[node name="VolumeLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1252819100]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Volume"
-
-[node name="VolumeSlider" type="HSlider" parent="VBoxContainer/HBoxContainer" unique_id=1494173836]
-custom_minimum_size = Vector2(300, 50)
-layout_mode = 2
-
-[node name="ValueLabel" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1285408204]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "80"
 
 [node name="BackButton" type="Button" parent="VBoxContainer" unique_id=432135592]
 layout_mode = 2

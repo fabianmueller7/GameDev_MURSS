@@ -19,6 +19,7 @@ const MAP_OPTIONS := [
 	["loop_chance", "Extra connections", "Chance that two neighbouring streets are connected as well,\nso there is more than one way around a guard", "percent"],
 	["with_plaza", "Plaza", "One 2x2 plaza inside the map (needs at least 4 x 4 tiles)", "bool"],
 	["coin_markers", "Coin spots", "Number of places where coins can spawn", "int"],
+	["use_final_tile", "Landslide finale", "The goal is the quarry outside the map: blow up the rock dam\nwith the bomb and the landslide buries the town.\nOff: the goal is the city gate inside the map.", "bool"],
 ]
 const ENEMY_OPTIONS := [
 	["enemy_density", "Enemies per tile", "Number of enemies = tiles x this value\n(0.25 on a 5 x 5 map = 6 enemies, 0 = no enemies)", "float"],

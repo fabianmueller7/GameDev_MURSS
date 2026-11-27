@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bem87l72ngugh" path="res://Menues/death_menu.gd" id="3_cbyko"]
 [ext_resource type="Script" path="res://Menues/map_overlay.gd" id="9_mapoverlay"]
 [ext_resource type="Script" path="res://Menues/victory_menu.gd" id="4_victory"]
+[ext_resource type="PackedScene" path="res://Menues/volume_settings.tscn" id="10_volume"]
 
 
 [node name="Hud" type="CanvasLayer" unique_id=1333986245]
@@ -117,10 +118,39 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Respawn"
 
+[node name="OptionsButton" type="Button" parent="PauseMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Options"
+
 [node name="MenuButton" type="Button" parent="PauseMenu/VBoxContainer" unique_id=1592274633]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "To Main menu"
+
+[node name="OptionsPanel" type="VBoxContainer" parent="PauseMenu"]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -130.0
+offset_right = 711.0
+offset_bottom = 130.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseMenu/OptionsPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Options"
+
+[node name="VolumeSettings" parent="PauseMenu/OptionsPanel" instance=ExtResource("10_volume")]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="PauseMenu/OptionsPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Back"
 
 [node name="DeathMenu" type="Control" parent="." unique_id=362981006]
 process_mode = 3

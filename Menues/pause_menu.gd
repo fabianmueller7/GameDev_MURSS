@@ -5,6 +5,7 @@ var is_paused: bool = false:
 		is_paused = value
 		get_tree().paused = is_paused
 		visible = is_paused
+		_show_options(false)   # always opens on the main list
 		
 		# Toggle mouse visibility for UI interaction
 		if is_paused:
@@ -31,12 +32,26 @@ func _ready() -> void:
 	$VBoxContainer/ResumeButton.pressed.connect(_on_resume_pressed)
 	$VBoxContainer/RespawnButton.pressed.connect(_on_respawn_pressed)
 	$VBoxContainer/MenuButton.pressed.connect(_on_main_menu_pressed)
+	$VBoxContainer/OptionsButton.pressed.connect(_show_options.bind(true))
+	$OptionsPanel/BackButton.pressed.connect(_show_options.bind(false))
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Check for the pause input action (default ESC / ui_cancel)
 	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.keycode == KEY_P):
-		is_paused = not is_paused
+		if is_paused and $OptionsPanel.visible:
+			_show_options(false)   # ESC in the options: back to the pause menu
+		else:
+			is_paused = not is_paused
 		get_viewport().set_input_as_handled() # Prevent input bleeding
+
+# Options (volume sliders, Menues/volume_settings.tscn) in place of the pause menu buttons
+func _show_options(open: bool) -> void:
+	if not is_node_ready():
+		return
+	if not open and $OptionsPanel.visible:
+		SettingsManager.save_settings()
+	$OptionsPanel.visible = open
+	$VBoxContainer.visible = not open
 
 func _on_resume_pressed() -> void:
 	is_paused = false

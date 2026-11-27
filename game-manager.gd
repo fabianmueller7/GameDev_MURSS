@@ -16,6 +16,8 @@ var current_level_path: String = "res://Levels/level_1.tscn"
 var generator_settings: Dictionary = {}
 # Level paths the player has finished (path -> true), loaded from PROGRESS_FILE
 var completed_levels: Dictionary = {}
+# The player can't be caught (set while the finale plays, from planting the bomb on)
+var player_invincible := false
 
 
 # Signal to notify HUD or other systems of changes
@@ -101,10 +103,13 @@ func select_slot(index: int) -> void:
 	inventory_updated.emit()
 	
 func trigger_death() -> void:
+	if player_invincible:
+		return
 	print("player dead registered")
 	player_died.emit()
 	
 func reset_game() -> void:
+	player_invincible = false
 	# Clear out inventory items and uses
 	slots.clear()
 	slot_uses.clear()
